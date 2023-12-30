@@ -1,0 +1,52 @@
+.mobile_menu {
+  width: 85%;
+  height: 50px;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0px 4px rgba(0, 0, 0, 0.3);
+  position: fixed;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--color-white);
+}
+
+.menu_item {
+  font-size: 30px;
+  color: var(--color-blue);
+  position: relative;
+  text-align: center;
+}
+
+.menu_item h3 {
+  font-size: 12px;
+  font-family: "Roboto";
+  font-weight: 800;
+}
+
+.menu_item span {
+  font-size: 10px;
+  background: var(--color-red);
+  color: var(--color-white);
+  padding: 2px 4px;
+  border-radius: 5px;
+  font-family: "Roboto";
+  border: 2px solid var(--color-white);
+  position: absolute;
+  top: 0;
+}
+
+.menu_item span:nth-child(1) {
+  right: -14px;
+}
+
+.menu_item span:nth-child(2) {
+  right: -18px;
+}
+
+.menu_item span:nth-child(3) {
+  right: 0px;
+}

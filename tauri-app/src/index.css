@@ -1,0 +1,15 @@
+:root {
+  --color-green: #22c55e;
+  --box-shadow-green: 0 5px 12px rgba(34, 197, 94, 0.5);
+  --color-red: #ef4444;
+  --box-shadow-red: 0 5px 12px rgba(239, 68, 68, 0.5);
+  --color-blue: #0ea5e9;
+  --color-white: #fff;
+  --color-black: #000;
+  --color-orange: #f97316;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}

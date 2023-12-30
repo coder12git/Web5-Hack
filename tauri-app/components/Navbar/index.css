@@ -1,0 +1,110 @@
+.main_navbar_container {
+  padding: 20px 65px;
+  box-shadow: 0 0 3px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: var(--color-white);
+  z-index: 5;
+}
+
+.logo_container {
+  position: relative;
+}
+
+.logo_container i:nth-child(1) {
+  font-size: 54px;
+  color: var(--color-blue);
+}
+
+.logo_container i:nth-child(2) {
+  font-size: 15px;
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  color: var(--color-white);
+}
+
+.comp_menu_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.comp_menu_container div {
+  font-family: "Roboto";
+  font-size: 14px;
+  margin: 0px 10px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comp_menu_container div i {
+  color: var(--color-blue);
+  margin-right: 4px;
+}
+
+.comp_menu_container div span {
+  color: var(--color-white);
+  background: var(--color-red);
+  font-family: "Roboto";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  font-size: 14px;
+  margin-left: 8px;
+  text-align: center;
+  padding: 2px 4px;
+}
+
+.comp_menu_container div h3 {
+  color: var(--color-blue);
+  font-weight: 800;
+  transition: 0.3s;
+}
+
+.comp_menu_container div h3:hover {
+  opacity: 1;
+}
+
+.auth_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+}
+
+.auth_container {
+  padding: 8px 20px;
+  padding-right: 8px;
+  border-radius: 28px;
+  background: var(--color-green);
+  box-shadow: var(--box-shadow-green);
+  color: var(--color-white);
+  font-family: "Roboto";
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.auth_container i {
+  background: var(--color-white);
+  padding: 10px 12px;
+  border-radius: 50%;
+  color: var(--color-black);
+  margin-left: 10px;
+}
+
+@media (max-width: 750px) {
+  .main_navbar_container {
+    padding: 15px 25px;
+  }
+
+  .comp_menu_container {
+    display: none;
+  }
+}
