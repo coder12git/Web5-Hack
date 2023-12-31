@@ -12,6 +12,7 @@
   justify-content: space-around;
   align-items: center;
   background: var(--color-white);
+  z-index: 5;
 }
 
 .menu_item {
