@@ -3,19 +3,26 @@ import { Record as Web5Record, Web5 } from "@web5/api"
 export namespace MedicalRecord {
   export type NullFlavor = "253|unknown|" | "271|no information|" | "272|masked|" | "273|not applicable|"
 
-  export type Quantity = {
-    "@type": "DV_QUANTITY",
+  export type QuantityComment = {
+    "@type": "DV_TEXT",
+    value: string
+  }
+
+  export type QuantityMagnitude = {
+    "@type": "DV_MAGNITUDE",
     magnitude: number,
-    units: string,
+    unit: string,
     comment?: string
-  } | { comment: string }
+  }
+
+  type Quantity = QuantityMagnitude | QuantityComment
 
   export type Element = {
     "@type": "ELEMENT",
     name: string,
     value: Quantity
   } & ({
-    null_flavor: NullFlavor,
+    null_flavor?: NullFlavor,
     null_reason?: string
   } | {
     null_flavor: NullFlavor,
@@ -34,7 +41,7 @@ export namespace MedicalRecord {
 
   export type Item = ItemSingle | ItemList
 
-  export type Event = {
+  export type HistoryEvent = {
     "@type": "EVENT",
     time: Date,
     state: Item
@@ -45,7 +52,7 @@ export namespace MedicalRecord {
     origin?: Date,
     period?: Date,
     duration?: Date,
-    events: Event[]
+    events: HistoryEvent[]
   }
 
   export type Document = {
@@ -54,12 +61,28 @@ export namespace MedicalRecord {
   }
 }
 
-export function createMedicalRecordItem(element: Omit<MedicalRecord.Element, "@type">): MedicalRecord.ItemSingle {
+export function createQuantityMagnitude(quantity: Omit<MedicalRecord.QuantityMagnitude, "@type">): MedicalRecord.QuantityMagnitude {
+  return {
+    ...quantity,
+    "@type": "DV_MAGNITUDE"
+  }
+}
+
+export function createQuantityComment(quantity: Omit<MedicalRecord.QuantityComment, "@type">): MedicalRecord.QuantityComment {
+  return {
+    ...quantity,
+    "@type": "DV_TEXT"
+  }
+}
+
+
+export function createItem(element: Omit<MedicalRecord.Element, "@type">): MedicalRecord.ItemSingle {
   return {
     "@type": "ITEM_SINGLE",
-    item: Object.assign(element, {
+    item: {
+      ...element,
       "@type": "ELEMENT"
-    } as const)
+    }
   }
 }
 
@@ -155,7 +178,7 @@ export class MedicalDocument {
       return false
     }
 
-    const { record: res } = await this._web5.dwn.records.create({
+    const res = await this._web5.dwn.records.create({
       data: {
         "@context": "https://schema.org",
         "@type": "MEDICAL_RECORD",
@@ -163,13 +186,15 @@ export class MedicalDocument {
         comment: this._comment
       },
       message: {
-        schema: "https://schema.org/OpenEHR",
+        schema: "https://schema.org/Person",
         dataFormat: "application/json",
-        protocol: this._protocol
+        protocol: this._protocol,
+        protocolPath: "person",
       },
     })
 
-    record = res?.record
+    record = res.record
+    console.log(res)
 
     if (!record)
       return false

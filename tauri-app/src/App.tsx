@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Home from "./pages/home";
 import Connect from "./pages/connect";
 import Remedy from "./pages/remedy";
+import MedicPage from "./pages/medic";
 
 const router = createHashRouter([
   {
@@ -17,6 +18,10 @@ const router = createHashRouter([
   {
     path: "/remedy",
     element: <Remedy />,
+  },
+  {
+    path: "/medic",
+    element: <MedicPage />,
   }
 ]);
 
