@@ -27,36 +27,31 @@ type Document = {
 export function useDocuments(web5: Web5) {
   const [documents, setDocuments] = useState<Document[]>([]);
 
-  useEffect(() => {
-    if (!web5) return;
-
-    async function fetchDocuments() {
-      const { records } = await web5.dwn.records.query({
-        message: {
-          filter: {
-            schema: "https://schema.org/DigitalDocument",
-          },
-          dateSort: "createdAscending",
+  async function fetchDocuments() {
+    const { records } = await web5.dwn.records.query({
+      message: {
+        filter: {
+          schema: "https://schema.org/DigitalDocument",
         },
+        dateSort: "createdAscending",
+      },
+    });
+
+    if (!records) return false
+
+    const docs = [];
+    for (const record of records) {
+      const data = await record.data.json();
+      docs.push({
+        record,
+        data,
+        id: record.id
       });
-
-      if (!records) return false
-
-      const docs = [];
-      for (const record of records) {
-        const data = await record.data.json();
-        docs.push({
-          record,
-          data,
-          id: record.id
-        });
-      }
-      setDocuments(docs);
     }
-    fetchDocuments();
-  }, [web5]);
+    setDocuments(docs);
+  }
 
-  async function createDocument(file: File) {
+  async function createDocument({ name, file }: { name: string | undefined, file: File }): Promise<false | Document> {
     const { record: uploadedFileResponse } = await web5.dwn.records.create({
       data: new Blob([file], { type: file.type }),
     });
@@ -67,7 +62,7 @@ export function useDocuments(web5: Web5) {
       data: {
         "@context": "https://schema.org",
         "@type": "DigitalDocument",
-        name: file.name,
+        name: name ?? file.name,
         encodingFormat: file.type,
         size: file.size.toString(),
         url: uploadedFileResponse.id,
@@ -88,9 +83,11 @@ export function useDocuments(web5: Web5) {
     if (!record) return false;
 
     const data = await record.data.json();
-    const message = { record, data, id: record.id };
+    const doc = { record, data, id: record.id };
 
-    setDocuments((prevDocs) => [...prevDocs, message]);
+    setDocuments((prevDocs) => [...prevDocs, doc]);
+
+    return doc
   }
 
   async function updateDocument(document: Document, { name, file }: { name?: string, file?: File }) {
@@ -159,5 +156,5 @@ export function useDocuments(web5: Web5) {
     return file;
   }
 
-  return { documents, createDocument, updateDocument, deleteDocument, getDocumentFile };
+  return { documents, createDocument, updateDocument, deleteDocument, getDocumentFile, fetchDocuments };
 }

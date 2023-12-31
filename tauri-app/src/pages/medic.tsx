@@ -1,42 +1,55 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
-import { MedicalDocument, MedicalRecord, createItem, createQuantityMagnitude } from "@/utils/medical-document";
+import { useDocuments } from "@/stores/useDocuments";
 
 const MedicPage: FunctionComponent = () => {
   const { web5, connect } = useWeb5Store((state) => ({ web5: state.web5!, connect: state.connect }));
-  const medicalRecord = useRef<MedicalDocument>(new MedicalDocument(web5, schemaOrgProtocolDefinition.protocol))
+  const { fetchDocuments, documents, createDocument, getDocumentFile } = useDocuments(web5)
+  const [docsWithImageUrls, setDocsWithImageUrls] = useState<{
+    document: typeof documents[0],
+    url: string
+  }[]>([])
+
   const [form, setForm] = useState<{
-    name: string,
-    magnitude: number,
-    unit: string,
-    comment?: string
+    name: string
+    doc: File
   }>({
     name: "",
-    magnitude: 0,
-    unit: "kg",
-    comment: undefined
+    doc: new File([], "")
   })
 
-  const [historyEvents, setHistoryEvents] = useState<Omit<MedicalRecord.HistoryEvent, "@type">[]>([])
+  useEffect(() => {
+    if (web5) {
+      fetchDocuments()
+    }
+  }, [web5])
 
-  const addHistoryEvent = () => {
-    const historyEvent = {
-      time: new Date(),
-      state: createItem({
-        name: form.name,
-        value: createQuantityMagnitude({
-          magnitude: form.magnitude,
-          unit: form.unit,
-          comment: form.comment
-        })
+  async function processDocsImage() {
+    const docsWithImageUrls: { document: typeof documents[0], url: string }[] = []
+
+    for (const doc of documents) {
+      const file = await getDocumentFile(doc)
+      let url = ""
+      if (file)
+        url = URL.createObjectURL(file)
+
+      docsWithImageUrls.push({
+        document: doc,
+        url
       })
     }
-    medicalRecord.current.addHistoryEvent(historyEvent)
-    setHistoryEvents([...historyEvents, historyEvent])
+
+    setDocsWithImageUrls(docsWithImageUrls)
   }
 
+  useEffect(() => {
+    processDocsImage()
+  }, [documents])
+
   const saveMedicalRecord = async () => {
-    const res = await medicalRecord.current.save()
+    const res = await createDocument({ name: form.name ? form.name : undefined, file: form.doc })
+
+    // console.log(res)
     if (res) {
       alert(`Medical record saved: ${res}`)
     }
@@ -45,8 +58,10 @@ const MedicPage: FunctionComponent = () => {
     }
   }
 
+  console.log(documents)
+
   return (
-    <div>
+    <div className="grid grid-cols-2 gap-4">
       <form onSubmit={(e) => {
         e.preventDefault()
         saveMedicalRecord()
@@ -54,45 +69,38 @@ const MedicPage: FunctionComponent = () => {
         <div>
           <input
             type="text"
-            required
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            placeholder="Item name. E.g: weight" />
-        </div>
-        <div className="flex gap-4">
-          <input
-            type="number"
-            required
-            onChange={(e) => setForm({ ...form, magnitude: parseInt(e.target.value) })}
-            placeholder="Magnitude" />
-          <select
-            onChange={(e) => setForm({ ...form, unit: e.target.value })}
-            className="w-20">
-            <option value="kg">kg</option>
-            <option value="g">g</option>
-          </select>
+            placeholder="Name" />
         </div>
         <div>
           <input
-            type="text"
+            type="file"
             required
-            onChange={(e) => setForm({ ...form, comment: e.target.value })}
-            placeholder="Comment" />
+            onChange={(e) => {
+              const fileList = e.target.files
+              if (!fileList) return
+
+              const file = fileList[0]
+              if (!file) return
+
+              setForm({
+                ...form,
+                doc: file
+              })
+            }}
+            placeholder="Document" />
         </div>
-        <div>
-          {historyEvents.map((event, index) => (
-            <div key={index} className="flex gap-2">
-              <span>{event.time.toLocaleString()}</span>
-              <span>{JSON.stringify(event.state)}</span>
-            </div>
-          ))}
-        </div>
-        <button type="button" onClick={addHistoryEvent}>
-          Add event
-        </button>
         <button type="submit">
-          Create medical record
+          Create record
         </button>
       </form>
+      <div>
+        {docsWithImageUrls.map(({ document, url }) => (
+          <div key={document.id}>
+            <img src={url} alt="img" />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
