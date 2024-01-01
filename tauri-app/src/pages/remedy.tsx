@@ -59,7 +59,7 @@ const Remedy: FunctionComponent = () => {
     }
   }
 
-  console.log(remedies)
+  // console.log(remedies)
 
   return (
     <div className="grid grid-cols-2 gap-4">

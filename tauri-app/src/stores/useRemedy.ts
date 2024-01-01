@@ -5,9 +5,18 @@ import _ from "lodash"
 
 export type Remedy = {
   "@context": "https://schema.org";
-  "@type": "Remedy";
+  "@type": "Collection";
   name: string;
   description: string;
+  encodingFormat: string;
+  size: string;
+  url: string;
+  identifier: string;
+  dateCreated?: string;
+  dateModified?: string;
+  datePublished: string;
+  thumbnail?: Blob;
+  thumbnailUrl?: string;
   // Add more properties as needed
 };
 
@@ -24,7 +33,7 @@ export function useRemedies(web5: Web5) {
     const { records } = await web5.dwn.records.query({
       message: {
         filter: {
-          schema: "https://schema.org/DigitalDocument",
+          schema: "https://schema.org/Collection",
         },
         dateSort: "createdAscending",
       },
@@ -48,21 +57,21 @@ export function useRemedies(web5: Web5) {
     const { record } = await web5.dwn.records.create({
       data: {
         "@context": "https://schema.org",
-        "@type": "Remedy",
+        "@type": "Collection",
         name: name,
         description: description,
         // Add more properties as needed
       },
       message: {
-        schema: "https://schema.org/DigitalDocument",
+        schema: "https://schema.org/Collection",
         protocol: schemaOrgProtocolDefinition.protocol,
-        protocolPath: "remedy",
+        protocolPath: "collection",
         dataFormat: "application/json",
         published: true,
       },
     });
 
-    if (!record) return false;
+    if (!record) return false
 
     const data = await record.data.json();
     const remedy = { record, data, id: record.id };
