@@ -105,7 +105,7 @@ export default function Home() {
             <div className="t-container-1">
               <div className="testimonial">
                 <div className="user-info">
-                  <img src="../../../public/pma.png" />
+                  <img src="../../../public/pic.jpg" />
                   <h2>Dave</h2>
                 </div>
                 <div class="info">
@@ -163,6 +163,55 @@ export default function Home() {
             d="M0,128L10,154.7C20,181,40,235,60,240C80,245,100,203,120,160C140,117,160,75,180,69.3C200,64,220,96,240,133.3C260,171,280,213,300,218.7C320,224,340,192,360,202.7C380,213,400,267,420,256C440,245,460,171,480,122.7C500,75,520,53,540,48C560,43,580,53,600,96C620,139,640,213,660,229.3C680,245,700,203,720,176C740,149,760,139,780,117.3C800,96,820,64,840,69.3C860,75,880,117,900,149.3C920,181,940,203,960,208C980,213,1000,203,1020,170.7C1040,139,1060,85,1080,53.3C1100,21,1120,11,1140,42.7C1160,75,1180,149,1200,192C1220,235,1240,245,1260,229.3C1280,213,1300,171,1320,149.3C1340,128,1360,128,1380,128C1400,128,1420,128,1430,128L1440,128L1440,0L1430,0C1420,0,1400,0,1380,0C1360,0,1340,0,1320,0C1300,0,1280,0,1260,0C1240,0,1220,0,1200,0C1180,0,1160,0,1140,0C1120,0,1100,0,1080,0C1060,0,1040,0,1020,0C1000,0,980,0,960,0C940,0,920,0,900,0C880,0,860,0,840,0C820,0,800,0,780,0C760,0,740,0,720,0C700,0,680,0,660,0C640,0,620,0,600,0C580,0,560,0,540,0C520,0,500,0,480,0C460,0,440,0,420,0C400,0,380,0,360,0C340,0,320,0,300,0C280,0,260,0,240,0C220,0,200,0,180,0C160,0,140,0,120,0C100,0,80,0,60,0C40,0,20,0,10,0L0,0Z"
           ></path>
         </svg>
+        <div
+          className="techstack-container"
+          style={{
+            background: "var(--color-white)",
+          }}
+        >
+          <h1 style={{ color: "var(--color-black)" }}>Major Features</h1>
+          <div className="tech-container">
+            <div className="tech">
+              <i className="fa-solid fa-lock"></i>
+              <h2>Secure Storage</h2>
+              <p>
+                Pulsepal employes blockchain for.storing user data and this
+                ensures that effective data protection from data loss or
+                manipulation and this is due to the immutability of data stored
+                on a blockchain.
+              </p>
+            </div>
+            <div className="tech">
+              <i className="fa fa-users"></i>
+              <h2>Find Your Tribe</h2>
+              <p>
+                Pulsepal uses articial intelligence to aid users with similiar
+                medical conditions find matches who can relate with them and
+                also find doctors/specialist within there regions on such
+                condition.
+              </p>
+            </div>
+            <div className="tech">
+              <i className="fa fa-medkit"></i>
+              <h2>Home Remedies</h2>
+              <p>
+                Pulsepal home remedies help users find a quick for emergency
+                situations and a also find better ways to cope with issues
+                bothering them.
+              </p>
+            </div>
+            <div className="tech">
+              <i className="fas fa-user-md"></i>
+              <h2>Find Specialist</h2>
+              <p>
+                Pulsepal use of artifical intelligence aids in making users
+                easily locate specialist within there region on medical
+                conditions affecting giving them easier access to a health
+                professional.
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

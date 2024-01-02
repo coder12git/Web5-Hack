@@ -1,17 +1,22 @@
 import "./index.css";
+import { NavLink } from "react-router-dom";
 
 const index = () => {
   return (
     <div className="mobile_menu">
-      <div className="menu_item">
-        <i className="fa fa-home"></i>
-        <h3>Home</h3>
-      </div>
-      <div className="menu_item">
-        <i className="fa fa-database"></i>
-        <h3>Records</h3>
-        <span>35</span>
-      </div>
+      <NavLink to="/" style={{ textDecoration: "none" }}>
+        <div className="menu_item">
+          <i style={{ fontSize: "30px" }} className="fa fa-home"></i>
+          <h3 style={{ fontSize: "13px" }}>Home</h3>
+        </div>
+      </NavLink>
+      <NavLink to="/records" style={{ textDecoration: "none" }}>
+        <div className="menu_item">
+          <i style={{ fontSize: "30px" }} className="fa fa-database"></i>
+          <h3 style={{ fontSize: "13px" }}>Records</h3>
+          <span>35</span>
+        </div>
+      </NavLink>
       <div className="menu_item">
         <i className="fas fa-comment-alt"></i>
         <span>28</span>

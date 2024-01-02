@@ -1,4 +1,5 @@
 import "./index.css";
+import { NavLink } from "react-router-dom";
 
 const index = () => {
   return (
@@ -8,15 +9,19 @@ const index = () => {
         <i className="fa fa-heartbeat"></i>
       </div>
       <div className="comp_menu_container">
-        <div>
-          <i className="fa fa-home"></i>
-          <h3>Home</h3>
-        </div>
-        <div>
-          <i className="fa fa-database"></i>
-          <h3>Records </h3>
-          <span>28</span>
-        </div>
+        <NavLink to="/" style={{ textDecoration: "none" }}>
+          <div>
+            <i className="fa fa-home"></i>
+            <h3>Home</h3>
+          </div>
+        </NavLink>
+        <NavLink to="/records" style={{ textDecoration: "none" }}>
+          <div>
+            <i className="fa fa-database"></i>
+            <h3>Records </h3>
+            <span>28</span>
+          </div>
+        </NavLink>
         <div>
           <i className="fas fa-comment-alt"></i>
           <h3>Chats </h3>
@@ -29,7 +34,7 @@ const index = () => {
         </div>
       </div>
       <div className="auth_container">
-        <h3>Join us!</h3>
+        <h3>Connect Wallet</h3>
         <i className="fa fa-user"></i>
       </div>
     </div>
