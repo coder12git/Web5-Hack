@@ -53,13 +53,27 @@ export function useRemedies(web5: Web5) {
     setRemedies(remedies);
   }
 
-  async function createRemedy({ name, description }: { name: string | undefined ; description: string | undefined }): Promise<false | RemedyDocument> {
+  async function createRemedy({ name, description, file }: { name: string | undefined ; description: string | undefined; file: File }): Promise<false | RemedyDocument> {
+    
+    const { record: uploadedFileResponse } = await web5.dwn.records.create({
+      data: new Blob([file], { type: file.type }),
+    });
+
+    if (!uploadedFileResponse) return false;    
+
     const { record } = await web5.dwn.records.create({
       data: {
         "@context": "https://schema.org",
         "@type": "Collection",
         name: name,
         description: description,
+        encodingFormat: file.type,
+        size: file.size.toString(),
+        url: uploadedFileResponse?.id,
+        identifier: "",
+        dateCreated: new Date().toISOString(),
+        dateModified: new Date().toISOString(),
+        datePublished: new Date().toISOString(),
         // Add more properties as needed
       },
       message: {
@@ -109,5 +123,25 @@ export function useRemedies(web5: Web5) {
     setRemedies((prevRemedies) => prevRemedies.filter((r) => r.id !== remedy.id));
   }
 
-  return { remedies, createRemedy, updateRemedy, deleteRemedy, fetchRemedies };
+  async function getDocumentFile(document: RemedyDocument) {
+    const { records } = await web5.dwn.records.query({
+      message: {
+        filter: {
+          recordId: document.data.url,
+        }
+      }
+    })
+
+    if (!records) return false
+
+    const firstRecord = records[0]
+
+    if (!firstRecord) return false
+
+    const file = new File([await firstRecord.data.blob()], document.data.name, { type: document.data.encodingFormat });
+
+    return file;
+  }
+
+  return { remedies, createRemedy, updateRemedy, deleteRemedy, getDocumentFile, fetchRemedies };
 }

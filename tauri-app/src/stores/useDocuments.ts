@@ -52,6 +52,7 @@ export function useDocuments(web5: Web5) {
   }
 
   async function createDocument({ name, file }: { name: string | undefined, file: File }): Promise<false | Document> {
+    
     const { record: uploadedFileResponse } = await web5.dwn.records.create({
       data: new Blob([file], { type: file.type }),
     });
