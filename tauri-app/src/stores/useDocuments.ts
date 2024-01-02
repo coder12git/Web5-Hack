@@ -51,7 +51,7 @@ export function useDocuments(web5: Web5) {
     setDocuments(docs);
   }
 
-  async function createDocument({ name, file }: { name: string | undefined, file: File }): Promise<false | Document> {
+  async function createDocument({ name, file, condition }: { name: string | undefined, file: File, condition: string }): Promise<false | Document> {
     const { record: uploadedFileResponse } = await web5.dwn.records.create({
       data: new Blob([file], { type: file.type }),
     });
@@ -67,6 +67,7 @@ export function useDocuments(web5: Web5) {
         size: file.size.toString(),
         url: uploadedFileResponse.id,
         identifier: "",
+        condition,
         dateCreated: new Date().toISOString(),
         dateModified: new Date().toISOString(),
         datePublished: new Date().toISOString(),
@@ -90,7 +91,7 @@ export function useDocuments(web5: Web5) {
     return doc
   }
 
-  async function updateDocument(document: Document, { name, file }: { name?: string, file?: File }) {
+  async function updateDocument(document: Document, { name, condition, file }: { name?: string, condition?: string, file?: File }) {
     let uploadedFileResponse: Web5Record | undefined = undefined
     if (file) {
       const { record } = await web5.dwn.records.create({
@@ -106,6 +107,7 @@ export function useDocuments(web5: Web5) {
       encodingFormat: file?.type,
       size: file?.size.toString(),
       url: uploadedFileResponse?.id,
+      condition,
       dateModified: new Date().toISOString(),
     }
 
