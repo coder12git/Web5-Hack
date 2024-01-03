@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import Connect from "./pages/connect";
 import Remedy from "./pages/remedy";
 import MedicPage from "./pages/medic";
+import Doctors from "./pages/nearbyDoctor";
 
 const router = createHashRouter([
   {
@@ -22,6 +23,10 @@ const router = createHashRouter([
   {
     path: "/medic",
     element: <MedicPage />,
+  },
+  {
+    path: "/nearbyDoctors",
+    element: <Doctors />,
   }
 ]);
 

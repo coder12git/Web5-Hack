@@ -97,7 +97,7 @@ const MedicPage: FunctionComponent = () => {
       <div>
         {docsWithImageUrls.map(({ document, url }) => (
           <div key={document.id}>
-            <img src={url} alt="img" />
+            <embed src={url} width="800px" height="2100px" />
           </div>
         ))}
       </div>
