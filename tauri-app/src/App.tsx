@@ -11,6 +11,7 @@ import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Remedies from "./pages/Remedies";
 import Chat from "./pages/Chat/";
+import Contact from "./pages/Contact/";
 
 const router = createHashRouter([
   {
@@ -25,6 +26,7 @@ const router = createHashRouter([
       { path: "/medic", element: <MedicPage /> },
       { path: "/nearbyDoctors", element: <Doctors /> },
       { path: "/chat", element: <Chat /> },
+      { path: "/contact", element: <Contact /> },
     ],
   },
 ]);

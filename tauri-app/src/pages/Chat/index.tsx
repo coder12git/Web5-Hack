@@ -1,7 +1,6 @@
 import "./index.css";
-import { FC } from "react";
 
-const index: FC = () => {
+const index= () => {
   return (
     <div>
       <h1>Chat Page</h1>
