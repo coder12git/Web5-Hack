@@ -8,13 +8,13 @@ import MedicPage from "./pages/medic";
 import Doctors from "./pages/nearbyDoctor";
 import HomePage from "./pages/Home";
 import SharedLayout from "./pages/SharedLayout/";
-import Records from './pages/Records'
-import Remedies from './pages/Remedies'
+import Records from "./pages/Records";
+import Remedies from "./pages/Remedies";
 
 const router = createHashRouter([
   {
     path: "/",
-    element: <SharedLayout/>,
+    element: <SharedLayout />,
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/records", element: <Records /> },
@@ -36,8 +36,7 @@ function App() {
     if (!web5) connect();
   }, []);
 
-  return <>{web5 ? <RouterProvider router={router} /> : <div>Error</div>}</>;
- 
+  return <>{true ? <RouterProvider router={router} /> : <div>Error</div>}</>;
 }
 
 export default App;

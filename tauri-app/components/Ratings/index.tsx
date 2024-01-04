@@ -1,7 +1,15 @@
 import "./index.css";
 
 const index = () => {
-  return <div></div>;
+  return (
+    <div>
+      <i className="fa-regular fa-star"></i>
+      <i className="fa-regular fa-star"></i>
+      <i className="fa-regular fa-star"></i>
+      <i className="fa-regular fa-star"></i>
+      <i className="fa-regular fa-star"></i>
+    </div>
+  );
 };
 
 export default index;

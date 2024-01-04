@@ -42,6 +42,15 @@ const Rating = ({ rating }) => {
   );
 };
 
+const createRatingsIcons = (ratings) => {
+  const icons = [];
+  for (let n = 0; n < ratings; n++) {
+    icons.push(<i className="fa fa-leaf"></i>);
+  }
+
+  return icons;
+};
+
 const index = ({
   title,
   coverIMGUrl,
@@ -62,7 +71,14 @@ const index = ({
       >
         <h1>{title}</h1>
         <p>--by {created_by}</p>
-        <Rating rating={rating} />
+        <div className="ratings-container">
+          <h3>
+            {rating}{" "}
+            {createRatingsIcons(rating).map((icon) => {
+              return icon;
+            })}
+          </h3>
+        </div>
       </div>
       <div className="remedy-info-container">
         <p>{desc_snippet}</p>

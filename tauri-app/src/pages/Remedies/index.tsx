@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState } from "react";
 import RemedyCard from "../../../components/RemedyCard/";
+import Ratings from "../../../components/Ratings/";
 
 const index = () => {
   const [remedies, setRemedies] = useState([
@@ -49,6 +50,24 @@ const index = () => {
     setIsDetailRemedyActive(true);
   };
 
+  const [isRated, setIsRated] = useState(false);
+  const Rate = () => {
+    console.log(activeRemedy);
+    if (!isRated) {
+      setActiveRemedy({
+        ...activeRemedy,
+        rating: activeRemedy.rating + 1,
+      });
+    } else {
+      setActiveRemedy({
+        ...activeRemedy,
+        rating: activeRemedy.rating - 1,
+      });
+    }
+    setIsRated(!isRated);
+    console.log(activeRemedy);
+  };
+
   return (
     <div className="main-remedies-container">
       <h1>Get a quick fix!</h1>
@@ -70,25 +89,6 @@ const index = () => {
         <div className="view-card-detail-container">
           <div className="active-remedy-container">
             <div
-              className="r-close-btn"
-              onClick={() => {
-                setIsDetailRemedyActive(false);
-                setActiveRemedy(null);
-              }}
-            >
-              <i className="fa fa-plus"></i>
-            </div>
-            <div
-              className="report-btn"
-              onClick={() => {
-                alert("Report Sent!!");
-              }}
-            >
-              <h3>Report</h3>
-              <i className="fa-solid fa-circle-exclamation"></i>
-            </div>
-
-            <div
               className="rimg-container"
               style={{
                 background: `url(${activeRemedy.coverIMGUrl})`,
@@ -96,8 +96,31 @@ const index = () => {
                 backgroundSize: "cover",
               }}
             >
-              <div>
-                <p>{activeRemedy.star_stats} </p>
+              <div
+                className="r-close-btn"
+                onClick={() => {
+                  setIsDetailRemedyActive(false);
+                  setActiveRemedy(null);
+                }}
+              >
+                <i className="fa fa-plus"></i>
+              </div>
+              <div
+                className="report-btn"
+                onClick={() => {
+                  alert("Report Sent!!");
+                }}
+              >
+                <h3>Report</h3>
+                <i className="fa-solid fa-circle-exclamation"></i>
+              </div>
+
+              <div onClick={() => Rate()} className="rd-container">
+                {activeRemedy.rating}
+                <i
+                  style={{ opacity: `${isRated ? "1" : "0.5"}` }}
+                  className="fa fa-leaf"
+                ></i>
               </div>
             </div>
             <h1>{activeRemedy.title} </h1>

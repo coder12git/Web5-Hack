@@ -52,6 +52,7 @@
   width: 100%;
   height: 300px;
   border-radius: 15px;
+  position: relative;
 }
 
 .r-close-btn {
@@ -63,7 +64,7 @@
   box-shadow: var(--box-shadow-red);
   position: absolute;
   right: 30px;
-  top: 60px;
+  top: 20px;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -78,7 +79,7 @@
   box-shadow: var(--box-shadow-red);
   position: absolute;
   right: 80px;
-  top: 60px;
+  top: 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -106,6 +107,19 @@
 .remedy-main-info-container p {
   font-family: "Open Sans";
   margin-left: 30px;
+}
+
+.rd-container {
+  color: var(--color-white);
+  font-family: "Pacifico";
+  font-size: 25px;
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}
+
+.rd-container i {
+  margin-left: 8px;
 }
 
 @media (max-width: 750px) {
@@ -141,12 +155,16 @@
 
   .report-btn,
   .r-close-btn {
-    top: 40px;
+    top: 10px;
     transform: translateX(15px);
   }
 
   .r-close-btn {
     transform: rotate(45deg);
-    right: 20px;
+    right: 10px;
+  }
+
+  .rd-container i {
+    margin-left: 4px;
   }
 }
