@@ -3,6 +3,8 @@ import { useState } from "react";
 
 import Ratings from "../../../components/Ratings/";
 import RemedyCard from "../../components/RemedyCard/";
+import AddRemedyComponent from "../../components/AddRemedyComponent/";
+
 const index = () => {
   const [remedies, setRemedies] = useState([
     {
@@ -52,7 +54,6 @@ const index = () => {
 
   const [isRated, setIsRated] = useState(false);
   const Rate = () => {
-    console.log(activeRemedy);
     if (!isRated) {
       setActiveRemedy({
         ...activeRemedy,
@@ -65,12 +66,24 @@ const index = () => {
       });
     }
     setIsRated(!isRated);
-    console.log(activeRemedy);
   };
+
+  const [isAddRemedyActive, setIsAddRemedyActive] = useState(false);
 
   return (
     <div className="main-remedies-container">
-      <h1>Get a quick fix!</h1>
+      <div className="records-header">
+        <h1>Get a quick Fix!</h1>
+        <div
+          className={
+            !isAddRemedyActive ? "add-records-btn" : "close-add-records-btn"
+          }
+          onClick={() => setIsAddRemedyActive(!isAddRemedyActive)}
+        >
+          <i className="fa fa-plus"></i>
+        </div>
+      </div>
+
       <div className="main-remedy-cards-container">
         {remedies.map((remedy) => {
           return (
@@ -140,6 +153,15 @@ const index = () => {
                 })}
             </div>
           </div>
+        </div>
+      )}
+
+      {isAddRemedyActive && (
+        <div
+          className="add-remedy-container"
+          style={{ zIndex: `${isAddRemedyActive ? "7" : "6"}` }}
+        >
+          <AddRemedyComponent />
         </div>
       )}
     </div>

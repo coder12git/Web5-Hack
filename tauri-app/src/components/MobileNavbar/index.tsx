@@ -17,11 +17,13 @@ const index = () => {
           <span>35</span>
         </div>
       </NavLink>
-      <div className="menu_item">
-        <i className="fas fa-comment-alt"></i>
-        <span>28</span>
-        <h3>Chats</h3>
-      </div>
+      <NavLink to="/chat" style={{ textDecoration: "none" }}>
+        <div className="menu_item">
+          <i className="fas fa-comment-alt"></i>
+          <span>28</span>
+          <h3>Chats</h3>
+        </div>
+      </NavLink>
       <NavLink to="/remedies" style={{ textDecoration: "none" }}>
         <div className="menu_item">
           <i className="fas fa-first-aid"></i>

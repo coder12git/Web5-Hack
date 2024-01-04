@@ -64,7 +64,6 @@ const index = () => {
     <div className="main-records-container">
       <div className="records-header">
         <h1>Records</h1>
-        <div className="search-container"></div>
         <div
           className={
             !isAddCardActive ? "add-records-btn" : "close-add-records-btn"

@@ -10,6 +10,7 @@ import HomePage from "./pages/Home";
 import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Remedies from "./pages/Remedies";
+import Chat from "./pages/Chat/";
 
 const router = createHashRouter([
   {
@@ -23,6 +24,7 @@ const router = createHashRouter([
       { path: "/remedy", element: <Remedy /> },
       { path: "/medic", element: <MedicPage /> },
       { path: "/nearbyDoctors", element: <Doctors /> },
+      { path: "/chat", element: <Chat /> },
     ],
   },
 ]);
@@ -36,7 +38,7 @@ function App() {
     if (!web5) connect();
   }, []);
 
-  return <>{web5 ? <RouterProvider router={router} /> : <div>Error</div>}</>;
+  return <>{true ? <RouterProvider router={router} /> : <div>Error</div>}</>;
 }
 
 export default App;
