@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 
 import "./index.css";
 import { Outlet } from "react-router-dom";
-import Navbar from "../../../components/Navbar/";
-import MobileNavbar from "../../../components/MobileNavbar/";
-import FootNavbar from "../../../components/FootNavbar/";
+import Navbar from "../../components/Navbar";
+import MobileNavbar from "../../components/MobileNavbar";
+import FootNavbar from "../../components/FootNavbar";
 
 const index = () => {
   const web5 = useWeb5Store((state) => state.web5);

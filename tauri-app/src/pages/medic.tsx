@@ -2,6 +2,15 @@ import { FunctionComponent, useEffect, useRef, useState } from "react";
 import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
 import { useDocuments } from "@/stores/useDocuments";
 
+const possibleConditions = [
+  "Cancer",
+  "Diabetes",
+  "Heart Disease",
+  "High Blood Pressure",
+  "High Cholesterol",
+  "Mental Illness",
+]
+
 const MedicPage: FunctionComponent = () => {
   const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
   const { fetchDocuments, documents, createDocument, getDocumentFile } = useDocuments(web5, did)
@@ -51,7 +60,6 @@ const MedicPage: FunctionComponent = () => {
   const saveMedicalRecord = async () => {
     const res = await createDocument({ name: form.name ? form.name : undefined, file: form.doc, condition: form.condition })
 
-    // console.log(res)
     if (res) {
       alert(`Medical record saved: ${res}`)
     }
@@ -93,15 +101,18 @@ const MedicPage: FunctionComponent = () => {
             placeholder="Document" />
         </div>
         <div>
-          <input
+          <select
             required
             onChange={(e) => {
               setForm({
                 ...form,
-                condition: e.target.value.toLowerCase()
+                condition: e.target.value
               })
-            }}
-            placeholder="Condition" />
+            }}>
+            {possibleConditions.map((condition) => (
+              <option key={condition} value={condition.toLowerCase()}>{condition}</option>
+            ))}
+          </select>
         </div>
         <button type="submit">
           Create record

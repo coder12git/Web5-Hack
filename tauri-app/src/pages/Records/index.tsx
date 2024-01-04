@@ -1,10 +1,10 @@
 import "./index.css";
 import { useState } from "react";
 
-import AddCardComponent from "../../../components/AddCardComponent/";
-import DetailCardComponent from "../../../components/DetailCardComponent";
+import AddCardComponent from "../../components/AddCardComponent";
+import DetailCardComponent from "../../components/DetailCardComponent";
 
-import Card from "../../../components/Card/";
+import Card from "../../components/Card";
 
 const index = () => {
   const [cardsData, setCardsData] = useState([

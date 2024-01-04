@@ -1,5 +1,6 @@
 import "./index.css";
 import { useState } from "react";
+
 import RemedyCard from "../../../components/RemedyCard/";
 import Ratings from "../../../components/Ratings/";
 
