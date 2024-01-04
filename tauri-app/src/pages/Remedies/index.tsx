@@ -1,6 +1,6 @@
 import "./index.css";
 import { useState } from "react";
-import RemedyCard from "../../../components/RemedyCard/";
+import RemedyCard from "../../components/RemedyCard";
 
 const index = () => {
   const [remedies, setRemedies] = useState([
