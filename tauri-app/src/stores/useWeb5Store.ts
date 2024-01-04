@@ -1,6 +1,6 @@
 import { Web5 } from "@web5/api/browser";
 import { create } from "zustand";
-import MedicalConditionsProtocol from "@/utils/protocols/medical-conditions";
+import ConditionsProtocol from "@/utils/protocols/conditions";
 
 interface Web5State {
   web5: Web5 | null;
@@ -27,6 +27,7 @@ const useWeb5Store = create<Web5State>((set, get) => ({
         // sync: "1000",
         sync: "5s",
       });
+      console.log("did:", did)
 
       // Set the Web5 instance and DID
       set({ web5, did });
@@ -59,20 +60,29 @@ const useWeb5Store = create<Web5State>((set, get) => ({
       }
 
       if (protocols.length > 0) {
-        console.log("protocol already exists:", await protocols[0])
+        console.log("protocol already exists:", p.protocol)
         continue
       }
 
+      console.log("Configuring protocol:", p.protocol)
       // configure protocol on local DWN
-      const { protocol } = await web5.dwn.protocols.configure({
+      const { protocol, status: protocolConfigurationStatus } = await web5.dwn.protocols.configure({
         message: {
           definition: p,
         },
       });
-      // console.log("configure protocol local status", configureStatus);
+      if (!protocol) {
+        console.log("Failed to configure protocol:", p.protocol)
+        console.log(protocolConfigurationStatus)
+        continue
+      }
+
+      console.log("configured protocol:", protocol);
 
       // configure protocol on remote DWN, because sync may not have occured yet
-      await protocol!.send(did);
+      console.log("sending protocol to remote DWN...")
+      const protocolSendStatus = await protocol.send(did);
+      console.log("sent protocol to remote DWN:", protocolSendStatus);
       // console.log("configure protocol remote status", remoteConfigureStatus);
     }
   },
@@ -192,4 +202,4 @@ export const schemaOrgProtocolDefinition = {
   },
 };
 
-const protocols = [schemaOrgProtocolDefinition, MedicalConditionsProtocol];
+const protocols = [schemaOrgProtocolDefinition, ConditionsProtocol];

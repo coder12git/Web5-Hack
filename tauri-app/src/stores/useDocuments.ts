@@ -1,7 +1,7 @@
 import { Web5, Record as Web5Record } from '@web5/api';
 import { useState, useEffect } from 'react';
 import { schemaOrgProtocolDefinition } from './useWeb5Store';
-import MedicalConditionsProtocol, { did as MedicalConditionsProtocolDID } from '@/utils/protocols/medical-conditions';
+import ConditionsProtocol, { did as ConditionsProtocolDID } from '@/utils/protocols/conditions';
 import _ from "lodash"
 
 export type DigitalDocument = {
@@ -54,37 +54,24 @@ export function useDocuments(web5: Web5, did: string) {
   }
 
   async function fetchDocumentsWithCondition(condition: string) {
-
-    const res = await web5.dwn.records.query({
-      from: MedicalConditionsProtocolDID,
+    const { records } = await web5.dwn.records.query({
+      from: ConditionsProtocolDID,
       message: {
         filter: {
-          protocolPath: 'medicalCondition',
-          schema: MedicalConditionsProtocol.types.medicalCondition.schema,
+          protocolPath: 'condition',
+          schema: ConditionsProtocol.types.condition.schema,
         },
+        dateSort: "createdAscending",
       },
     });
-    console.log(res)
-    console.log(res.records)
+    if (!records) return false
 
-    return []
-    // const { records } = await web5.dwn.records.query({
-    //   from: MedicalConditionsProtocolDID,
-    //   message: {
-    //     filter: {
-    //       protocolPath: 'medicalCondition',
-    //       schema: MedicalConditionsProtocol.types.medicalCondition.schema,
-    //     },
-    //     dateSort: "createdAscending",
-    //   },
-    // });
-    // if (!records) return false
-    //
-    // const fetchedRecords = await Promise.allSettled(records.map(record => record.data.json()))
-    //   .then(results => results
-    //     .filter(result => result.status === 'fulfilled')
-    //     .map(result => result.value))
-    // return fetchedRecords
+    const fetchedRecords = await Promise.allSettled(records.map(record => record.data.json()))
+      .then(results => results
+        .filter(result => result.status === 'fulfilled')
+        .map(result => result.value))
+
+    return fetchedRecords
   }
 
   async function createDocument({ name, file, condition }: { name: string | undefined, file: File, condition: string }): Promise<false | Document> {
@@ -119,27 +106,28 @@ export function useDocuments(web5: Web5, did: string) {
 
     if (!record) return false;
 
-    const { record: medicalConditionRecord, status } = await web5.dwn.records.create({
+    const { record: conditionRecord, status } = await web5.dwn.records.create({
       data: {
         condition,
         did
       },
       message: {
-        protocol: MedicalConditionsProtocol.protocol,
-        protocolPath: 'medicalCondition',
-        schema: MedicalConditionsProtocol.types.medicalCondition.schema,
-        dataFormat: MedicalConditionsProtocol.types.medicalCondition.dataFormats[0],
+        protocol: ConditionsProtocol.protocol,
+        protocolPath: 'condition',
+        schema: ConditionsProtocol.types.condition.schema,
+        dataFormat: ConditionsProtocol.types.condition.dataFormats[0],
       }
     })
 
     console.log(status)
-    console.log(medicalConditionRecord)
-    if (!medicalConditionRecord) return false
+    console.log(conditionRecord)
+    if (!conditionRecord) return false
 
-    await medicalConditionRecord.send(MedicalConditionsProtocolDID)
+    await conditionRecord.send(ConditionsProtocolDID)
     console.log('sent to pulsepal dwn')
-    await medicalConditionRecord.send(did)
-    console.log('sent to user dwn')
+
+    // await conditionRecord.send(did)
+    // console.log('sent to user dwn')
 
     const data = await record.data.json();
     const doc = { record, data, id: record.id };
