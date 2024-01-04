@@ -3,8 +3,8 @@ import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store
 import { useDocuments } from "@/stores/useDocuments";
 
 const MedicPage: FunctionComponent = () => {
-  const { web5, connect } = useWeb5Store((state) => ({ web5: state.web5!, connect: state.connect }));
-  const { fetchDocuments, documents, createDocument, getDocumentFile } = useDocuments(web5)
+  const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
+  const { fetchDocuments, documents, createDocument, getDocumentFile } = useDocuments(web5, did)
   const [docsWithImageUrls, setDocsWithImageUrls] = useState<{
     document: typeof documents[0],
     url: string
@@ -12,10 +12,12 @@ const MedicPage: FunctionComponent = () => {
 
   const [form, setForm] = useState<{
     name: string
-    doc: File
+    doc: File,
+    condition: string
   }>({
     name: "",
-    doc: new File([], "")
+    doc: new File([], ""),
+    condition: ""
   })
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const MedicPage: FunctionComponent = () => {
   }, [documents])
 
   const saveMedicalRecord = async () => {
-    const res = await createDocument({ name: form.name ? form.name : undefined, file: form.doc })
+    const res = await createDocument({ name: form.name ? form.name : undefined, file: form.doc, condition: form.condition })
 
     // console.log(res)
     if (res) {
@@ -89,6 +91,17 @@ const MedicPage: FunctionComponent = () => {
               })
             }}
             placeholder="Document" />
+        </div>
+        <div>
+          <input
+            required
+            onChange={(e) => {
+              setForm({
+                ...form,
+                condition: e.target.value.toLowerCase()
+              })
+            }}
+            placeholder="Condition" />
         </div>
         <button type="submit">
           Create record

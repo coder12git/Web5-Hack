@@ -1,5 +1,6 @@
 import { Web5 } from "@web5/api/browser";
 import { create } from "zustand";
+import MedicalConditionsProtocol from "@/utils/protocols/medical-conditions";
 
 interface Web5State {
   web5: Web5 | null;
@@ -56,9 +57,9 @@ const useWeb5Store = create<Web5State>((set, get) => ({
         return;
       }
 
-      // protocol already exists
       if (protocols.length > 0) {
-        // console.log("protocol already exists");
+        console.log("protocol already exists:", await protocols[0])
+        continue
       }
 
       // configure protocol on local DWN
@@ -190,4 +191,4 @@ export const schemaOrgProtocolDefinition = {
   },
 };
 
-const protocols = [schemaOrgProtocolDefinition];
+const protocols = [schemaOrgProtocolDefinition, MedicalConditionsProtocol];
