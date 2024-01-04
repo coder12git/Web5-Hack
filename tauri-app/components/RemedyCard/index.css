@@ -1,0 +1,58 @@
+.ratings-container {
+  margin: 10px 0;
+}
+
+.ratings-container i {
+  margin-right: 5px;
+}
+
+.remedy-card {
+  height: 400px;
+  width: 300px;
+  border-radius: 15px;
+  padding: px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  margin: 20px 0px;
+}
+
+.remedy-card-image-container {
+  height: 200px;
+  color: var(--color-white);
+  padding: 15px;
+  font-weight: 500;
+  border-radius: 0 0 15px 15px;
+}
+
+.remedy-card-image-container h1 {
+  font-family: "Roboto";
+  margin-bottom: 15px;
+  text-transform: capitalize;
+  font-size: 30px;
+}
+
+.remedy-card-image-container p {
+  font-family: "Roboto";
+}
+
+.remedy-info-container p {
+  padding: 15px;
+  font-family: "Open Sans";
+}
+
+.remedy-info-container button {
+  margin-top: 20px;
+  border: none;
+  font-family: "Pacifico";
+  background: var(--color-green);
+  box-shadow: var(--box-shadow-green);
+  padding: 10px 15px;
+  width: 90%;
+  color: var(--color-white);
+  font-size: 24px;
+  margin: auto auto;
+  border-radius: 8px;
+  margin-left: 5%;
+  cursor: pointer;
+  outline: none;
+}

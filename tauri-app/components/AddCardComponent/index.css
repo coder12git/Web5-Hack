@@ -1,0 +1,198 @@
+.main-add-card-container {
+  background: var(--color-white);
+  width: 500px;
+  min-height: 300px;
+  position: relative;
+  z-index: 7;
+  border-radius: 15px;
+  padding: var(--padding-desktop);
+  margin-bottom: 30px;
+}
+
+.main-add-card-container h1 {
+  font-family: "Roboto";
+  font-size: 35px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}
+
+.input-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-form input[type="text"] {
+  width: 60%;
+  border: none;
+  background: var(--color-slate);
+  padding: 10px 2px;
+  border-radius: 8px;
+  font-family: "Roboto";
+  text-indent: 10px;
+  outline: none;
+  margin-bottom: 10px;
+  margin-right: 40%;
+}
+
+.input-form textarea {
+  width: 100%;
+  border: none;
+  background: var(--color-slate);
+  padding: 10px 2px;
+  border-radius: 8px;
+  font-family: "Roboto";
+  text-indent: 10px;
+  outline: none;
+  min-height: 80px;
+}
+
+.input-form button {
+  width: 30%;
+  border: none;
+  color: var(--color-white);
+  background: var(--color-green);
+  box-shadow: var(--box-shadow-green);
+  margin-top: 20px;
+  padding: 5px 2px;
+  margin-right: 70%;
+  font-size: 24px;
+  border-radius: 8px;
+  font-family: "Pacifico";
+  text-indent: 10px;
+  outline: none;
+}
+
+.input-form p {
+  color: var(--color-red);
+  font-family: "Roboto";
+  margin-top: 10px;
+}
+
+.form-container {
+  border: 2px solid var(--color-blue);
+  border-style: dashed;
+  border-radius: 15px;
+  width: 100%;
+  height: 100px;
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.form-container-active {
+  border: 2px solid var(--color-green);
+  border-radius: 15px;
+  width: 100%;
+  height: 100px;
+  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.form-container input {
+  width: 40%;
+  position: relative;
+  margin: auto auto;
+}
+
+.form-container-active input {
+  width: 40%;
+  position: relative;
+  margin: auto auto;
+}
+
+.add-mu {
+  background: var(--color-red);
+  color: var(--color-white);
+  box-shadow: var(--box-shadow-red);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 15px;
+  transform: translateY(20px);
+}
+
+.sadd-mu {
+  background: var(--color-red);
+  color: var(--color-white);
+  box-shadow: var(--box-shadow-red);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 15px;
+  transform: translateY(50px);
+  opacity: 0.5;
+}
+
+.uploader-content {
+  width: 100%;
+}
+
+@media (max-width: 750px) {
+  .main-add-card-container {
+    width: 300px;
+    padding: var(--padding-mobile);
+    margin-top: 50px;
+    z-index: 10;
+    position: relative;
+  }
+
+  .input-form {
+    overflow-y: scroll;
+    height: 400px;
+    padding: 5px;
+  }
+
+  .main-add-card-container h1 {
+    font-size: 25px;
+  }
+
+  .add-mu,
+  .sadd-mu {
+    top: 20px;
+    left: 265px;
+  }
+
+  .sadd-mu {
+    transform: translateY(13px);
+  }
+
+  .form-container,
+  .form-container-active {
+    height: 60px;
+  }
+
+  .input-form input[type="text"] {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .input-form input[type="file"] {
+    padding: 10px 0;
+  }
+
+  .input-form button {
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .input-form textarea {
+    width: 100%;
+  }
+}
