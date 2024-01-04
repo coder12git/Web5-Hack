@@ -1,6 +1,6 @@
 import "./index.css";
 
-export default function Home() {
+export default function HomePage() {
   return (
     <>
       <div className="main_container">
@@ -108,7 +108,7 @@ export default function Home() {
                   <img src="../../../public/pic.jpg" />
                   <h2>Dave</h2>
                 </div>
-                <div class="info">
+                <div className="info">
                   <p>
                     <b>Pulsepal</b> has being awesome so far making it a breeze
                     to keep track of my medical history coupled with guidance
@@ -124,7 +124,7 @@ export default function Home() {
                   <img src="../../../public/pm.jpg" />
                   <h2>Greg</h2>
                 </div>
-                <div class="info">
+                <div className="info">
                   <p>
                     Knowing that <b>blockchain</b> is being used and it's
                     immutaility makes feel safer from losing such vital records
@@ -140,7 +140,7 @@ export default function Home() {
                 <img src="../../../public/pg.jpg" />
                 <h2>Nikki</h2>
               </div>
-              <div class="info">
+              <div className="info">
                 <p>
                   Using it for quite a while now and it had being nice
                   especially a <b>beta</b> feature,i heard it can find out what
