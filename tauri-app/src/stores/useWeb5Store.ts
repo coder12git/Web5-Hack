@@ -21,10 +21,11 @@ const useWeb5Store = create<Web5State>((set, get) => ({
     try {
       // Connect to Web5
       const { web5, did } = await Web5.connect({
-        techPreview: {
-          dwnEndpoints: [],
-        },
+        // techPreview: {
+        //   dwnEndpoints: [],
+        // },
         // sync: "1000",
+        sync: "5s",
       });
 
       // Set the Web5 instance and DID

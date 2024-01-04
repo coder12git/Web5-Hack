@@ -34,6 +34,7 @@ export function useDocuments(web5: Web5, did: string) {
         filter: {
           schema: "https://schema.org/DigitalDocument",
         },
+        // @ts-ignore
         dateSort: "createdAscending",
       },
     });
@@ -67,23 +68,23 @@ export function useDocuments(web5: Web5, did: string) {
     console.log(res.records)
 
     return []
-    const { records } = await web5.dwn.records.query({
-      from: MedicalConditionsProtocolDID,
-      message: {
-        filter: {
-          protocolPath: 'medicalCondition',
-          schema: MedicalConditionsProtocol.types.medicalCondition.schema,
-        },
-        dateSort: "createdAscending",
-      },
-    });
-    if (!records) return false
-
-    const fetchedRecords = await Promise.allSettled(records.map(record => record.data.json()))
-      .then(results => results
-        .filter(result => result.status === 'fulfilled')
-        .map(result => result.value))
-    return fetchedRecords
+    // const { records } = await web5.dwn.records.query({
+    //   from: MedicalConditionsProtocolDID,
+    //   message: {
+    //     filter: {
+    //       protocolPath: 'medicalCondition',
+    //       schema: MedicalConditionsProtocol.types.medicalCondition.schema,
+    //     },
+    //     dateSort: "createdAscending",
+    //   },
+    // });
+    // if (!records) return false
+    //
+    // const fetchedRecords = await Promise.allSettled(records.map(record => record.data.json()))
+    //   .then(results => results
+    //     .filter(result => result.status === 'fulfilled')
+    //     .map(result => result.value))
+    // return fetchedRecords
   }
 
   async function createDocument({ name, file, condition }: { name: string | undefined, file: File, condition: string }): Promise<false | Document> {

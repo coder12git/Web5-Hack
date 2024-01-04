@@ -35,6 +35,7 @@ export function useRemedies(web5: Web5) {
         filter: {
           schema: "https://schema.org/Collection",
         },
+        // @ts-ignore
         dateSort: "createdAscending",
       },
     });
