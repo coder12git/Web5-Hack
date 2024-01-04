@@ -22,11 +22,13 @@ const index = () => {
         <span>28</span>
         <h3>Chats</h3>
       </div>
-      <div className="menu_item">
-        <i className="fas fa-first-aid"></i>
-        <h3>DIY Remedies</h3>
-        <span>99+</span>
-      </div>
+      <NavLink to="/remedies" style={{ textDecoration: "none" }}>
+        <div className="menu_item">
+          <i className="fas fa-first-aid"></i>
+          <h3>DIY Remedies</h3>
+          <span>99+</span>
+        </div>
+      </NavLink>
     </div>
   );
 };

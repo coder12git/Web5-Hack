@@ -27,7 +27,6 @@
   border-radius: 50%;
   cursor: pointer;
   z-index: 7;
-  transition: 0.3s;
 }
 
 .close-add-records-btn {
@@ -92,5 +91,9 @@
     flex-direction: column;
     justify-content: center;
     flex-wrap: nowrap;
+  }
+
+  .records-header h1 {
+    font-size: 35px;
   }
 }

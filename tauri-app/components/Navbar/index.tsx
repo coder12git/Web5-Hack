@@ -27,11 +27,13 @@ const index = () => {
           <h3>Chats </h3>
           <span>5</span>
         </div>
-        <div>
-          <i className="fas fa-first-aid"></i>
-          <h3>DIY Remedies</h3>
-          <span>99+</span>
-        </div>
+        <NavLink to="/remedies" style={{ textDecoration: "none" }}>
+          <div>
+            <i className="fas fa-first-aid"></i>
+            <h3>DIY Remedies</h3>
+            <span>99+</span>
+          </div>
+        </NavLink>
       </div>
       <div className="auth_container">
         <h3>Connect Wallet</h3>
