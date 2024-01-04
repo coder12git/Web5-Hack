@@ -36,7 +36,7 @@ const index = () => {
         </NavLink>
       </div>
       <div className="auth_container">
-        <h3>Connect Wallet</h3>
+        <h3>Join us!</h3>
         <i className="fa fa-user"></i>
       </div>
     </div>

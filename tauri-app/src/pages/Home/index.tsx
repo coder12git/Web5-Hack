@@ -9,16 +9,18 @@ export default function HomePage() {
             <b className="header">
               Hi welcome to,
               <b>
-                pulse<span>pal</span>
+                 pulse<span>Pal</span>
               </b>
             </b>
             <h1>Stay up & running while connected</h1>
             <p>
-              Pulsepal utilizes web5 to safely store critical user medical
-              records.Keeping it safe from data loss and give the user full
-              control over there data as well as keeping,verifying and tracking
-              home remedies from people with similar conditions while keeping
-              them connected
+            Welcome to PulsePal, your health guardian in WEB5.
+            Safely store medical records with decentralized identifiers 
+            and web nodes, ensuring data security. Connect with similar conditions,
+            share home remedies with a rating system, and access specialized 
+            doctors based on your location. PulsePal – where advanced 
+            technology meets user-friendly design for your secure, 
+            connected health journey.
             </p>
             <button className="gs_btn">
               Get Started! <i className="fa fa-fire"></i>
@@ -38,19 +40,19 @@ export default function HomePage() {
           <div className="tech-container">
             <div className="tech">
               <i className="fab fa-hive"></i>
-              <h2>Blockchain</h2>
+              <h2>WEB5</h2>
               <p>
-                Pulsepal utililizes blockchain technology specifically web5 to
+                PulsePal utililizes WEB5 to
                 ensure the immutability of user data stored making it a breeze
-                to safely store medical data/records.
+                to safely store medical data and records.
               </p>
             </div>
             <div className="tech">
               <i className="fa-solid fa-robot"></i>
               <h2>A.I</h2>
               <p>
-                Pulsepal uses articial intelligence to aid users with similiar
-                medical conditions find matches who can relate with them and
+                PulsePal uses artificial intelligence to aid users with similiar
+                medical conditions, find matches who can relate with them and
                 also find doctors/specialist within there regions on such
                 condition.
               </p>
@@ -59,7 +61,7 @@ export default function HomePage() {
               <i className="fa-brands fa-react"></i>
               <h2>React</h2>
               <p>
-                Pulsepal employes react a frontend framework to power our
+                PulsePal employes react a frontend framework to power our
                 frontend along with typescript enabling better user experience
                 and smoother and faster development,updates and feature roll
                 outs giving quality product delivery.
@@ -110,7 +112,7 @@ export default function HomePage() {
                 </div>
                 <div className="info">
                   <p>
-                    <b>Pulsepal</b> has being awesome so far making it a breeze
+                    <b>PulsePal</b> has being awesome so far making it a breeze
                     to keep track of my medical history coupled with guidance
                     have made staying healthy so much more accessible. The
                     user-friendly interface and helpful <b>home remedies</b>{" "}
@@ -175,39 +177,40 @@ export default function HomePage() {
               <i className="fa-solid fa-lock"></i>
               <h2>Secure Storage</h2>
               <p>
-                Pulsepal employes blockchain for.storing user data and this
-                ensures that effective data protection from data loss or
-                manipulation and this is due to the immutability of data stored
-                on a blockchain.
+              Medical records are stored with the utmost 
+              security using WEB5, guaranteeing data integrity 
+              and user control over their personal health information.
               </p>
             </div>
             <div className="tech">
               <i className="fa fa-users"></i>
               <h2>Find Your Tribe</h2>
               <p>
-                Pulsepal uses articial intelligence to aid users with similiar
-                medical conditions find matches who can relate with them and
-                also find doctors/specialist within there regions on such
-                condition.
+              Our platform goes beyond conventional networking 
+              by employing a sophisticated algorithm to match users 
+              based on their medical records. PulsePal becomes a virtual 
+              community where individuals can share experiences, insights, 
+              and support each other on their health journeys.
               </p>
             </div>
             <div className="tech">
               <i className="fa fa-medkit"></i>
               <h2>Home Remedies</h2>
               <p>
-                Pulsepal home remedies help users find a quick for emergency
-                situations and a also find better ways to cope with issues
-                bothering them.
+              PulsePal empowers users to contribute and 
+              share simple yet effective home remedies. A 
+              user-driven rating system ensures the most beneficial remedies rise to the top, 
+              creating a community-driven repository of wellness solutions.
               </p>
             </div>
             <div className="tech">
               <i className="fas fa-user-md"></i>
               <h2>Find Specialist</h2>
               <p>
-                Pulsepal use of artifical intelligence aids in making users
-                easily locate specialist within there region on medical
-                conditions affecting giving them easier access to a health
-                professional.
+              Wherever you are, PulsePal provides a seamless experience by 
+              recommending specialized doctors in your nearby areas based 
+              on your current location, 
+              enhancing accessibility to healthcare professionals.
               </p>
             </div>
           </div>
