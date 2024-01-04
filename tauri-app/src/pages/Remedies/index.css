@@ -1,0 +1,152 @@
+.main-remedies-container {
+  padding: var(--padding-desktop);
+}
+
+.main-remedy-cards-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.main-remedies-container h1 {
+  font-family: "Pacifico";
+  font-size: 45px;
+}
+
+.view-card-detail-container {
+  background: rgba(0, 0, 0, 0.3);
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 6;
+}
+
+.active-remedy-container {
+  width: 500px;
+  min-height: 400px;
+  background: var(--color-white);
+  border-radius: 15px;
+  padding: 25px 20px;
+  position: relative;
+}
+
+.active-remedy-container h1 {
+  font-family: "Roboto";
+  font-weight: 400;
+  font-size: 30px;
+  margin: 10px 0px;
+}
+
+.active-remedy-container p {
+  font-family: "Open Sans";
+  margin: 20px 0px;
+}
+
+.rimg-container {
+  width: 100%;
+  height: 300px;
+  border-radius: 15px;
+}
+
+.r-close-btn {
+  width: 40px;
+  height: 40px;
+  background: var(--color-red);
+  color: var(--color-white);
+  border-radius: 50%;
+  box-shadow: var(--box-shadow-red);
+  position: absolute;
+  right: 30px;
+  top: 60px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: rotate(45deg);
+}
+
+.report-btn {
+  background: var(--color-red);
+  color: var(--color-white);
+  border-radius: 20px;
+  box-shadow: var(--box-shadow-red);
+  position: absolute;
+  right: 80px;
+  top: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "Roboto";
+  padding: 8px 15px;
+  text-transform: uppercase;
+}
+
+.report-btn i {
+  font-size: 25px;
+  margin-left: 10px;
+}
+
+.remedy-main-info-container {
+  height: 300px;
+  overflow-y: scroll;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.remedy-main-info-container h3 {
+  font-family: "Roboto";
+}
+
+.remedy-main-info-container p {
+  font-family: "Open Sans";
+  margin-left: 30px;
+}
+
+@media (max-width: 750px) {
+  .main-remedies-container {
+    padding: var(--padding-mobile);
+  }
+
+  .main-remedies-container h1 {
+    font-size: 35px;
+  }
+
+  .main-remedy-cards-container {
+    flex: nowrap;
+    flex-direction: column;
+  }
+
+  .active-remedy-container {
+    width: 91%;
+    height: 70%;
+    margin-top: 20px;
+    padding: 15px 10px;
+  }
+
+  .rimg-container {
+    height: 180px;
+  }
+
+  .remedy-main-info-container {
+    height: 180px;
+    overflow-y: scroll;
+    padding: 5px;
+  }
+
+  .report-btn,
+  .r-close-btn {
+    top: 40px;
+    transform: translateX(15px);
+  }
+
+  .r-close-btn {
+    transform: rotate(45deg);
+    right: 20px;
+  }
+}

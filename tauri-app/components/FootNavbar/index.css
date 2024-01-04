@@ -1,0 +1,87 @@
+.footer-container {
+  background: #000;
+  padding: var(--padding-desktop);
+  color: #fff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 20px;
+}
+
+.footer-logo-right-container {
+  margin-right: 50px;
+  text-align: center;
+}
+
+.footer-logo-right-container h1 {
+  margin-bottom: 35px;
+  font-family: "Roboto";
+}
+
+.footer-logo-right-container p {
+  font-family: "Roboto";
+}
+
+.footer-logo-right-container h1 span {
+  font-family: "Pacifico";
+}
+
+.footer-link-container {
+  width: 100%;
+}
+
+.footer-utils-link-container {
+  display: flex;
+  align-items: center;
+  padding: 10px 0px;
+  justify-content: space-evenly;
+}
+
+.footer-utils-link-container h1 {
+  font-family: "Roboto";
+  font-size: 18px;
+}
+
+.footer-utils-link-container h1 a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-line {
+  width: 50%;
+  margin: 10px auto;
+}
+
+.footer-link-container p {
+  color: #fff;
+  font-family: "Pacifico";
+  margin: 10px auto;
+}
+
+.team-container {
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 750px) {
+  .footer-container {
+    display: block;
+    background: #000;
+    padding: var(--padding-mobile);
+  }
+
+  .footer-utils-link-container {
+    display: block;
+    justify-content: center;
+  }
+
+  .footer-utils-link-container h1 {
+    margin: 10px auto;
+    width: max-content;
+  }
+
+  .footer-logo-right-container {
+    width: 100%;
+    margin: 0;
+  }
+}
