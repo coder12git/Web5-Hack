@@ -1,9 +1,9 @@
 const ConditionsProtocol = {
-  protocol: "https://dschema.org/protocols/conditions",
+  protocol: "https://dschema.org/protocols/condition",
   published: true,
   types: {
     condition: {
-      schema: "https://dschema.org/protocols/conditions/schemas/condition.json",
+      schema: "https://dschema.org/protocols/condition/schemas/condition.json",
       dataFormats: [
         "application/json"
       ]

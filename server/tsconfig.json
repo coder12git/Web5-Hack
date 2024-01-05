@@ -1,7 +1,15 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "noEmit": true
+    "noEmit": true,
+    "strict": false,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@backend/*": ["./src/*"],
+      "@frontend/*": ["../tauri-app/src/*"]
+    }
   },
   "include": [
     "server.ts",
@@ -9,11 +17,5 @@
   ],
   "exclude": [
     "node_modules"
-  ],
-  "references": [
-    {
-      "path": "../tsconfig.json"
-    }
-  ],
-  "extends": "../tsconfig.json"
+  ]
 }
