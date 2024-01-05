@@ -55,12 +55,21 @@ const index: FC = () => {
         <button>locate</button>
       </div>
       <div className="locations-container">
-        <RowComponent
-          name={"Hospital/Dr. name"}
-          address={"Address"}
-          city={"City"}
-          distance={"Distance"}
-        />
+        <div className="row-container">
+          <div>
+            <h3>Hospital/Dr. name</h3>
+          </div>
+          <div>
+            <h3>Address</h3>
+          </div>
+          <div>
+            <h3>City</h3>
+          </div>
+          <div>
+            <h3>Distance</h3>
+          </div>
+        </div>
+
         {fetchedLocations.map((location) => {
           return (
             <RowComponent

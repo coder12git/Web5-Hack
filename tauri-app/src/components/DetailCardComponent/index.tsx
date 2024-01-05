@@ -1,7 +1,29 @@
 import "./index.css";
-import { useState } from "react";
+import React, { FC, useState } from "react";
 
-const index = ({ cardData, close }) => {
+interface OtherFileProp {
+  title: String;
+  file_extension: string;
+  file_name: string;
+
+  file_url: string;
+}
+
+interface CardDataProps {
+  file_name: String;
+  file_extension: string;
+  title: String;
+  desc: String;
+  date: String;
+  other_files: OtherFileProp[];
+}
+
+interface CardProp {
+  cardData: CardDataProps;
+  close: (isCardDetailActive: boolean) => void;
+}
+
+const index: FC<CardProp> = ({ cardData, close }) => {
   const [supportedIMGExtensions, setSupportedIMGExtensions] = useState([
     "jpg",
     "png",

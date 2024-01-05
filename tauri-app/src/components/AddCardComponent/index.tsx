@@ -1,14 +1,18 @@
 import "./index.css";
-import { useState } from "react";
+import React, { useState } from "react";
+
+interface FileProp {
+  file: File | null | undefined;
+}
 
 const FileUploader = () => {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<FileProp>({ file: null });
 
   return (
     <div className={!file ? "form-container" : "form-container-active"}>
       <input
         onChange={(e) => {
-          setFile(e.target.files[0]);
+          setFile({ file: e?.target?.files?.[0] });
         }}
         type="file"
         accept=".jpg,.png,.jpeg,.docx,.pdf"
@@ -18,7 +22,9 @@ const FileUploader = () => {
 };
 
 const index = () => {
-  const [fileUploaders, setUploaderFile] = useState([<FileUploader />]);
+  const [fileUploaders, setUploaderFile] = useState<React.ReactElement[]>([
+    <FileUploader />,
+  ]);
   return (
     <div className="main-add-card-container">
       <h1>Create New Record</h1>

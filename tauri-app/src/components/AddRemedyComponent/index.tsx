@@ -1,14 +1,18 @@
 import "./index.css";
-import { useState } from "react";
+import React, { FC, useState } from "react";
 
-const FileUploader = () => {
-  const [file, setFile] = useState(null);
+interface FileProp {
+  file: File | null | undefined;
+}
+
+const FileUploader: FC = () => {
+  const [file, setFile] = useState<FileProp>({ file: null });
 
   return (
     <div className={!file ? "form-container" : "form-container-active"}>
       <input
         onChange={(e) => {
-          setFile(e.target.files[0]);
+          setFile({ file: e?.target?.files?.[0] });
         }}
         type="file"
         accept=".jpg,.png,.jpeg"
@@ -17,7 +21,13 @@ const FileUploader = () => {
   );
 };
 
-const StepField = ({ addStep, index }) => {
+interface StepProp {
+  index: React.ReactNode;
+}
+
+//add stepFunction
+//to trigger when save in main form is clicked
+const StepField: FC<StepProp> = ({ index }) => {
   return (
     <div className="step-container">
       <h1>Step #{index}</h1>
@@ -27,8 +37,11 @@ const StepField = ({ addStep, index }) => {
   );
 };
 
-const index = () => {
-  const [steps, setSteps] = useState([<StepField index={1} />]);
+const index: FC = () => {
+  const [steps, setSteps] = useState<React.ReactElement[]>([
+    <StepField index={1} />,
+  ]);
+
   return (
     <div className="main-add-card-container">
       <h1>Create New Remedy</h1>
