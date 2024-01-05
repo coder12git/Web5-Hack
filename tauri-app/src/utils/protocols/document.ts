@@ -1,5 +1,5 @@
-const url = "https://dschema.org"  as const
-const protocol = `${url}/protocols/document/v0.0.3` as const
+import { url } from "./defns"
+const protocol = `${url}/protocols/document` as const
 
 const DocumentProtocol = {
   protocol,
@@ -59,6 +59,7 @@ export namespace Record {
     encodingFormat: string
     size: number
     url: string
+    // profileUrl: string
     condition: string
     dateCreated?: string
     dateModified?: string
