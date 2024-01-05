@@ -2,6 +2,8 @@ import { Web5 } from "@web5/api/browser";
 import { create } from "zustand";
 import ConditionsProtocol from "@/utils/protocols/conditions";
 import DocumentProtocol from "@/utils/protocols/document";
+import UserDetailsProtocol from "@/utils/protocols/user";
+import { protocols as AllProtocols } from "@/utils/protocols";
 
 interface Web5State {
   web5: Web5 | null;
@@ -203,4 +205,4 @@ export const schemaOrgProtocolDefinition = {
   },
 };
 
-const protocols = [schemaOrgProtocolDefinition, ConditionsProtocol, DocumentProtocol];
+const protocols = [schemaOrgProtocolDefinition, ...AllProtocols]
