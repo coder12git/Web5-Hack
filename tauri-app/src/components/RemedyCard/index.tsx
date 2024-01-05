@@ -1,5 +1,6 @@
 import "./index.css";
 
+// @ts-ignore
 const Rating = ({ rating }) => {
   return (
     <div className="ratings-container">
@@ -42,6 +43,7 @@ const Rating = ({ rating }) => {
   );
 };
 
+// @ts-ignore
 const createRatingsIcons = (ratings) => {
   const icons = [];
   for (let n = 0; n < ratings; n++) {
@@ -51,12 +53,19 @@ const createRatingsIcons = (ratings) => {
   return icons;
 };
 
+
 const index = ({
+  // @ts-ignore
   title,
+  // @ts-ignore
   coverIMGUrl,
+  // @ts-ignore
   desc_snippet,
+  // @ts-ignore
   created_by,
+  // @ts-ignore
   rating,
+  // @ts-ignore
   isClicked,
 }) => {
   return (

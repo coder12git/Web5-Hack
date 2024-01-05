@@ -9,7 +9,7 @@ const FileUploader = () => {
   const [file, setFile] = useState<FileProp>({ file: null });
 
   return (
-    <div className={!file ? "form-container" : "form-container-active"}>
+    <div className={file?.file ? "form-container-active" : "form-container"}>
       <input
         onChange={(e) => {
           setFile({ file: e?.target?.files?.[0] });
