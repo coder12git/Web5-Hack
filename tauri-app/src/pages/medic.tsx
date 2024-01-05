@@ -1,5 +1,5 @@
-import { FunctionComponent, useEffect, useRef, useState } from "react";
-import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
+import { FunctionComponent, useEffect, useState } from "react";
+import useWeb5Store  from "@/stores/useWeb5Store";
 import { useDocuments } from "@/stores/useDocuments";
 
 const possibleConditions = [
@@ -58,6 +58,7 @@ const MedicPage: FunctionComponent = () => {
   }, [documents])
 
   const saveMedicalRecord = async () => {
+    console.log(form)
     const res = await createDocument({ name: form.name ? form.name : undefined, file: form.doc, condition: form.condition })
 
     if (res) {
