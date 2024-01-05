@@ -11,7 +11,7 @@ const DocumentProtocol = {
     blob: {
       schema: "https://dschema.org/protocols/document/schemas/blob.json",
       dataFormats: [
-        "application/json"
+        "application/binary"
       ]
     }
   },
@@ -36,13 +36,12 @@ const DocumentProtocol = {
         },
         {
           who: "author",
-          of: "parentId",
           can: "write"
         }
       ]
     }
   }
-}
+} as const
 
 export namespace Record {
   export type File = Blob
