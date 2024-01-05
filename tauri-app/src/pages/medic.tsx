@@ -113,8 +113,8 @@ const Page: FunctionComponent = () => {
         </button>
       </form>
       <div>
-        {documentsWithUrl.map(({ document, fileUrl: url }) => (
-          <div key={document.id}>
+        {documentsWithUrl.map(({ record, document, fileUrl: url }) => (
+          <div key={record.id}>
             <embed src={url} width="800px" height="2100px" />
           </div>
         ))}
