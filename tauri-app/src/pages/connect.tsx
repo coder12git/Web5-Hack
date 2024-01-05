@@ -1,65 +1,86 @@
-import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
-import { useDocuments } from "@/stores/useDocuments";
-import { useEffect, useState } from "react";
+import useWeb5Store from "@/stores/useWeb5Store";
+import { useState } from "react";
+import { hc } from "hono/client"
+import { App } from "@backend/app"
+
+const backendClient = hc<App>("/")
+
+const possibleConditions = [
+  "Cancer",
+  "Diabetes",
+  "Heart Disease",
+  "High Blood Pressure",
+  "High Cholesterol",
+  "Mental Illness",
+]
 
 function Connect() {
-    const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
-    const { fetchDocumentsWithCondition } = useDocuments(web5, did)
-    const [similarConditions, setSimilarConditions] = useState<{ did: string, condition: string }[]>([])
-    const [form, setForm] = useState<{
-        condition: string
-    }>({
-        condition: ""
+  const [similarConditions, setSimilarConditions] = useState<{ did: string, condition: string }[]>([])
+  const [form, setForm] = useState({ condition: "" })
+
+  const fetchDocumentsWithCondition = async (condition: string) => {
+    const maybeConditions = await backendClient.api.conditions.$get({
+      query: {
+        condition
+      }
     })
+      .then(res => res.json())
+    if (!Array.isArray(maybeConditions))
+      return []
+    const conditions = maybeConditions
+    return conditions
+  }
 
-    useEffect(() => {
-        fetchDocumentsWithCondition("cancer")
-    }, [])
+  const connectCondition = async () => {
+    const res = await fetchDocumentsWithCondition(form.condition)
+    setSimilarConditions(res)
+  }
 
-    const connectCondition = async () => {
-        const res = await fetchDocumentsWithCondition(form.condition)
-        console.log(res)
-        if (res)
-            setSimilarConditions(res)
-    }
-
-
-    return (
-        <>
-            <div>
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    connectCondition()
-                }}>
-                    <input type="text"
-                        onChange={(e) => {
-                            setForm({ ...form, condition: e.target.value })
-                        }}
-                        placeholder="Condition" />
-                    <button type="submit">
-                        Connect
-                    </button>
-                </form>
+  return (
+    <>
+      <div>
+        <form onSubmit={(e) => {
+          e.preventDefault()
+          connectCondition()
+        }}>
+          <div>
+            <select
+              required
+              onChange={(e) => {
+                setForm({
+                  ...form,
+                  condition: e.target.value
+                })
+              }}>
+              {possibleConditions.map((condition) => (
+                <option key={condition} value={condition.toLowerCase()}>{condition}</option>
+              ))}
+            </select>
+          </div>
+          <button type="submit">
+            Connect
+          </button>
+        </form>
+      </div>
+      <div>
+        <header>
+          People with similar conditions:
+        </header>
+        <div>
+          {similarConditions.map((condition, index) => (
+            <div key={index}>
+              <div>
+                {condition.did}
+              </div>
+              <div>
+                {condition.condition}
+              </div>
             </div>
-            <div>
-                <header>
-                    People with similar conditions:
-                </header>
-                <div>
-                    {similarConditions.map((condition, index) => (
-                        <div key={index}>
-                            <div>
-                                {condition.did}
-                            </div>
-                            <div>
-                                {condition.condition}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </>
-    )
+          ))}
+        </div>
+      </div>
+    </>
+  )
 }
 
 export default Connect;

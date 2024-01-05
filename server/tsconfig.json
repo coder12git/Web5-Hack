@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": false,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@backend/*": ["./src/*"],
+      "@frontend/*": ["../tauri-app/src/*"]
+    }
+  },
+  "include": [
+    "server.ts",
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

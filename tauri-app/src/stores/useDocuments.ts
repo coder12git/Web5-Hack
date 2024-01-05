@@ -61,6 +61,7 @@ export function useDocuments(web5: Web5, did: string) {
           protocolPath: 'condition',
           schema: ConditionsProtocol.types.condition.schema,
         },
+        // @ts-ignore
         dateSort: "createdAscending",
       },
     });
@@ -69,6 +70,7 @@ export function useDocuments(web5: Web5, did: string) {
     const fetchedRecords = await Promise.allSettled(records.map(record => record.data.json()))
       .then(results => results
         .filter(result => result.status === 'fulfilled')
+        // @ts-ignore
         .map(result => result.value))
 
     return fetchedRecords
