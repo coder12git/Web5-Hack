@@ -29,7 +29,8 @@
   flex-direction: column;
   padding: 10px;
   overflow-y: scroll;
-  height: 300px;
+  overflow-x: hidden;
+  max-height: 300px;
 }
 
 .input-form-r::-webkit-scrollbar {
