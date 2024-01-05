@@ -1,9 +1,24 @@
 import useWeb5Store from "@/stores/useWeb5Store";
 import { useState } from "react";
-import { hc } from "hono/client"
-import { App } from "@backend/app"
+import DocumentUtils from "@/utils/document";
+import { Agent } from "@/components/Auth/types";
+import { Record as DocumentRecord } from "@/utils/protocols/document";
 
-const backendClient = hc<App>("/")
+const fetchDocumentsWithCondition = async (agent: Agent, condition: string) => {
+  const documentRecords = await DocumentUtils.fetchDocumentRecords(agent)
+  if (!documentRecords)
+    return []
+
+  const matchingDocumentConditions = []
+  for (const documentRecord of documentRecords) {
+    const data: DocumentRecord.Document = await documentRecord.data.json()
+
+    if (data.condition === condition) {
+      matchingDocumentConditions.push(data)
+    }
+  }
+  return matchingDocumentConditions
+}
 
 const possibleConditions = [
   "Cancer",
@@ -15,25 +30,14 @@ const possibleConditions = [
 ]
 
 function Connect() {
-  const [similarConditions, setSimilarConditions] = useState<{ did: string, condition: string }[]>([])
-  const [form, setForm] = useState({ condition: "" })
-
-  const fetchDocumentsWithCondition = async (condition: string) => {
-    const maybeConditions = await backendClient.api.conditions.$get({
-      query: {
-        condition
-      }
-    })
-      .then(res => res.json())
-    if (!Array.isArray(maybeConditions))
-      return []
-    const conditions = maybeConditions
-    return conditions
-  }
+  const agent = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
+  const [similarConditionDocuments, setSimilarConditionDocuments] = useState<DocumentRecord.Document[]>([])
+  const [form, setForm] = useState({ condition: possibleConditions[0] })
 
   const connectCondition = async () => {
-    const res = await fetchDocumentsWithCondition(form.condition)
-    setSimilarConditions(res)
+    const res = await fetchDocumentsWithCondition(agent, form.condition)
+    console.log(res)
+    setSimilarConditionDocuments(res)
   }
 
   return (
@@ -67,13 +71,13 @@ function Connect() {
           People with similar conditions:
         </header>
         <div>
-          {similarConditions.map((condition, index) => (
+          {similarConditionDocuments.map((doc, index) => (
             <div key={index}>
               <div>
-                {condition.did}
+                {doc.name}
               </div>
               <div>
-                {condition.condition}
+                {doc.condition}
               </div>
             </div>
           ))}

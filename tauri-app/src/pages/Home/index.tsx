@@ -107,7 +107,7 @@ export default function HomePage() {
             <div className="t-container-1">
               <div className="testimonial">
                 <div className="user-info">
-                  <img src="../../../public/pic.jpg" />
+                  <img src="/pic.jpg" />
                   <h2>Dave</h2>
                 </div>
                 <div className="info">
@@ -123,7 +123,7 @@ export default function HomePage() {
               </div>
               <div className="testimonial">
                 <div className="user-info">
-                  <img src="../../../public/pm.jpg" />
+                  <img src="/pm.jpg" />
                   <h2>Greg</h2>
                 </div>
                 <div className="info">
@@ -139,7 +139,7 @@ export default function HomePage() {
             </div>
             <div className="testimonial-2">
               <div className="user-info">
-                <img src="../../../public/pg.jpg" />
+                <img src="/pg.jpg" />
                 <h2>Nikki</h2>
               </div>
               <div className="info">

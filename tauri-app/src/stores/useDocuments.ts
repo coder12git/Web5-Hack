@@ -206,5 +206,5 @@ export function useDocuments(web5: Web5, did: string) {
     return file;
   }
 
-  return { documents, createDocument, updateDocument, deleteDocument, getDocumentFile, fetchDocuments, fetchDocumentsWithCondition };
+  return { documents, createDocument, updateDocument, deleteDocument, getDocumentFile, fetchDocuments, };
 }

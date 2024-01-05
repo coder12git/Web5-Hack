@@ -1,17 +1,23 @@
+import { url } from "./defns"
+const protocol = `${url}/protocols/document` as const
+
 const DocumentProtocol = {
-  protocol: "https://dschema.org/protocols/document",
+  protocol,
   published: true,
   types: {
     document: {
-      schema: "https://schema.org/protocols/document/schemas/document.json",
+      schema: `${protocol}/schema/document.json`,
       dataFormats: [
         "application/json"
       ]
     },
     blob: {
-      schema: "https://dschema.org/protocols/document/schemas/blob.json",
+      schema: `${protocol}/schema/blob.json`,
       dataFormats: [
-        "application/json"
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "application/pdf"
       ]
     }
   },
@@ -24,6 +30,7 @@ const DocumentProtocol = {
         },
         {
           who: "author",
+          of: "document",
           can: "write"
         }
       ]
@@ -36,13 +43,13 @@ const DocumentProtocol = {
         },
         {
           who: "author",
-          of: "parentId",
+          of: "blob",
           can: "write"
         }
       ]
     }
   }
-}
+} as const
 
 export namespace Record {
   export type File = Blob
@@ -52,6 +59,7 @@ export namespace Record {
     encodingFormat: string
     size: number
     url: string
+    // profileUrl: string
     condition: string
     dateCreated?: string
     dateModified?: string

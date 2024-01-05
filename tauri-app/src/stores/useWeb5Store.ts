@@ -1,6 +1,9 @@
 import { Web5 } from "@web5/api/browser";
 import { create } from "zustand";
 import ConditionsProtocol from "@/utils/protocols/conditions";
+import DocumentProtocol from "@/utils/protocols/document";
+import UserDetailsProtocol from "@/utils/protocols/user";
+import { protocols as AllProtocols } from "@/utils/protocols";
 
 interface Web5State {
   web5: Web5 | null;
@@ -68,7 +71,7 @@ const useWeb5Store = create<Web5State>((set, get) => ({
       // configure protocol on local DWN
       const { protocol, status: protocolConfigurationStatus } = await web5.dwn.protocols.configure({
         message: {
-          definition: p,
+          definition: Object.assign(p),
         },
       });
       if (!protocol) {
@@ -202,4 +205,4 @@ export const schemaOrgProtocolDefinition = {
   },
 };
 
-const protocols = [schemaOrgProtocolDefinition, ConditionsProtocol];
+const protocols = [schemaOrgProtocolDefinition, ...AllProtocols]

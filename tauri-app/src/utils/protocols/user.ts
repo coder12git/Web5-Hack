@@ -1,9 +1,12 @@
+import { url } from "./defns"
+const protocol = `${url}/protocols/user` as const
+
 const UserDetailsProtocol = {
-  protocol: "https://dschema.org/protocols/user",
+  protocol: protocol,
   published: true,
   types: {
     details: {
-      schema: "https://dschema.org/protocols/user/schemas/details.json",
+      schema: `${protocol}/schemas/details.json`,
       dataFormats: [
         "application/json"
       ]
@@ -26,7 +29,7 @@ const UserDetailsProtocol = {
 }
 
 export namespace Record {
-  export type UserDetails = {
+  export type Details = {
     firstName: string
     lastName: string
     profilePictureUrl: string
