@@ -36,6 +36,12 @@ const index = () => {
             <span>99+</span>
           </div>
         </NavLink>
+        <NavLink to="/contact" style={{ textDecoration: "none" }}>
+          <div>
+            <i className="fa fa-address-book"></i>
+            <h3>Contact</h3>
+          </div>
+        </NavLink>
       </div>
       <div className="auth_container">
         <h3>Join us!</h3>

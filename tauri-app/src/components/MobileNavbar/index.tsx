@@ -31,6 +31,12 @@ const index = () => {
           <span>99+</span>
         </div>
       </NavLink>
+      <NavLink to="/contact" style={{ textDecoration: "none" }}>
+        <div className="menu_item">
+          <i className="fa fa-address-book"></i>
+          <h3>Contact</h3>
+        </div>
+      </NavLink>
     </div>
   );
 };
