@@ -12,7 +12,7 @@
   z-index: 7;
   border-radius: 15px;
   padding: var(--padding-desktop);
-  margin-bottom: 30px;
+  margin-top: 30px;
 }
 
 .main-add-card-container h1 {
@@ -22,33 +22,33 @@
   margin-bottom: 20px;
 }
 
-.input-form {
+.input-form-r {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
+  padding: 10px;
   overflow-y: scroll;
-  overflow-x: hidden;
-  height: 400px;
+  height: 300px;
 }
 
-.input-form::-webkit-scrollbar {
+.input-form-r::-webkit-scrollbar {
   width: 6px;
 }
 
-.input-form::-webkit-scrollbar-track {
+.input-form-r::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 }
 
-.input-form::-webkit-scrollbar-thumb {
+.input-form-r::-webkit-scrollbar-thumb {
   width: 2px;
   background: var(--color-blue);
   border-radius: 5px;
   margin: 0 3px;
 }
 
-.input-form input[type="text"] {
+.input-form-r input[type="text"] {
   width: 60%;
   border: none;
   background: var(--color-slate);
@@ -61,7 +61,7 @@
   margin-right: 40%;
 }
 
-.input-form textarea {
+.input-form-r textarea {
   width: 96%;
   border: none;
   background: var(--color-slate);
@@ -74,7 +74,7 @@
   margin-right: 4%;
 }
 
-.input-form button {
+.input-form-r button {
   width: 30%;
   border: none;
   color: var(--color-white);
@@ -90,7 +90,7 @@
   outline: none;
 }
 
-.input-form p {
+.input-form-r p {
   color: var(--color-red);
   font-family: "Roboto";
   margin-top: 10px;
@@ -179,9 +179,9 @@
     position: relative;
   }
 
-  .input-form {
+  .input-form-r {
     overflow-y: scroll;
-    height: 400px;
+    height: 300px;
     padding: 5px;
   }
 
@@ -204,21 +204,21 @@
     height: 60px;
   }
 
-  .input-form input[type="text"] {
+  .input-form-r input[type="text"] {
     width: 100%;
     margin-right: 0;
   }
 
-  .input-form input[type="file"] {
+  .input-form-r input[type="file"] {
     padding: 10px 0;
   }
 
-  .input-form button {
+  .input-form-r button {
     width: 100%;
     margin-right: 0;
   }
 
-  .input-form textarea {
+  .input-form-r textarea {
     width: 100%;
   }
 }
