@@ -5,7 +5,7 @@ interface RowProp {
   name: String;
   address: String;
   city: String;
-  distance: Number;
+  distance: string;
 }
 
 const RowComponent: FC<RowProp> = ({ name, address, city, distance }) => {
@@ -33,19 +33,19 @@ const index: FC = () => {
       name: "Hopsital",
       address: "No 4 Dress road",
       city: "Kumkubaga",
-      distance: 47,
+      distance: '47',
     },
     {
       name: "Hopsital",
       address: "No 4 Dress road",
       city: "Kumkubaga",
-      distance: 47,
+      distance: '47',
     },
     {
       name: "Hopsital",
       address: "No 4 Dress road",
       city: "Kumkubaga",
-      distance: 47,
+      distance: '47',
     },
   ]);
   return (

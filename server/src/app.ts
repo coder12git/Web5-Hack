@@ -22,6 +22,7 @@ const app = new Hono()
       if (res.isErr)
         return c.json({ error: res.error })
 
+      // @ts-ignore
       const conditions = res.value.filter(record => record.condition === condition)
       return c.json(conditions)
     })

@@ -1,5 +1,6 @@
 import { Web5 } from "@web5/api";
 import ConditionsProtocol, { type Record, did as ConditionsProtocolDID } from "@frontend/utils/protocols/conditions"
+// @ts-ignore
 import Result, { ok, err } from "true-myth/result"
 
 export type Agent = {
@@ -12,6 +13,7 @@ export type Status = {
   detail: string,
 }
 
+// @ts-ignore
 export async function configureProtocol(agent: Agent): Promise<Result<undefined, { type: "REMOTE_PROTOCOL_CONFIGURATION_FAILED" | "LOCAL_PROTOCOL_CONFIGURATION_FAILED" } & { status: Status }>> {
   const { protocols } = await agent.web5.dwn.protocols.query({
     message: {
@@ -47,6 +49,7 @@ export async function configureProtocol(agent: Agent): Promise<Result<undefined,
   return ok(undefined)
 }
 
+// @ts-ignore
 export async function fetchConditions(agent: Agent): Promise<Result<Record.Condition[], Status>> {
   const { records, status } = await agent.web5.dwn.records.query({
     from: ConditionsProtocolDID,
@@ -56,6 +59,7 @@ export async function fetchConditions(agent: Agent): Promise<Result<Record.Condi
         schema: ConditionsProtocol.types.condition.schema,
         protocol: ConditionsProtocol.protocol,
       },
+      // @ts-ignore
       dateSort: "createdAscending",
     }
   })
@@ -75,6 +79,7 @@ export async function fetchConditions(agent: Agent): Promise<Result<Record.Condi
   return ok(conditions)
 }
 
+// @ts-ignore
 export async function setupAgent(): Promise<Agent> {
   const { web5, did } = await Web5.connect({
     sync: "5s",

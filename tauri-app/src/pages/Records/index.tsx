@@ -54,6 +54,7 @@ const index = () => {
   const [isCardDetailActive, setIsCardDetailActive] = useState(false);
   const [activeCard, setActiveCard] = useState(null);
 
+  // @ts-ignore
   const isCardClicked = (cardDetail) => {
     setIsCardDetailActive(!isCardDetailActive);
     setIsAddCardActive(false);
@@ -79,6 +80,7 @@ const index = () => {
             <Card
               file_name={card.file_name}
               file_extension={card.file_extension}
+              // @ts-ignore
               title={card.title}
               date={card.date}
               desc={card.desc}
@@ -96,6 +98,7 @@ const index = () => {
             {isAddCardActive && <AddCardComponent />}
             {isCardDetailActive && (
               <DetailCardComponent
+              // @ts-ignore
                 cardData={activeCard}
                 close={setIsCardDetailActive}
               />

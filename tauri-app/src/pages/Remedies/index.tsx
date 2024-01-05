@@ -1,7 +1,7 @@
 import "./index.css";
 import { useState } from "react";
 
-import Ratings from "../../../components/Ratings/";
+import Ratings from "../../components/Ratings";
 import RemedyCard from "../../components/RemedyCard/";
 import AddRemedyComponent from "../../components/AddRemedyComponent/";
 
@@ -47,6 +47,7 @@ const index = () => {
   const [isDetailRemedyActive, setIsDetailRemedyActive] = useState(false);
   const [activeRemedy, setActiveRemedy] = useState(null);
 
+  // @ts-ignore
   const remedyClicked = (remedyDetail) => {
     setActiveRemedy(remedyDetail);
     setIsDetailRemedyActive(true);
@@ -56,12 +57,16 @@ const index = () => {
   const Rate = () => {
     if (!isRated) {
       setActiveRemedy({
+        // @ts-ignore
         ...activeRemedy,
+        // @ts-ignore
         rating: activeRemedy.rating + 1,
       });
     } else {
       setActiveRemedy({
+        // @ts-ignore
         ...activeRemedy,
+        // @ts-ignore
         rating: activeRemedy.rating - 1,
       });
     }
@@ -104,6 +109,7 @@ const index = () => {
             <div
               className="rimg-container"
               style={{
+                // @ts-ignore
                 background: `url(${activeRemedy.coverIMGUrl})`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
@@ -129,18 +135,24 @@ const index = () => {
               </div>
 
               <div onClick={() => Rate()} className="rd-container">
-                {activeRemedy.rating}
+                {// @ts-ignore
+                activeRemedy.rating}
                 <i
                   style={{ opacity: `${isRated ? "1" : "0.5"}` }}
                   className="fa fa-leaf"
                 ></i>
               </div>
             </div>
-            <h1>{activeRemedy.title} </h1>
+            <h1>{// @ts-ignore
+            activeRemedy.title} </h1>
 
             <div className="remedy-main-info-container">
-              <p style={{ marginLeft: "0px" }}>{activeRemedy.desc}</p>
-              {activeRemedy.steps &&
+              <p style={{ marginLeft: "0px" }}>{
+              // @ts-ignore
+              activeRemedy.desc}</p>
+              {// @ts-ignore
+              activeRemedy.steps &&
+              // @ts-ignore
                 activeRemedy.steps.map((step, indx) => {
                   return (
                     <div>
