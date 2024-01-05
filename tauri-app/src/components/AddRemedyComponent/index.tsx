@@ -46,7 +46,7 @@ const index: FC = () => {
     <div className="main-add-card-container">
       <h1>Create New Remedy</h1>
       <FileUploader />
-      <div className="input-form">
+      <div className="input-form-r">
         <input type="text" placeholder="Title" />
         <textarea placeholder="Let's know your remdy"></textarea>
         <div>

@@ -1,0 +1,55 @@
+.userprofile-container {
+  box-shadow: var(--box-shadow-black);
+  width: 200px;
+  text-align: center;
+  border-radius: 15px;
+  padding: 8px 12px;
+  position: relative;
+}
+
+.userprofile-info-container img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--color-white);
+  padding: 10px;
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.userprofile-info-container p {
+  font-family: "Open Sans";
+  margin-top: 40px;
+}
+
+.cover-container {
+  height: 130px;
+  border-radius: 15px;
+  text-align: left;
+}
+
+.cover-container h3 {
+  color: var(--color-white);
+  font-family: "Roboto";
+  font-size: 18px;
+  position: relative;
+  left: 6px;
+  top: 10px;
+}
+
+.cover-container p {
+  color: var(--color-white);
+  font-family: "Open Sans";
+  font-size: 14px;
+  position: relative;
+  left: 6px;
+  top: 15px;
+}
+
+@media (max-width: 750px) {
+  .userprofile-container {
+    width: 100%;
+  }
+}
