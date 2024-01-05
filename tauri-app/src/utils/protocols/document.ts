@@ -1,17 +1,23 @@
+const url = "https://dschema.org"
+const protocol = `${url}/protocols/document/v0.0.3`
+
 const DocumentProtocol = {
-  protocol: "https://dschema.org/protocols/document",
+  protocol,
   published: true,
   types: {
     document: {
-      schema: "https://schema.org/protocols/document/schemas/document.json",
+      schema: `${protocol}/schema/document.json`,
       dataFormats: [
         "application/json"
       ]
     },
     blob: {
-      schema: "https://dschema.org/protocols/document/schemas/blob.json",
+      schema: `${protocol}/schema/blob.json`,
       dataFormats: [
-        "application/binary"
+        "image/png",
+        "image/jpeg",
+        "image/jpg",
+        "application/pdf"
       ]
     }
   },
@@ -24,6 +30,7 @@ const DocumentProtocol = {
         },
         {
           who: "author",
+          of: "document",
           can: "write"
         }
       ]
@@ -36,6 +43,7 @@ const DocumentProtocol = {
         },
         {
           who: "author",
+          of: "blob",
           can: "write"
         }
       ]
