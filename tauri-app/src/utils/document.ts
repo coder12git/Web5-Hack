@@ -238,6 +238,8 @@ const DocumentUtils = {
   fetchDocumentRecords,
   updateDocumentRecord,
   createDocumentRecord,
+  createBlobRecord,
+  updateBlobRecord,
   fetchBlobRecord,
 }
 

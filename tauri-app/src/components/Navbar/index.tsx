@@ -1,3 +1,4 @@
+import AccountGuard from "../Auth/Account/Guard";
 import "./index.css";
 import { NavLink } from "react-router-dom";
 
@@ -43,10 +44,17 @@ const index = () => {
           </div>
         </NavLink>
       </div>
-      <div className="auth_container">
-        <h3>Join us!</h3>
-        <i className="fa fa-user"></i>
-      </div>
+      <AccountGuard fallback={
+        <div className="auth_container">
+          <h3>Join us!</h3>
+          <i className="fa fa-user"></i>
+        </div>
+      }>
+        <div className="auth_container">
+          <h3>Profile</h3>
+          <i className="fa fa-user"></i>
+        </div>
+      </AccountGuard>
     </div>
   );
 };
