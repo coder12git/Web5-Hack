@@ -1,6 +1,9 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import useWeb5Store  from "@/stores/useWeb5Store";
-import { useDocuments } from "@/stores/useDocuments";
+import useWeb5Store from "@/stores/useWeb5Store";
+import DocumentUtils from "@/utils/document";
+import { Record as DocumentRecord } from "@/utils/protocols/document";
+import { Record as Web5Record } from "@web5/api/browser";
+import AuthGuard from "@/components/Auth/Guard";
 
 const possibleConditions = [
   "Cancer",
@@ -11,55 +14,46 @@ const possibleConditions = [
   "Mental Illness",
 ]
 
-const MedicPage: FunctionComponent = () => {
-  const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
-  const { fetchDocuments, documents, createDocument, getDocumentFile } = useDocuments(web5, did)
-  const [docsWithImageUrls, setDocsWithImageUrls] = useState<{
-    document: typeof documents[0],
-    url: string
-  }[]>([])
-
-  const [form, setForm] = useState<{
-    name: string
-    doc: File,
-    condition: string
-  }>({
+const Page: FunctionComponent = () => {
+  const agent = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
+  const [documentsWithUrl, setDocumentsWithUrl] = useState<{ document: DocumentRecord.Document, fileUrl: string, record: Web5Record }[]>([])
+  const [form, setForm] = useState({
     name: "",
-    doc: new File([], ""),
-    condition: ""
+    file: new File([], ""),
+    condition: possibleConditions[0]
   })
 
   useEffect(() => {
-    if (web5) {
-      fetchDocuments()
-    }
-  }, [web5])
+    (async () => {
+      const docRecords = await DocumentUtils.fetchDocumentRecords(agent)
+      if (!docRecords) {
+        console.log("Failed to fetch document records")
+        return
+      }
 
-  async function processDocsImage() {
-    const docsWithImageUrls: { document: typeof documents[0], url: string }[] = []
+      const docsWithUrl = []
+      for (const docRecord of docRecords) {
+        const data: DocumentRecord.Document = await docRecord.data.json()
+        const fileRecord = await DocumentUtils.fetchBlobRecord(agent, data.url)
 
-    for (const doc of documents) {
-      const file = await getDocumentFile(doc)
-      let url = ""
-      if (file)
-        url = URL.createObjectURL(file)
+        if (!fileRecord)
+          continue
 
-      docsWithImageUrls.push({
-        document: doc,
-        url
-      })
-    }
+        const file = new File([await fileRecord.data.blob()], data.name, { type: data.encodingFormat })
 
-    setDocsWithImageUrls(docsWithImageUrls)
-  }
+        docsWithUrl.push({
+          record: docRecord,
+          document: data,
+          fileUrl: URL.createObjectURL(file),
+        })
+      }
 
-  useEffect(() => {
-    processDocsImage()
-  }, [documents])
+      setDocumentsWithUrl(docsWithUrl)
+    })()
+  }, [])
 
   const saveMedicalRecord = async () => {
-    console.log(form)
-    const res = await createDocument({ name: form.name ? form.name : undefined, file: form.doc, condition: form.condition })
+    const res = await DocumentUtils.createDocumentRecord(agent, form)
 
     if (res) {
       alert(`Medical record saved: ${res}`)
@@ -68,8 +62,6 @@ const MedicPage: FunctionComponent = () => {
       alert("Failed to save record")
     }
   }
-
-  console.log(documents)
 
   return (
     <div className="grid grid-cols-2 gap-4">
@@ -96,7 +88,7 @@ const MedicPage: FunctionComponent = () => {
 
               setForm({
                 ...form,
-                doc: file
+                file: file
               })
             }}
             placeholder="Document" />
@@ -105,6 +97,7 @@ const MedicPage: FunctionComponent = () => {
           <select
             required
             onChange={(e) => {
+              console.log(e.target.value)
               setForm({
                 ...form,
                 condition: e.target.value
@@ -120,13 +113,21 @@ const MedicPage: FunctionComponent = () => {
         </button>
       </form>
       <div>
-        {docsWithImageUrls.map(({ document, url }) => (
+        {documentsWithUrl.map(({ document, fileUrl: url }) => (
           <div key={document.id}>
             <embed src={url} width="800px" height="2100px" />
           </div>
         ))}
       </div>
     </div>
+  )
+}
+
+const MedicPage: FunctionComponent = () => {
+  return (
+    <AuthGuard>
+      <Page />
+    </AuthGuard>
   )
 }
 
