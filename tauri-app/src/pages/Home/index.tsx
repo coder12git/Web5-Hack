@@ -6,7 +6,7 @@ export default function HomePage() {
       <div className="main_container">
         <div className="main_info_container">
           <div className="info_container">
-            <b className="header">
+            <b id="header">
               Hi welcome to,
               <b>
                  pulse<span>Pal</span>

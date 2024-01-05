@@ -21,13 +21,13 @@
   margin: 20px 0px;
 }
 
-.header {
+#header {
   font-family: "Roboto";
   font-size: 20px;
   font-weight: 500;
 }
 
-.header b {
+#header b {
   font-family: "Pacifico";
   text-transform: capitalize;
   color: var(--color-blue);
@@ -150,7 +150,6 @@
 }
 
 @keyframes morphBorder {
-
   0%,
   100% {
     border-radius: 70% 30% 41% 59% / 47% 73% 27% 53%;
