@@ -1,4 +1,4 @@
-import { Web5 } from "@web5/api/browser";
+import { Web5 } from "@web5/api";
 import { create } from "zustand";
 import ConditionsProtocol from "@/utils/protocols/conditions";
 
