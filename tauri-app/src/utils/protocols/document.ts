@@ -1,5 +1,5 @@
-const url = "https://dschema.org"
-const protocol = `${url}/protocols/document/v0.0.3`
+const url = "https://dschema.org"  as const
+const protocol = `${url}/protocols/document/v0.0.3` as const
 
 const DocumentProtocol = {
   protocol,

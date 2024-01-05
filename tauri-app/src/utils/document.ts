@@ -11,13 +11,55 @@ type FilterObj = {
   recordId: string,
 }
 
-async function fetchDocumentRecord(agent: Agent, filter: FilterObj) {
+type Type = keyof typeof DocumentProtocol["types"]
+type Schema<T extends Type> = typeof DocumentProtocol["types"][T]["schema"]
+type DataFormat<T extends Type> = typeof DocumentProtocol["types"][T]["dataFormats"][number]
+
+type FullFilterObj<T extends Type> = {
+  protocolPath: T
+  schema: Schema<T>
+}
+
+type FullMessageObj<T extends Type> = {
+  schema: Schema<T>
+  protocolPath: T
+  dataFormat: DataFormat<T>
+  published: typeof DocumentProtocol["published"]
+}
+
+async function createRecord(agent: Agent, data: DocumentProtocolRecord.Document, message: FullMessageObj<"document">): Promise<false | Web5Record>;
+async function createRecord(agent: Agent, data: DocumentProtocolRecord.File, message: FullMessageObj<"blob">): Promise<false | Web5Record>;
+
+async function createRecord<T extends Type>(agent: Agent, data: DocumentProtocolRecord.Document | DocumentProtocolRecord.File, message: FullMessageObj<T>) {
+  const { record, status } = await agent.web5.dwn.records.create({
+    data,
+    message: Object.assign({
+      ...message,
+      protocol: DocumentProtocol.protocol,
+    })
+  });
+
+  if (!record) {
+    console.error("Failed to create record:", status)
+    return false
+  }
+
+  const { status: syncStatus } = await record.send(DocumentProtocolDID)
+
+  if (syncStatus.code !== 202) {
+    console.log("Failed to sync record with remote DWN:", syncStatus)
+  }
+
+  return record
+}
+
+async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<T>) {
   const { records, status } = await agent.web5.dwn.records.query({
+    from: DocumentProtocolDID,
     message: {
       filter: {
         ...filter,
         protocol: DocumentProtocol.protocol,
-        protocolPath: "document",
       },
       // @ts-ignore
       dateSort: "createdAscending",
@@ -25,76 +67,47 @@ async function fetchDocumentRecord(agent: Agent, filter: FilterObj) {
   });
 
   if (!records) {
-    console.log("Failed to fetch document record:", status)
+    console.log("Failed to fetch records:", status)
     return false
   }
+  return records
+}
 
-  if (records.length < 1) return false
+async function fetchDocumentRecord(agent: Agent, filter: FilterObj) {
+  const records = await fetchRecords(agent, {
+    ...filter,
+    schema: DocumentProtocol.types.document.schema,
+    protocolPath: "document",
+  })
+
+  if (!records || !records[0]) return false
 
   return records[0]
 }
 
 async function fetchDocumentRecords(agent: Agent) {
-  const { records, status } = await agent.web5.dwn.records.query({
-    message: {
-      filter: {
-        protocol: DocumentProtocol.protocol,
-        protocolPath: "document",
-      },
-      // @ts-ignore
-      dateSort: "createdAscending",
-    },
-  });
-
-  if (!records) {
-    console.log("Failed to fetch document records:", status)
-    return false
-  }
-
-  return records
+  return fetchRecords(agent, {
+    protocolPath: "document",
+    schema: DocumentProtocol.types.document.schema,
+  })
 }
 
 async function fetchBlobRecord(agent: Agent, id: string) {
-  const { records, status } = await agent.web5.dwn.records.query({
-    message: {
-      filter: {
-        recordId: id,
-        protocol: DocumentProtocol.protocol,
-        protocolPath: "blob",
-      },
-      // @ts-ignore
-      dateSort: "createdAscending",
-    },
-  });
+  const records = await fetchRecords(agent, {
+    protocolPath: "blob",
+    schema: DocumentProtocol.types.blob.schema,
+  })
 
-  if (!records) {
-    console.log("Failed to fetch blob record:", status)
-    return false
-  }
-
-  if (records.length < 1) return false
+  if (!records || !records[0]) return false
 
   return records[0]
 }
 
 async function fetchBlobRecords(agent: Agent) {
-  const { records, status } = await agent.web5.dwn.records.query({
-    message: {
-      filter: {
-        protocol: DocumentProtocol.protocol,
-        protocolPath: "blob",
-      },
-      // @ts-ignore
-      dateSort: "createdAscending",
-    },
-  });
-
-  if (!records) {
-    console.log("Failed to fetch blob records:", status)
-    return false
-  }
-
-  return records
+  return fetchRecords(agent, {
+    protocolPath: "blob",
+    schema: DocumentProtocol.types.blob.schema,
+  })
 }
 
 type UpdatePayload = Partial<{
@@ -174,62 +187,50 @@ async function createDocumentRecord(agent: Agent, { name, file, condition }: { n
   const blobRecord = await createBlobRecord(agent, file)
   if (!blobRecord) return false
 
-  const data: DocumentProtocolRecord.Document = {
-    name: name ?? file.name,
-    encodingFormat: file.type,
-    size: file.size,
-    url: blobRecord.id,
-    condition,
-    dateCreated: new Date().toISOString(),
-    dateModified: new Date().toISOString()
-  }
-  const { record: createdRecord, status: recordCreationStatus } = await agent.web5.dwn.records.create({
-    data,
-    message: {
+  const record = await createRecord(
+    agent,
+    {
+      name: name ?? file.name,
+      encodingFormat: file.type,
+      size: file.size,
+      url: blobRecord.id,
+      condition,
+      dateCreated: new Date().toISOString(),
+      dateModified: new Date().toISOString()
+    },
+    {
       schema: DocumentProtocol.types.document.schema,
-      protocol: DocumentProtocol.protocol,
       protocolPath: "document",
       dataFormat: DocumentProtocol.types.document.dataFormats[0],
       published: DocumentProtocol.published,
-    },
-  });
+    })
 
-  if (!createdRecord) {
-    console.error("Failed to create document record:", recordCreationStatus)
+  if (!record) {
+    console.error("Failed to create document record")
     return false
   }
 
-  const { status: syncStatus } = await createdRecord.send(DocumentProtocolDID)
-
-  if (syncStatus.code !== 202) {
-    console.log("Failed to sync document record with remote DWN:", syncStatus)
-  }
-
-  return createdRecord
+  return record
 }
 
 async function createBlobRecord(agent: Agent, file: File) {
-  const { record: createdRecord, status } = await agent.web5.dwn.records.create({
-    data: new Blob([file], { type: file.type }),
-    message: {
+  const record = await createRecord(
+    agent,
+    new Blob([file], { type: file.type }),
+    {
       schema: DocumentProtocol.types.blob.schema,
-      protocol: DocumentProtocol.protocol,
       protocolPath: "blob",
+      dataFormat: file.type as DataFormat<"blob">,
+      published: DocumentProtocol.published,
     }
-  })
+  )
 
-  if (!createdRecord) {
-    console.error("Failed to create blob record", status)
+  if (!record) {
+    console.error("Failed to create blob record")
     return false
   }
 
-  const { status: syncStatus } = await createdRecord.send(DocumentProtocolDID)
-
-  if (syncStatus.code !== 202) {
-    console.log("Failed to sync blob record with remote DWN:", syncStatus)
-  }
-
-  return createdRecord
+  return record
 }
 
 const DocumentUtils = {
