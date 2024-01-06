@@ -71,6 +71,45 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
   return records
 }
 
+type CreatePayload = {
+  firstName: string
+  lastName: string
+  profilePicture: File,
+}
+async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
+  const existingRecord = await fetchUserDetailsRecord(agent)
+  if (existingRecord) {
+    console.error("User details record already exists")
+    return false
+  }
+
+  const blobRecord = await DocumentUtils.createBlobRecord(agent, payload.profilePicture)
+  if (!blobRecord) return false
+
+  const { profilePicture, ...restPayload } = payload
+
+  const record = await createRecord(
+    agent,
+    {
+      ...restPayload,
+      profilePictureUrl: blobRecord.id,
+      dateCreated: new Date().toISOString()
+    },
+    {
+      schema: UserDetailsProtocol.types.details.schema,
+      protocolPath: "details",
+      dataFormat: UserDetailsProtocol.types.details.dataFormats[0],
+      published: UserDetailsProtocol.published,
+    })
+
+  if (!record) {
+    console.error("Failed to create document record")
+    return false
+  }
+
+  return record
+}
+
 async function fetchUserDetailsRecord(agent: Agent) {
   const records = await fetchRecords(agent, {
     schema: UserDetailsProtocol.types.details.schema,
@@ -132,39 +171,34 @@ async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Re
   return record
 }
 
-type CreatePayload = {
-  firstName: string
-  lastName: string
-  profilePicture: File,
-}
-async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
-  const existingRecord = await fetchUserDetailsRecord(agent)
-  if (existingRecord) {
-    console.error("User details record already exists")
+async function deleteUserDetailsRecord(agent: Agent) {
+  const record = await fetchUserDetailsRecord(agent)
+  if (!record) return false
+
+  const profile: UserDetailsProtocolRecord.Details = await record.data.json()
+
+  const profilePictureRecord = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureUrl)
+  if (!profilePictureRecord) return false
+
+  const { status: profileDeleteStatus } = await agent.web5.dwn.records.delete({
+    message: {
+      recordId: profilePictureRecord.id
+    }
+  })
+
+  if (profileDeleteStatus.code !== 202) {
+    console.log("Failed to delete profile picture record:", profileDeleteStatus)
     return false
   }
 
-  const blobRecord = await DocumentUtils.createBlobRecord(agent, payload.profilePicture)
-  if (!blobRecord) return false
+  const { status } = await agent.web5.dwn.records.delete({
+    message: {
+      recordId: record.id
+    }
+  })
 
-  const { profilePicture, ...restPayload } = payload
-
-  const record = await createRecord(
-    agent,
-    {
-      ...restPayload,
-      profilePictureUrl: blobRecord.id,
-      dateCreated: new Date().toISOString()
-    },
-    {
-      schema: UserDetailsProtocol.types.details.schema,
-      protocolPath: "details",
-      dataFormat: UserDetailsProtocol.types.details.dataFormats[0],
-      published: UserDetailsProtocol.published,
-    })
-
-  if (!record) {
-    console.error("Failed to create document record")
+  if (status.code !== 202) {
+    console.log("Failed to delete profile record:", status)
     return false
   }
 
@@ -175,6 +209,7 @@ const UserDetailsUtils = {
   fetchUserDetailsRecord,
   updateUserDetailsRecord,
   createUserDetailsRecord,
+  deleteUserDetailsRecord
 }
 
 export default UserDetailsUtils
