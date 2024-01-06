@@ -9,7 +9,6 @@ import Doctors from "./pages/nearbyDoctor";
 import HomePage from "./pages/Home";
 import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
-import Remedies from "./pages/Remedies";
 import Chat from "./pages/Chat/";
 import Contact from "./pages/Contact/";
 
@@ -20,7 +19,6 @@ const router = createHashRouter([
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/records", element: <Records /> },
-      { path: "/remedies", element: <Remedies /> },
       { path: "/connect", element: <Connect /> },
       { path: "/remedy", element: <Remedy /> },
       { path: "/medic", element: <MedicPage /> },

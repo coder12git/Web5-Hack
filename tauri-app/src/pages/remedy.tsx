@@ -1,25 +1,26 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
 import { useRemedies } from "@/stores/useRemedy";
+import Remedies from './Remedies';
 
-const cards = [
-  {
-      name: "Cancer",
-      description: "Dangerous..."
-  },
-  {
-      name: "Cancer",
-      description: "Dangerous..."
-  },
-  {
-      name: "Cancer",
-      description: "Dangerous..."
-  },
-  {
-      name: "Cancer",
-      description: "Dangerous..."
-  }
-]
+// const cards = [
+//   {
+//       name: "Cancer",
+//       description: "Dangerous..."
+//   },
+//   {
+//       name: "Cancer",
+//       description: "Dangerous..."
+//   },
+//   {
+//       name: "Cancer",
+//       description: "Dangerous..."
+//   },
+//   {
+//       name: "Cancer",
+//       description: "Dangerous..."
+//   }
+// ]
 
 const Remedy: FunctionComponent = () => {
   const { web5, connect } = useWeb5Store((state) => ({ web5: state.web5!, connect: state.connect }));
@@ -32,10 +33,14 @@ const Remedy: FunctionComponent = () => {
   const [form, setForm] = useState<{
     name: string
     description: string
+    created_by: string
+    rating: string
     doc: File
   }>({
     name: "",
     description: "",
+    created_by: "",
+    rating: "",
     doc: new File([], "")
   })
 
@@ -69,7 +74,7 @@ const Remedy: FunctionComponent = () => {
   }, [remedies])
 
   const saveRemedy = async () => {
-    const res = await createRemedy({ name: form.name ? form.name : undefined, description: form.description ? form.description : undefined , file: form.doc})
+    const res = await createRemedy({ name: form.name ? form.name : undefined, description: form.description ? form.description : undefined , file: form.doc, created_by: form.created_by, rating: form.rating})
 
     console.log(res)
     if (res) {
@@ -81,17 +86,15 @@ const Remedy: FunctionComponent = () => {
     }
   }
 
-  // const deleteItem = async (id) => {
-  //   deleteRemedy(id);
-  // }
-  
-
   console.log(remedies)
-  console.log(docsWithImageUrls)
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <form onSubmit={(e) => {
+    <>
+      <Remedies 
+      //@ts-ignore
+      save={saveRemedy} formFunc={setForm} form={form} remediesData={remedies}
+      />
+      {/* <form onSubmit={(e) => {
         e.preventDefault()
         saveRemedy()
       }}>
@@ -106,6 +109,18 @@ const Remedy: FunctionComponent = () => {
             type="text"
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             placeholder="Description" />
+        </div>
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setForm({ ...form, created_by: e.target.value })}
+            placeholder="Created" />
+        </div>
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setForm({ ...form, rating: e.target.value })}
+            placeholder="rating" />
         </div>
         
         <button type="submit">
@@ -128,14 +143,16 @@ const Remedy: FunctionComponent = () => {
                     <div key={document.id} className="bg-white p-4 rounded-md shadow-md">
                         <h5 className="text-xl font-semibold mb-2">{document.data.name}</h5>
                         <p className="text-gray-600">{document.data.description}</p>
+                        <p className="text-gray-600">{document.data.created_by}</p>
+                        <p className="text-gray-600">{document.data.rating}</p>
                         <button onClick={()=> deleteRemedy(document)}>Delete</button>
                         <br/>
                         <button onClick={()=> updateRemedy(document, {name:'hjk', description: 'hhhj'})}>Edit</button>
                     </div>
                 ))}
             </div>
-      </div>
-    </div>
+      </div> */}
+    </>
   )
 }
 

@@ -29,7 +29,7 @@ const index = () => {
             <span>5</span>
           </div>
         </NavLink>
-        <NavLink to="/remedies" style={{ textDecoration: "none" }}>
+        <NavLink to="/remedy" style={{ textDecoration: "none" }}>
           <div>
             <i className="fas fa-first-aid"></i>
             <h3>DIY Remedies</h3>

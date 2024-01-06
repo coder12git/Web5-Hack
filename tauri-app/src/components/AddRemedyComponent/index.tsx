@@ -1,5 +1,6 @@
 import "./index.css";
 import React, { FC, useState } from "react";
+import Remedies from '../../pages/Remedies'
 
 interface FileProp {
   file: File | null | undefined;
@@ -37,7 +38,8 @@ const StepField: FC<StepProp> = ({ index }) => {
   );
 };
 
-const index: FC = () => {
+//@ts-ignore
+const index: FC = ({saveFunc, formFunc, form}) => {
   const [steps, setSteps] = useState<React.ReactElement[]>([
     <StepField index={1} />,
   ]);
@@ -45,29 +47,29 @@ const index: FC = () => {
   return (
     <div className="main-add-card-container">
       <h1>Create New Remedy</h1>
-      <FileUploader />
+      {/* <FileUploader /> */}
+      <form 
+      onSubmit={(e) => {
+      e.preventDefault()
+      saveFunc()
+      }}
+      >
       <div className="input-form">
-        <input type="text" placeholder="Title" />
-        <textarea placeholder="Let's know your remdy"></textarea>
-        <div>
-          <div
-            className="add-mu"
-            onClick={() =>
-              setSteps([...steps, <StepField index={steps.length + 1} />])
-            }
-          >
-            <i className="fa fa-plus"></i>
-          </div>
-          {steps.map((Field) => {
-            return Field;
-          })}
-        </div>
-        <button>Save</button>
-        <p>
-          *ensure inputted information are correct as once saved it cannot be
-          deleted/edited
-        </p>
+        <input type="text" placeholder="Title" required={true}
+        onChange={(e) => formFunc({ ...form, name: e.target.value })}
+        />
+        <textarea placeholder="Let's know your remedy" required={true}
+        onChange={(e) => formFunc({ ...form, description: e.target.value })}
+        />
+        <input type="text" placeholder="Created By" required={true}
+        onChange={(e) => formFunc({ ...form, created_by: e.target.value })}
+        />
+        <input type="text" placeholder="Rating in numbers" required={true}
+        onChange={(e) => formFunc({ ...form, rating: e.target.value })}
+        />
+        <button type="submit">Save</button>
       </div>
+      </form>
     </div>
   );
 };
