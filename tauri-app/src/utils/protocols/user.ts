@@ -34,6 +34,7 @@ export namespace Record {
     firstName: string
     lastName: string
     profilePictureUrl: string
+    description: string
     dateCreated: string
   }
 }

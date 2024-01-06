@@ -71,70 +71,10 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
   return records
 }
 
-async function fetchUserDetailsRecord(agent: Agent) {
-  const records = await fetchRecords(agent, {
-    schema: UserDetailsProtocol.types.details.schema,
-    protocolPath: "details",
-  })
-
-  if (!records || !records[0]) return false
-
-  return records[0]
-}
-
-async function fetchUserDetailsRecords(agent: Agent) {
-  return fetchRecords(agent, {
-    protocolPath: "details",
-    schema: UserDetailsProtocol.types.details.schema,
-  })
-}
-
-type UpdatePayload = Partial<{
-  firstName: string
-  lastName: string
-  profilePicture: File
-}>
-
-async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Record, payload: Partial<UpdatePayload>) {
-  let record: Web5Record
-
-  if (typeof idOrRecord === "string") {
-    const fetchedRecord = await fetchUserDetailsRecord(agent, { recordId: idOrRecord })
-
-    if (!fetchedRecord) return false
-
-    record = fetchedRecord
-  }
-  else {
-    record = idOrRecord
-  }
-
-  const data: UserDetailsProtocolRecord.Details = await record.data.json()
-  const { profilePicture, ...restPayload } = payload
-
-  let url = data.profilePictureUrl
-  if (profilePicture) {
-    const blobRecord = await DocumentUtils.updateBlobRecord(agent, url, profilePicture)
-    if (!blobRecord) return false
-
-    url = blobRecord.id
-  }
-
-  const { status } = await record.update({
-    data: _.merge(data, Object.assign(restPayload, { url }))
-  })
-
-  if (status.code !== 202) {
-    console.log("Failed to sync document record update with remote DWN:", status)
-    return false
-  }
-
-  return record
-}
-
 type CreatePayload = {
   firstName: string
   lastName: string
+  description: string
   profilePicture: File,
 }
 async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
@@ -171,10 +111,96 @@ async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
   return record
 }
 
+async function fetchUserDetailsRecord(agent: Agent) {
+  const records = await fetchRecords(agent, {
+    schema: UserDetailsProtocol.types.details.schema,
+    protocolPath: "details",
+  })
+
+  if (!records || !records[0]) return false
+
+  return records[0]
+}
+
+async function fetchUserDetailsRecords(agent: Agent) {
+  return fetchRecords(agent, {
+    protocolPath: "details",
+    schema: UserDetailsProtocol.types.details.schema,
+  })
+}
+
+type UpdatePayload = Partial<{
+  firstName: string
+  lastName: string
+  description: string
+  profilePicture: File
+}>
+
+async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Record, payload: Partial<UpdatePayload>) {
+  let record: Web5Record
+
+  if (typeof idOrRecord === "string") {
+    const fetchedRecord = await fetchUserDetailsRecord(agent)
+
+    if (!fetchedRecord) return false
+
+    record = fetchedRecord
+  }
+  else {
+    record = idOrRecord
+  }
+
+  const data: UserDetailsProtocolRecord.Details = await record.data.json()
+  const { profilePicture, ...restPayload } = payload
+
+  let url = data.profilePictureUrl
+  if (profilePicture) {
+    const blobRecord = await DocumentUtils.updateBlobRecord(agent, url, profilePicture)
+    if (!blobRecord) return false
+
+    url = blobRecord.id
+  }
+
+  const { status } = await record.update({
+    data: _.merge(data, Object.assign(restPayload, { url }))
+  })
+
+  if (status.code !== 202) {
+    console.log("Failed to sync document record update with remote DWN:", status)
+    return false
+  }
+
+  return record
+}
+
+async function deleteUserDetailsRecord(agent: Agent) {
+  const record = await fetchUserDetailsRecord(agent)
+  if (!record) return false
+
+  const profile: UserDetailsProtocolRecord.Details = await record.data.json()
+
+  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureUrl)
+  if (!hasDeletedProfilePictureRecord) return false
+
+  const { status } = await agent.web5.dwn.records.delete({
+    message: {
+      recordId: record.id
+    }
+  })
+
+  if (status.code !== 202) {
+    console.log("Failed to delete profile record:", status)
+    return false
+  }
+
+  return true
+}
+
 const UserDetailsUtils = {
   fetchUserDetailsRecord,
   updateUserDetailsRecord,
   createUserDetailsRecord,
+  deleteUserDetailsRecord
 }
 
 export default UserDetailsUtils

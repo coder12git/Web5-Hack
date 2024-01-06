@@ -11,7 +11,7 @@ const Guard = ({ children, fallback }: PropsWithChildren & { fallback?: ReactNod
   return <>{children}</>
 }
 
-export default function AccountGuard(props: PropsWithChildren & { fallback?: ReactNode }) {
+export default function ProfileGuard(props: PropsWithChildren & { fallback?: ReactNode }) {
   return <AuthGuard>
     <Guard {...props} />
   </AuthGuard>
