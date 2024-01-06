@@ -9,6 +9,7 @@ import HomePage from "./pages/Home";
 import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Chat from "./pages/Chat/";
+import { Toaster } from "react-hot-toast";
 
 const router = createHashRouter([
   {
@@ -36,7 +37,13 @@ function App() {
   }, []);
 
   return (
-    <>{web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}</>
+    <>
+      <>{web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}</>
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
+    </>
   );
 }
 

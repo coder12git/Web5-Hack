@@ -2,11 +2,24 @@ import ProfileGuard from "../Auth/Profile/Guard";
 import "./index.css";
 import { NavLink } from "react-router-dom";
 import { usePulseGlobalStore } from "../../stores/pulseGlobalStore.ts";
+import useWeb5Store from "@/stores/useWeb5Store.ts";
+import { Agent } from "../Auth/types";
+import { useProfile } from "@/stores/profile.ts";
 
 const index = () => {
-  const toggleIsAuthBtnClicked = usePulseGlobalStore(
-    (store) => store.toggleIsAuthBtnClicked,
-  );
+  const { web5, did } = useWeb5Store((state) => ({ web5: state.web5, did: state.did }));
+  const { signIn, setShowAuthModal, signOut } = useProfile(state => ({
+    signIn: state.signIn,
+    signOut: state.signOut,
+    setShowAuthModal: state.setShowAuthModal
+  }))
+
+  const beginAuthFlow = async (agent: Agent) => {
+    const signedIn = await signIn(agent)
+    if (!signedIn)
+      setShowAuthModal(true)
+  }
+
   return (
     <div className="main_navbar_container">
       <div className="logo_container">
@@ -50,19 +63,23 @@ const index = () => {
       </div>
       <ProfileGuard
         fallback={
-          <div
+          <button
+            type="button"
             className="auth_container"
-            onClick={() => toggleIsAuthBtnClicked()}
+            onClick={() => web5 && did ? beginAuthFlow({ web5, did }) : null}
           >
             <h3>Join us!</h3>
             <i className="fa fa-user"></i>
-          </div>
+          </button>
         }
       >
-        <div className="auth_container">
-          <h3>Profile</h3>
-          <i className="fa fa-user"></i>
-        </div>
+        <button
+        type="button"
+        className="auth_container"
+        onClick={() => web5 && did ? signOut() : null}>
+          <h3>Sign out</h3>
+          <i className="fa fa-sign-out"></i>
+        </button>
       </ProfileGuard>
     </div>
   );
