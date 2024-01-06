@@ -88,7 +88,7 @@ const index = ({
         </div>
       </div>
       <div className="remedy-info-container">
-        <p>{description}</p>
+        <p>{description.substring(0,60)+"..."}</p>
         <button onClick={() => isClicked[1](isClicked[0])}>View Remedy</button>
       </div>
     </div>
