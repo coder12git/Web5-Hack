@@ -16,8 +16,7 @@ const UserDetailsProtocol = {
     details: {
       $actions: [
         {
-          who: "author",
-          of: "details",
+          who: "anyone",
           can: "read"
         },
         {
