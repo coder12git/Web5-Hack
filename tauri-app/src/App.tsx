@@ -35,7 +35,9 @@ function App() {
     if (!web5) connect();
   }, []);
 
-  return <>{web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}</>;
+  return (
+    <>{true ? <RouterProvider router={router} /> : <div>Connecting...</div>}</>
+  );
 }
 
 export default App;

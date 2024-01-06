@@ -33,7 +33,7 @@
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 9;
+  z-index: 8;
 }
 
 .close-add-records-btn {
@@ -48,7 +48,7 @@
   align-items: center;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 9;
+  z-index: 8;
   transform: rotate(45deg);
   transition: 0.3s;
 }

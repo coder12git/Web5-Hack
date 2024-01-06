@@ -6,7 +6,7 @@ import RemedyCard from "../../components/RemedyCard/";
 import AddRemedyComponent from "../../components/AddRemedyComponent/";
 import Remedy from "../remedy";
 //@ts-ignore
-const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
+const index = ({ save, formFunc, form, remediesData, docsWithImageUrls }) => {
   const [remedies, setRemedies] = useState([
     {
       name: "Lavendar Scalp Treament",
@@ -14,7 +14,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat...",
       desc: "Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.",
       useUrl: "/pg.jpg",
-      rating: '1.5',
+      rating: "1.5",
       created_by: "draky",
       // steps: [
       //   {
@@ -32,7 +32,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
       description:
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat...",
       useUrl: "/pg.jpg",
-      rating: '4',
+      rating: "4",
       created_by: "dave",
     },
     {
@@ -40,7 +40,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
       description:
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat...",
       useUrl: "/pg.jpg",
-      rating: '3.5',
+      rating: "3.5",
       created_by: "nikki",
     },
   ]);
@@ -48,7 +48,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
   const [isDetailRemedyActive, setIsDetailRemedyActive] = useState(false);
   const [activeRemedy, setActiveRemedy] = useState(null);
 
-  const url = '';
+  const url = "";
   // @ts-ignore
   const remedyClicked = (remedyDetail) => {
     setActiveRemedy(remedyDetail);
@@ -113,22 +113,23 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
           );
         })}
 
-
         {/* Remedy Created by user */}
-        {//@ts-ignore
-        docsWithImageUrls.map(({document, url}) => {
-          return (
-            <RemedyCard
-              name={document.data.name}
-              description={document.data.description}
-              useUrl={document.data.useUrl}
-              created_by={document.data.created_by}
-              //@ts-ignore
-              isClicked={[document.data, remedyClicked]}
-              rating={document.data.rating}
-            />
-          );
-        })}
+        {
+          //@ts-ignore
+          docsWithImageUrls.map(({ document, url }) => {
+            return (
+              <RemedyCard
+                name={document.data.name}
+                description={document.data.description}
+                useUrl={document.data.useUrl}
+                created_by={document.data.created_by}
+                //@ts-ignore
+                isClicked={[document.data, remedyClicked]}
+                rating={document.data.rating}
+              />
+            );
+          })
+        }
       </div>
       {isDetailRemedyActive && (
         <div className="view-card-detail-container">
@@ -162,21 +163,30 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
               </div>
 
               <div onClick={() => Rate()} className="rd-container">
-                {// @ts-ignore
-                activeRemedy.rating}
+                {
+                  // @ts-ignore
+                  activeRemedy.rating
+                }
                 <i
                   style={{ opacity: `${isRated ? "1" : "0.5"}` }}
                   className="fa fa-leaf"
                 ></i>
               </div>
             </div>
-            <h1>{// @ts-ignore
-            activeRemedy.name} </h1>
+            <h1>
+              {
+                // @ts-ignore
+                activeRemedy.name
+              }{" "}
+            </h1>
 
             <div className="remedy-main-info-container">
-              <p style={{ marginLeft: "0px" }}>{
-              // @ts-ignore
-              activeRemedy.description}</p>
+              <p style={{ marginLeft: "0px" }}>
+                {
+                  // @ts-ignore
+                  activeRemedy.description
+                }
+              </p>
             </div>
           </div>
         </div>
@@ -185,11 +195,14 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
       {isAddRemedyActive && (
         <div
           className="add-remedy-container"
-          style={{ zIndex: `${isAddRemedyActive ? "7" : "6"}` }}
+          style={{ zIndex: `${isAddRemedyActive ? "5" : "5"}` }}
         >
-          <AddRemedyComponent 
-          //@ts-ignore
-          saveFunc={save} formFunc={formFunc} form={form}/>
+          <AddRemedyComponent
+            //@ts-ignore
+            saveFunc={save}
+            formFunc={formFunc}
+            form={form}
+          />
         </div>
       )}
     </div>
