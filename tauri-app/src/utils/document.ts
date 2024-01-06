@@ -73,6 +73,56 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
   return records
 }
 
+async function createDocumentRecord(agent: Agent, { name, file, condition }: { name: string | undefined, file: File, condition: string }) {
+  const blobRecord = await createBlobRecord(agent, file)
+  if (!blobRecord) return false
+
+  const record = await createRecord(
+    agent,
+    {
+      name: name ?? file.name,
+      encodingFormat: file.type,
+      size: file.size,
+      url: blobRecord.id,
+      condition,
+      dateCreated: new Date().toISOString(),
+      dateModified: new Date().toISOString()
+    },
+    {
+      schema: DocumentProtocol.types.document.schema,
+      protocolPath: "document",
+      dataFormat: DocumentProtocol.types.document.dataFormats[0],
+      published: DocumentProtocol.published,
+    })
+
+  if (!record) {
+    console.error("Failed to create document record")
+    return false
+  }
+
+  return record
+}
+
+async function createBlobRecord(agent: Agent, file: File) {
+  const record = await createRecord(
+    agent,
+    new Blob([file], { type: file.type }),
+    {
+      schema: DocumentProtocol.types.blob.schema,
+      protocolPath: "blob",
+      dataFormat: file.type as DataFormat<"blob">,
+      published: DocumentProtocol.published,
+    }
+  )
+
+  if (!record) {
+    console.error("Failed to create blob record")
+    return false
+  }
+
+  return record
+}
+
 async function fetchDocumentRecord(agent: Agent, filter: FilterObj) {
   const records = await fetchRecords(agent, {
     ...filter,
@@ -183,64 +233,71 @@ async function updateBlobRecord(agent: Agent, idOrRecord: string | Web5Record, f
   return record
 }
 
-async function createDocumentRecord(agent: Agent, { name, file, condition }: { name: string | undefined, file: File, condition: string }) {
-  const blobRecord = await createBlobRecord(agent, file)
-  if (!blobRecord) return false
+async function deleteDocumentRecord(agent: Agent, id: string): Promise<boolean>;
+async function deleteDocumentRecord(agent: Agent, record: Web5Record): Promise<boolean>;
 
-  const record = await createRecord(
-    agent,
-    {
-      name: name ?? file.name,
-      encodingFormat: file.type,
-      size: file.size,
-      url: blobRecord.id,
-      condition,
-      dateCreated: new Date().toISOString(),
-      dateModified: new Date().toISOString()
-    },
-    {
-      schema: DocumentProtocol.types.document.schema,
-      protocolPath: "document",
-      dataFormat: DocumentProtocol.types.document.dataFormats[0],
-      published: DocumentProtocol.published,
-    })
+async function deleteDocumentRecord(agent: Agent, idOrRecord: string | Web5Record): Promise<boolean> {
+  let record: Web5Record
 
-  if (!record) {
-    console.error("Failed to create document record")
+  if (typeof idOrRecord === "string") {
+    const fetchedRecord = await fetchDocumentRecord(agent, { recordId: idOrRecord })
+
+    if (!fetchedRecord) return false
+
+    record = fetchedRecord
+  }
+  else {
+    record = idOrRecord
+  }
+
+  const document: DocumentProtocolRecord.Document = await record.data.json()
+
+  const hasDeletedBlobRecord = await deleteBlobRecord(agent, document.url)
+  if (!hasDeletedBlobRecord) return false
+
+  const { status } = await agent.web5.dwn.records.delete({
+    message: {
+      recordId: record.id
+    }
+  })
+  if (status.code !== 202) {
+    console.log("Failed to delete record:", status)
     return false
   }
 
-  return record
+  return true
 }
 
-async function createBlobRecord(agent: Agent, file: File) {
-  const record = await createRecord(
-    agent,
-    new Blob([file], { type: file.type }),
-    {
-      schema: DocumentProtocol.types.blob.schema,
-      protocolPath: "blob",
-      dataFormat: file.type as DataFormat<"blob">,
-      published: DocumentProtocol.published,
-    }
-  )
+async function deleteBlobRecord(agent: Agent, id: string): Promise<boolean>;
+async function deleteBlobRecord(agent: Agent, record: Web5Record): Promise<boolean>;
 
-  if (!record) {
-    console.error("Failed to create blob record")
+async function deleteBlobRecord(agent: Agent, idOrRecord: string | Web5Record): Promise<boolean> {
+  const record = typeof idOrRecord === "string" ? await fetchBlobRecord(agent, idOrRecord) : idOrRecord
+  if (!record) return false
+
+  const { status } = await agent.web5.dwn.records.delete({
+    message: {
+      recordId: record.id
+    }
+  })
+  if (status.code !== 202) {
+    console.log("Failed to delete blob record:", status)
     return false
   }
 
-  return record
+  return true
 }
 
 const DocumentUtils = {
-  fetchDocumentRecord,
-  fetchDocumentRecords,
-  updateDocumentRecord,
   createDocumentRecord,
   createBlobRecord,
-  updateBlobRecord,
+  fetchDocumentRecord,
+  fetchDocumentRecords,
   fetchBlobRecord,
+  updateDocumentRecord,
+  updateBlobRecord,
+  deleteDocumentRecord,
+  deleteBlobRecord
 }
 
 export default DocumentUtils

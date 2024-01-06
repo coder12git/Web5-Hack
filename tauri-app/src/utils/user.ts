@@ -74,6 +74,7 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
 type CreatePayload = {
   firstName: string
   lastName: string
+  description: string
   profilePicture: File,
 }
 async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
@@ -131,6 +132,7 @@ async function fetchUserDetailsRecords(agent: Agent) {
 type UpdatePayload = Partial<{
   firstName: string
   lastName: string
+  description: string
   profilePicture: File
 }>
 
@@ -138,7 +140,7 @@ async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Re
   let record: Web5Record
 
   if (typeof idOrRecord === "string") {
-    const fetchedRecord = await fetchUserDetailsRecord(agent, { recordId: idOrRecord })
+    const fetchedRecord = await fetchUserDetailsRecord(agent)
 
     if (!fetchedRecord) return false
 
@@ -177,19 +179,8 @@ async function deleteUserDetailsRecord(agent: Agent) {
 
   const profile: UserDetailsProtocolRecord.Details = await record.data.json()
 
-  const profilePictureRecord = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureUrl)
-  if (!profilePictureRecord) return false
-
-  const { status: profileDeleteStatus } = await agent.web5.dwn.records.delete({
-    message: {
-      recordId: profilePictureRecord.id
-    }
-  })
-
-  if (profileDeleteStatus.code !== 202) {
-    console.log("Failed to delete profile picture record:", profileDeleteStatus)
-    return false
-  }
+  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureUrl)
+  if (!hasDeletedProfilePictureRecord) return false
 
   const { status } = await agent.web5.dwn.records.delete({
     message: {
@@ -202,7 +193,7 @@ async function deleteUserDetailsRecord(agent: Agent) {
     return false
   }
 
-  return record
+  return true
 }
 
 const UserDetailsUtils = {
