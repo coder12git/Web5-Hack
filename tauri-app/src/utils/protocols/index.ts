@@ -4,6 +4,6 @@ import UserDetailsProtocol from "./user"
 
 export const protocols = [
   DocumentProtocol,
-  UserDetailsProtocol
-  // ConditionsProtocol,
+  UserDetailsProtocol,
+  ConditionsProtocol,
 ]

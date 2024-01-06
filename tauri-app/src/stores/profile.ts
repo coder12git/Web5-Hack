@@ -28,8 +28,12 @@ export const useProfile = create(
     state: {
       profile: null,
       isSignedIn: false
-    } as State
+    } as State,
+    showAuthModal: false
   }, (set, get) => ({
+    setShowAuthModal: (showAuthModal: boolean) => {
+      set({ showAuthModal })
+    },
     signOut: () => {
       if (get().state.isSignedIn) {
         set({
@@ -45,7 +49,6 @@ export const useProfile = create(
       if (!profileRecord) return false
 
       const profile: UserDetailsProtocolRecord.Details = await profileRecord.data.json()
-      console.log(profile)
 
       const profilePicture = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureUrl)
       let profilePictureUrl = ""

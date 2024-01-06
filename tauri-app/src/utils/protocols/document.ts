@@ -29,8 +29,7 @@ const DocumentProtocol = {
           can: "read"
         },
         {
-          who: "author",
-          of: "document",
+          who: "anyone",
           can: "write"
         }
       ]
@@ -42,8 +41,7 @@ const DocumentProtocol = {
           can: "read"
         },
         {
-          who: "author",
-          of: "blob",
+          who: "anyone",
           can: "write"
         }
       ]

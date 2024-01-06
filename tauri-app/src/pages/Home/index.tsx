@@ -1,33 +1,11 @@
 import "./index.css";
-import { useState } from "react";
-import { usePulseGlobalStore } from "../../stores/pulseGlobalStore.ts";
-
-interface FileProp {
-  file: File | null | undefined;
-}
-
-const FileUploader: FC = () => {
-  const [file, setFile] = useState<FileProp>({ file: null });
-
-  return (
-    <div className={!file?.file ? "form-container" : "form-container-active"}>
-      <h3>Profile Picture</h3>
-      <br />
-      <input
-        onChange={(e) => {
-          setFile({ file: e?.target?.files?.[0] });
-        }}
-        type="file"
-        accept=".jpg,.png,.jpeg"
-      />
-    </div>
-  );
-};
+import { useProfile } from "@/stores/profile";
+import SignUpForm from "./SignUpForm";
+import AuthGuard from "@/components/Auth/Guard";
 
 export default function HomePage() {
-  const isAuthBtnClicked = usePulseGlobalStore(
-    (state) => state.isAuthBtnClicked,
-  );
+  const showAuthModal = useProfile(state => state.showAuthModal);
+
   return (
     <>
       <div className="main_container">
@@ -241,28 +219,12 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {isAuthBtnClicked && (
-          <div class="data-container">
-            <div className="auth-form">
-              <FileUploader />
-              <input type="text" placeholder="Firstname" />
-              <input type="text" placeholder="Lastname" />
-
-              <textarea placeholder="Let's know about you?"></textarea>
-              <input
-                type="text"
-                placeholder="(Optional)got any conditions,let's find you a buddy"
-              />
-              <button
-                style={{ width: "100%", marginRight: "0" }}
-                className={false ? "filled-btn" : "not-filled-btn"}
-              >
-                Fill Form To Proceed
-              </button>
-            </div>
-          </div>
+        {showAuthModal && (
+          <AuthGuard>
+            <SignUpForm />
+          </AuthGuard>
         )}
-      </div>
+      </div >
     </>
   );
 }
