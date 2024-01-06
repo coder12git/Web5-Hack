@@ -11,6 +11,10 @@
   --color-black: #000;
   --color-slate: #e2e8f0;
   --color-orange: #f97316;
+  --color-light-green: #4ade80;
+  --color-light-blue: #7dd3fc;
+  --color-light-grey: #f8fafc;
+  --color-grey: #d1d5db;
   --padding-desktop: 40px 65px;
   --padding-mobile: 40px 25px;
 }
