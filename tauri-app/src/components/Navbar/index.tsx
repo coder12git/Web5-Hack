@@ -1,8 +1,12 @@
 import AccountGuard from "../Auth/Account/Guard";
 import "./index.css";
 import { NavLink } from "react-router-dom";
+import { usePulseGlobalStore } from "../../stores/pulseGlobalStore.ts";
 
 const index = () => {
+  const toggleIsAuthBtnClicked = usePulseGlobalStore(
+    (store) => store.toggleIsAuthBtnClicked,
+  );
   return (
     <div className="main_navbar_container">
       <div className="logo_container">
@@ -44,17 +48,17 @@ const index = () => {
           </div>
         </NavLink>
       </div>
-      <AccountGuard fallback={
-        <div className="auth_container">
-          <h3>Join us!</h3>
-          <i className="fa fa-user"></i>
-        </div>
-      }>
+      {/*  <AccountGuard fallback={*/}
+      <div className="auth_container" onClick={() => toggleIsAuthBtnClicked()}>
+        <h3>Join us!</h3>
+        <i className="fa fa-user"></i>
+      </div>
+      {/*}>}
         <div className="auth_container">
           <h3>Profile</h3>
           <i className="fa fa-user"></i>
         </div>
-      </AccountGuard>
+      </AccountGuard>*/}
     </div>
   );
 };

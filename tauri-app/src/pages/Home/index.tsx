@@ -1,6 +1,33 @@
 import "./index.css";
+import { useState } from "react";
+import { usePulseGlobalStore } from "../../stores/pulseGlobalStore.ts";
+
+interface FileProp {
+  file: File | null | undefined;
+}
+
+const FileUploader: FC = () => {
+  const [file, setFile] = useState<FileProp>({ file: null });
+
+  return (
+    <div className={!file?.file ? "form-container" : "form-container-active"}>
+      <h3>Profile Picture</h3>
+      <br />
+      <input
+        onChange={(e) => {
+          setFile({ file: e?.target?.files?.[0] });
+        }}
+        type="file"
+        accept=".jpg,.png,.jpeg"
+      />
+    </div>
+  );
+};
 
 export default function HomePage() {
+  const isAuthBtnClicked = usePulseGlobalStore(
+    (state) => state.isAuthBtnClicked,
+  );
   return (
     <>
       <div className="main_container">
@@ -9,18 +36,17 @@ export default function HomePage() {
             <b id="header">
               Hi welcome to,
               <b>
-                 pulse<span>Pal</span>
+                pulse<span>Pal</span>
               </b>
             </b>
             <h1>Stay up & running while connected</h1>
             <p>
-            Welcome to PulsePal, your health guardian in WEB5.
-            Safely store medical records with decentralized identifiers 
-            and web nodes, ensuring data security. Connect with similar conditions,
-            share home remedies with a rating system, and access specialized 
-            doctors based on your location. PulsePal – where advanced 
-            technology meets user-friendly design for your secure, 
-            connected health journey.
+              Welcome to PulsePal, your health guardian in WEB5. Safely store
+              medical records with decentralized identifiers and web nodes,
+              ensuring data security. Connect with similar conditions, share
+              home remedies with a rating system, and access specialized doctors
+              based on your location. PulsePal – where advanced technology meets
+              user-friendly design for your secure, connected health journey.
             </p>
             <button className="gs_btn">
               Get Started! <i className="fa fa-fire"></i>
@@ -42,9 +68,9 @@ export default function HomePage() {
               <i className="fab fa-hive"></i>
               <h2>WEB5</h2>
               <p>
-                PulsePal utililizes WEB5 to
-                ensure the immutability of user data stored making it a breeze
-                to safely store medical data and records.
+                PulsePal utililizes WEB5 to ensure the immutability of user data
+                stored making it a breeze to safely store medical data and
+                records.
               </p>
             </div>
             <div className="tech">
@@ -177,44 +203,65 @@ export default function HomePage() {
               <i className="fa-solid fa-lock"></i>
               <h2>Secure Storage</h2>
               <p>
-              Medical records are stored with the utmost 
-              security using WEB5, guaranteeing data integrity 
-              and user control over their personal health information.
+                Medical records are stored with the utmost security using WEB5,
+                guaranteeing data integrity and user control over their personal
+                health information.
               </p>
             </div>
             <div className="tech">
               <i className="fa fa-users"></i>
               <h2>Find Your Tribe</h2>
               <p>
-              Our platform goes beyond conventional networking 
-              by employing a sophisticated algorithm to match users 
-              based on their medical records. PulsePal becomes a virtual 
-              community where individuals can share experiences, insights, 
-              and support each other on their health journeys.
+                Our platform goes beyond conventional networking by employing a
+                sophisticated algorithm to match users based on their medical
+                records. PulsePal becomes a virtual community where individuals
+                can share experiences, insights, and support each other on their
+                health journeys.
               </p>
             </div>
             <div className="tech">
               <i className="fa fa-medkit"></i>
               <h2>Home Remedies</h2>
               <p>
-              PulsePal empowers users to contribute and 
-              share simple yet effective home remedies. A 
-              user-driven rating system ensures the most beneficial remedies rise to the top, 
-              creating a community-driven repository of wellness solutions.
+                PulsePal empowers users to contribute and share simple yet
+                effective home remedies. A user-driven rating system ensures the
+                most beneficial remedies rise to the top, creating a
+                community-driven repository of wellness solutions.
               </p>
             </div>
             <div className="tech">
               <i className="fas fa-user-md"></i>
               <h2>Find Specialist</h2>
               <p>
-              Wherever you are, PulsePal provides a seamless experience by 
-              recommending specialized doctors in your nearby areas based 
-              on your current location, 
-              enhancing accessibility to healthcare professionals.
+                Wherever you are, PulsePal provides a seamless experience by
+                recommending specialized doctors in your nearby areas based on
+                your current location, enhancing accessibility to healthcare
+                professionals.
               </p>
             </div>
           </div>
         </div>
+        {isAuthBtnClicked && (
+          <div class="data-container">
+            <div className="auth-form">
+              <FileUploader />
+              <input type="text" placeholder="Firstname" />
+              <input type="text" placeholder="Lastname" />
+
+              <textarea placeholder="Let's know about you?"></textarea>
+              <input
+                type="text"
+                placeholder="(Optional)got any conditions,let's find you a buddy"
+              />
+              <button
+                style={{ width: "100%", marginRight: "0" }}
+                className={false ? "filled-btn" : "not-filled-btn"}
+              >
+                Fill Form To Proceed
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
