@@ -61,6 +61,7 @@ const index: FC = ({saveFunc, formFunc, form}) => {
         <textarea placeholder="Let's know your remedy" required={true}
         onChange={(e) => formFunc({ ...form, description: e.target.value })}
         />
+        <br/>
         <input type="text" placeholder="Created By" required={true}
         onChange={(e) => formFunc({ ...form, created_by: e.target.value })}
         />

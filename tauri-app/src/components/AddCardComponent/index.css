@@ -23,7 +23,8 @@
   flex-direction: column;
   padding: 10px;
   overflow-y: scroll;
-  min-height: 300px;
+  overflow-x: hidden;
+  max-height: 300px;
 }
 
 .input-form::-webkit-scrollbar {

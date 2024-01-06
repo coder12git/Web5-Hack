@@ -17,6 +17,7 @@ const UserDetailsProtocol = {
       $actions: [
         {
           who: "author",
+          of: "details",
           can: "read"
         },
         {
@@ -33,6 +34,7 @@ export namespace Record {
     firstName: string
     lastName: string
     profilePictureUrl: string
+    dateCreated: string
   }
 }
 
