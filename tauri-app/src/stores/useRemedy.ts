@@ -9,6 +9,7 @@ export type Remedy = {
   name: string;
   description: string;
   created_by: string;
+  useUrl: string;
   encodingFormat: string;
   size: string;
   url: string;

@@ -57,7 +57,7 @@ const Remedy: FunctionComponent = () => {
       if (file)
         url = URL.createObjectURL(file)
         console.log(url);
-
+        doc.data.useUrl=url
       docsWithImageUrls.push({
         document: doc,
         url
