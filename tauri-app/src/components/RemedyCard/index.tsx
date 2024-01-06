@@ -60,7 +60,7 @@ const index = ({
   // @ts-ignore
   description,
   // @ts-ignore
-  created_by,
+  created_by, url,
   // @ts-ignore
   rating,
   // @ts-ignore
@@ -70,7 +70,7 @@ const index = ({
     <div className="remedy-card">
       <div
         style={{
-          background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5)),url(/pg.jpg)`,
+          background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5)),url(${url})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}

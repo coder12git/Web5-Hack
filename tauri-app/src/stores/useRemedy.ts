@@ -9,7 +9,6 @@ export type Remedy = {
   name: string;
   description: string;
   created_by: string;
-  rating: string;
   encodingFormat: string;
   size: string;
   url: string;
@@ -56,7 +55,7 @@ export function useRemedies(web5: Web5) {
     setRemedies(remedies);
   }
 
-  async function createRemedy({ name, description, file, created_by, rating }: { name: string | undefined ; description: string | undefined; file: File; created_by: string | undefined; rating: string | undefined }): Promise<false | RemedyDocument> {
+  async function createRemedy({ name, description, file, created_by }: { name: string | undefined ; description: string | undefined; file: File; created_by: string | undefined}): Promise<false | RemedyDocument> {
     
     const { record: uploadedFileResponse } = await web5.dwn.records.create({
       data: new Blob([file], { type: file.type }),
@@ -71,7 +70,6 @@ export function useRemedies(web5: Web5) {
         name: name,
         description: description,
         created_by: created_by,
-        rating: rating,
         encodingFormat: file.type,
         size: file.size.toString(),
         url: uploadedFileResponse?.id,
@@ -100,12 +98,11 @@ export function useRemedies(web5: Web5) {
     return remedy;
   }
 
-  async function updateRemedy(remedy: RemedyDocument, { name, description, created_by, rating }: { name?: string; description?: string, created_by?: string; rating?: string }) {
+  async function updateRemedy(remedy: RemedyDocument, { name, description, created_by}: { name?: string; description?: string, created_by?: string }) {
     const data = {
       name: name ?? remedy.data.name,
       description: description ?? remedy.data.description,
       created_by: created_by ?? remedy.data.created_by,
-      rating: rating ?? remedy.data.rating
       // Add more properties as needed
     };
 

@@ -6,17 +6,28 @@ interface FileProp {
   file: File | null | undefined;
 }
 
-const FileUploader: FC = () => {
+//@ts-ignore
+const FileUploader: FC = ({formFunc, form}) => {
   const [file, setFile] = useState<FileProp>({ file: null });
 
   return (
     <div className={!file?.file ? "form-container" : "form-container-active"}>
       <input
         onChange={(e) => {
+          const fileList = e.target.files
+              if (!fileList) return
+
+              const file = fileList[0]
+              if (!file) return
           setFile({ file: e?.target?.files?.[0] });
+          formFunc({
+            ...form,
+            doc: file
+          })
         }}
         type="file"
         accept=".jpg,.png,.jpeg"
+        
       />
     </div>
   );
@@ -47,15 +58,16 @@ const index: FC = ({saveFunc, formFunc, form}) => {
   return (
     <div className="main-add-card-container">
       <h1>Create New Remedy</h1>
-      {/* <FileUploader /> */}
       <form 
       onSubmit={(e) => {
       e.preventDefault()
       saveFunc()
       }}
       >
+             {/* @ts-ignore */}
+      <FileUploader formFunc={formFunc} form={form}/>
       <div className="input-form">
-        <input type="text" placeholder="Title" required={true}
+        <input type="text" placeholder="Title" required
         onChange={(e) => formFunc({ ...form, name: e.target.value })}
         />
         <textarea placeholder="Let's know your remedy" required={true}
@@ -64,9 +76,6 @@ const index: FC = ({saveFunc, formFunc, form}) => {
         <br/>
         <input type="text" placeholder="Created By" required={true}
         onChange={(e) => formFunc({ ...form, created_by: e.target.value })}
-        />
-        <input type="text" placeholder="Rating in numbers" required={true}
-        onChange={(e) => formFunc({ ...form, rating: e.target.value })}
         />
         <button type="submit">Save</button>
       </div>
