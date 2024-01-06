@@ -16,8 +16,7 @@ const index = ({
   // @ts-ignore
   description,
   // @ts-ignore
-  created_by,
-  url,
+  created_by, useUrl,
   // @ts-ignore
   rating,
   // @ts-ignore
@@ -27,7 +26,7 @@ const index = ({
     <div className="remedy-card">
       <div
         style={{
-          background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5)),url(${url})`,
+          background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5)),url(${useUrl})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
@@ -45,7 +44,7 @@ const index = ({
         </div>
       </div>
       <div className="remedy-info-container">
-        <p>{description.substring(0, 150) + "..."}</p>
+        <p>{description.substring(0,50) + "..."}</p>
         <button onClick={() => isClicked[1](isClicked[0])}>View Remedy</button>
       </div>
     </div>
