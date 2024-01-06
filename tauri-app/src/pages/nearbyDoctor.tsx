@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import useWeb5Store from "@/stores/useWeb5Store";
+import Contact from '@/pages/Contact';
 
 const accessToken = "AIzaSyCfqty5e_JIBd-2RrdbB0W5ykv3D4noYNg"
 
@@ -76,8 +77,12 @@ const Doctors: FunctionComponent = () => {
   //       }
   // },[web5])
   return (
-    <div>
-      <button onClick={findHospitals}>Find Hospitals</button>
+    <>
+      <Contact 
+      //@ts-ignore
+      find={findHospitals} places={places}
+      />
+      {/* <button onClick={findHospitals}>Find Hospitals</button>
       {places?.map((place) => (
         <div key={place.place_id}>
           <ul>
@@ -86,8 +91,8 @@ const Doctors: FunctionComponent = () => {
             <li>Rating: {place.rating}</li>
           </ul>
         </div>
-      ))}
-    </div>
+      ))} */}
+    </>
   )
 }
 

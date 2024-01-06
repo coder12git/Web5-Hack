@@ -4,11 +4,10 @@ import React, { FC, useState } from "react";
 interface RowProp {
   name: String;
   address: String;
-  city: String;
-  distance: string;
+  rating: String
 }
 
-const RowComponent: FC<RowProp> = ({ name, address, city, distance }) => {
+const RowComponent: FC<RowProp> = ({ name, address, rating}) => {
   return (
     <div className="row-container">
       <div>
@@ -18,41 +17,39 @@ const RowComponent: FC<RowProp> = ({ name, address, city, distance }) => {
         <h3>{address}</h3>
       </div>
       <div>
-        <h3>{city}</h3>
-      </div>
-      <div>
-        <h3>{distance}</h3>
+        <h3>{rating}</h3>
       </div>
     </div>
   );
 };
 
-const index: FC = () => {
-  const [fetchedLocations, setFetchedLocations] = useState<RowProp[]>([
-    {
-      name: "Hopsital",
-      address: "No 4 Dress road",
-      city: "Kumkubaga",
-      distance: '47',
-    },
-    {
-      name: "Hopsital",
-      address: "No 4 Dress road",
-      city: "Kumkubaga",
-      distance: '47',
-    },
-    {
-      name: "Hopsital",
-      address: "No 4 Dress road",
-      city: "Kumkubaga",
-      distance: '47',
-    },
-  ]);
+//@ts-ignore
+const index: FC = ({find, places}) => {
+  // const [fetchedLocations, setFetchedLocations] = useState<RowProp[]>([
+  //   {
+  //     name: "Hopsital",
+  //     address: "No 4 Dress road",
+  //     city: "Kumkubaga",
+  //     distance: '47',
+  //   },
+  //   {
+  //     name: "Hopsital",
+  //     address: "No 4 Dress road",
+  //     city: "Kumkubaga",
+  //     distance: '47',
+  //   },
+  //   {
+  //     name: "Hopsital",
+  //     address: "No 4 Dress road",
+  //     city: "Kumkubaga",
+  //     distance: '47',
+  //   },
+  // ]);
   return (
     <div className="locate-container">
       <div className="header">
         <h1>Find Hospitals/Drs. Near You.</h1>
-        <button>locate</button>
+        <button className="find" onClick={find}>Find</button>
       </div>
       <div className="locations-container">
         <div className="row-container">
@@ -63,20 +60,17 @@ const index: FC = () => {
             <h3>Address</h3>
           </div>
           <div>
-            <h3>City</h3>
-          </div>
-          <div>
-            <h3>Distance</h3>
+            <h3>Ratings</h3>
           </div>
         </div>
 
-        {fetchedLocations.map((location) => {
+        {/* @ts-ignore */}
+        {places?.map((place) => {
           return (
             <RowComponent
-              name={location.name}
-              address={location.address}
-              city={location.city}
-              distance={location.distance}
+              name={place.name}
+              address={place.vicinity}
+              rating={place.rating}
             />
           );
         })}

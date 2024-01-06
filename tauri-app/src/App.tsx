@@ -1,7 +1,6 @@
 import { RouterProvider, createHashRouter } from "react-router-dom";
 import useWeb5Store from "./stores/useWeb5Store";
 import { useEffect } from "react";
-import Home from "./pages/home";
 import Connect from "./pages/connect";
 import Remedy from "./pages/remedy";
 import MedicPage from "./pages/medic";
@@ -10,7 +9,6 @@ import HomePage from "./pages/Home";
 import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Chat from "./pages/Chat/";
-import Contact from "./pages/Contact/";
 
 const router = createHashRouter([
   {
@@ -20,11 +18,10 @@ const router = createHashRouter([
       { path: "/", element: <HomePage /> },
       { path: "/records", element: <Records /> },
       { path: "/connect", element: <Connect /> },
-      { path: "/remedy", element: <Remedy /> },
+      { path: "/remedies", element: <Remedy /> },
       { path: "/medic", element: <MedicPage /> },
-      { path: "/nearbyDoctors", element: <Doctors /> },
+      { path: "/contact", element: <Doctors /> },
       { path: "/chat", element: <Chat /> },
-      { path: "/contact", element: <Contact /> },
     ],
   },
 ]);
