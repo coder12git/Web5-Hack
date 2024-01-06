@@ -1,49 +1,6 @@
 import "./index.css";
 
 // @ts-ignore
-const Rating = ({ rating }) => {
-  return (
-    <div className="ratings-container">
-      {rating >= 1 && rating < 2 && (
-        <div>
-          <i className="fa-solid fa-star"></i>
-        </div>
-      )}
-      {rating >= 2 && rating < 3 && (
-        <div>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-        </div>
-      )}
-      {rating >= 3 && rating < 4 && (
-        <div>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-        </div>
-      )}
-      {rating >= 4 && rating < 5 && (
-        <div>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-        </div>
-      )}
-      {rating >= 5 && (
-        <div>
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-
-          <i className="fa-solid fa-star"></i>
-          <i className="fa-solid fa-star"></i>
-        </div>
-      )}
-    </div>
-  );
-};
-
-// @ts-ignore
 const createRatingsIcons = (ratings) => {
   const icons = [];
   for (let n = 0; n < ratings; n++) {

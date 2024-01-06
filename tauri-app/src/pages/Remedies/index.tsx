@@ -13,7 +13,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
       description:
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat...",
       desc: "Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis.",
-      url: "/pg.jpg",
+      useUrl: "/pg.jpg",
       rating: '1.5',
       created_by: "draky",
       // steps: [
@@ -31,7 +31,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
       name: "Aloe Vera Eczema Fix",
       description:
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat...",
-      url: "/pg.jpg",
+      useUrl: "/pg.jpg",
       rating: '4',
       created_by: "dave",
     },
@@ -39,7 +39,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
       name: "Asthma Breathing Exercises",
       description:
         "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat...",
-      url: "/pg.jpg",
+      useUrl: "/pg.jpg",
       rating: '3.5',
       created_by: "nikki",
     },
@@ -105,7 +105,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
             <RemedyCard
               name={remedy.name}
               description={remedy.description}
-              url={remedy.url}
+              useUrl={remedy.useUrl}
               created_by={remedy.created_by}
               isClicked={[remedy, remedyClicked]}
               rating={remedy.rating}
@@ -121,7 +121,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
             <RemedyCard
               name={document.data.name}
               description={document.data.description}
-              url={url}
+              useUrl={document.data.useUrl}
               created_by={document.data.created_by}
               //@ts-ignore
               isClicked={[document.data, remedyClicked]}
@@ -137,7 +137,7 @@ const index = ({save, formFunc, form, remediesData, docsWithImageUrls}) => {
               className="rimg-container"
               style={{
                 // @ts-ignore
-                background: `url(/pg.jpg)`,
+                background: `url(${activeRemedy.useUrl})`,
                 backgroundPosition: "center",
                 backgroundSize: "cover",
               }}
