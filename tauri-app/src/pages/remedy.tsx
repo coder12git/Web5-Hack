@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
 import { useRemedies } from "@/stores/useRemedy";
+import Remedies from './Remedies';
 
 const cards = [
   {
@@ -32,10 +33,12 @@ const Remedy: FunctionComponent = () => {
   const [form, setForm] = useState<{
     name: string
     description: string
+    created_by: string
     doc: File
   }>({
     name: "",
     description: "",
+    created_by: "",
     doc: new File([], "")
   })
 
@@ -69,7 +72,7 @@ const Remedy: FunctionComponent = () => {
   }, [remedies])
 
   const saveRemedy = async () => {
-    const res = await createRemedy({ name: form.name ? form.name : undefined, description: form.description ? form.description : undefined , file: form.doc})
+    const res = await createRemedy({ name: form.name ? form.name : undefined, description: form.description ? form.description : undefined , file: form.doc, created_by: form.created_by})
 
     console.log(res)
     if (res) {
@@ -81,17 +84,15 @@ const Remedy: FunctionComponent = () => {
     }
   }
 
-  // const deleteItem = async (id) => {
-  //   deleteRemedy(id);
-  // }
-  
-
   console.log(remedies)
-  console.log(docsWithImageUrls)
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <form onSubmit={(e) => {
+    <>
+      <Remedies 
+      //@ts-ignore
+      save={saveRemedy} formFunc={setForm} form={form} remediesData={remedies} docsWithImageUrls={docsWithImageUrls}
+      />
+      {/* <form onSubmit={(e) => {
         e.preventDefault()
         saveRemedy()
       }}>
@@ -107,7 +108,36 @@ const Remedy: FunctionComponent = () => {
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             placeholder="Description" />
         </div>
-        
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setForm({ ...form, created_by: e.target.value })}
+            placeholder="Created" />
+        </div>
+        <div>
+          <input
+            type="text"
+            onChange={(e) => setForm({ ...form, rating: e.target.value })}
+            placeholder="rating" />
+        </div>
+        <div>
+          <input
+            type="file"
+            required
+            onChange={(e) => {
+              const fileList = e.target.files
+              if (!fileList) return
+
+              const file = fileList[0]
+              if (!file) return
+
+              setForm({
+                ...form,
+                doc: file
+              })
+            }}
+            placeholder="Document" />
+        </div>
         <button type="submit">
           Create Remedy
         </button>
@@ -124,18 +154,21 @@ const Remedy: FunctionComponent = () => {
       </div>
       <div className="container mx-auto my-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {remedies.map((document) => (
+                {docsWithImageUrls.map(({document, url}) => (
                     <div key={document.id} className="bg-white p-4 rounded-md shadow-md">
                         <h5 className="text-xl font-semibold mb-2">{document.data.name}</h5>
                         <p className="text-gray-600">{document.data.description}</p>
+                        <p className="text-gray-600">{document.data.created_by}</p>
+                        <p className="text-gray-600">{document.data.rating}</p>
+                        <img src={url} alt="txt"/>
                         <button onClick={()=> deleteRemedy(document)}>Delete</button>
                         <br/>
                         <button onClick={()=> updateRemedy(document, {name:'hjk', description: 'hhhj'})}>Edit</button>
                     </div>
                 ))}
             </div>
-      </div>
-    </div>
+      </div> */}
+    </>
   )
 }
 

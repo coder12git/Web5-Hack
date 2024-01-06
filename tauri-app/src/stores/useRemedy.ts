@@ -8,6 +8,7 @@ export type Remedy = {
   "@type": "Collection";
   name: string;
   description: string;
+  created_by: string;
   encodingFormat: string;
   size: string;
   url: string;
@@ -54,7 +55,7 @@ export function useRemedies(web5: Web5) {
     setRemedies(remedies);
   }
 
-  async function createRemedy({ name, description, file }: { name: string | undefined ; description: string | undefined; file: File }): Promise<false | RemedyDocument> {
+  async function createRemedy({ name, description, file, created_by }: { name: string | undefined ; description: string | undefined; file: File; created_by: string | undefined}): Promise<false | RemedyDocument> {
     
     const { record: uploadedFileResponse } = await web5.dwn.records.create({
       data: new Blob([file], { type: file.type }),
@@ -68,6 +69,7 @@ export function useRemedies(web5: Web5) {
         "@type": "Collection",
         name: name,
         description: description,
+        created_by: created_by,
         encodingFormat: file.type,
         size: file.size.toString(),
         url: uploadedFileResponse?.id,
@@ -96,10 +98,11 @@ export function useRemedies(web5: Web5) {
     return remedy;
   }
 
-  async function updateRemedy(remedy: RemedyDocument, { name, description }: { name?: string; description?: string }) {
+  async function updateRemedy(remedy: RemedyDocument, { name, description, created_by}: { name?: string; description?: string, created_by?: string }) {
     const data = {
       name: name ?? remedy.data.name,
       description: description ?? remedy.data.description,
+      created_by: created_by ?? remedy.data.created_by,
       // Add more properties as needed
     };
 

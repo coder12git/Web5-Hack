@@ -53,16 +53,14 @@ const createRatingsIcons = (ratings) => {
   return icons;
 };
 
-
 const index = ({
   // @ts-ignore
-  title,
+  name,
   // @ts-ignore
-  coverIMGUrl,
-  // @ts-ignore
-  desc_snippet,
+  description,
   // @ts-ignore
   created_by,
+  url,
   // @ts-ignore
   rating,
   // @ts-ignore
@@ -72,13 +70,13 @@ const index = ({
     <div className="remedy-card">
       <div
         style={{
-          background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5)),url(${coverIMGUrl})`,
+          background: `linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.5)),url(${url})`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
         className="remedy-card-image-container"
       >
-        <h1>{title}</h1>
+        <h1>{name}</h1>
         <p>--by {created_by}</p>
         <div className="ratings-container">
           <h3>
@@ -90,7 +88,7 @@ const index = ({
         </div>
       </div>
       <div className="remedy-info-container">
-        <p>{desc_snippet.slice(0,150)+"..."}</p>
+        <p>{desc_snippet.slice(0, 150) + "..."}</p>
         <button onClick={() => isClicked[1](isClicked[0])}>View Remedy</button>
       </div>
     </div>
