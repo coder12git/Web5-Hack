@@ -1,7 +1,6 @@
 import ProfileGuard from "../Auth/Profile/Guard";
 import "./index.css";
 import { NavLink } from "react-router-dom";
-import { usePulseGlobalStore } from "../../stores/pulseGlobalStore.ts";
 import useWeb5Store from "@/stores/useWeb5Store.ts";
 import { Agent } from "../Auth/types";
 import { useProfile } from "@/stores/profile.ts";
@@ -16,8 +15,10 @@ const index = () => {
 
   const beginAuthFlow = async (agent: Agent) => {
     const signedIn = await signIn(agent)
-    if (!signedIn)
+    if (!signedIn) {
+      console.log("displaying auth modal")
       setShowAuthModal(true)
+    }
   }
 
   return (
@@ -74,9 +75,9 @@ const index = () => {
         }
       >
         <button
-        type="button"
-        className="auth_container"
-        onClick={() => web5 && did ? signOut() : null}>
+          type="button"
+          className="auth_container"
+          onClick={() => web5 && did ? signOut() : null}>
           <h3>Sign out</h3>
           <i className="fa fa-sign-out"></i>
         </button>

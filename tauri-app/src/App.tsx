@@ -1,4 +1,4 @@
-import { RouterProvider, createHashRouter } from "react-router-dom";
+import { RouterProvider, createHashRouter, Navigate } from "react-router-dom";
 import useWeb5Store from "./stores/useWeb5Store";
 import { useEffect } from "react";
 import Connect from "./pages/connect";
@@ -17,7 +17,13 @@ const router = createHashRouter([
     element: <SharedLayout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/records", element: <ProfileGuard><Records /></ProfileGuard> },
+      {
+        path: "/records", element: (
+          <ProfileGuard fallback={<Navigate to="/" />}>
+            <Records />
+          </ProfileGuard>
+        )
+      },
       { path: "/connect", element: <Connect /> },
       { path: "/remedies", element: <Remedy /> },
       { path: "/contact", element: <Doctors /> },

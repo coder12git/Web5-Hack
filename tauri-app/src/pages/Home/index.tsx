@@ -221,6 +221,7 @@ export default function HomePage() {
         </div>
         {showAuthModal && (
           <AuthGuard>
+            {console.log("fjekkfle") || null}
             <SignUpForm />
           </AuthGuard>
         )}

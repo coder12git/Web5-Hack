@@ -32,6 +32,8 @@ export const fetchRecords = async (agent: Agent, profile: ProfileState) => {
 
     const otherFiles = otherFilesProcessing as Exclude<typeof otherFilesProcessing[number], false>[]
 
+    console.log(data.profileId)
+    console.log(data.profileId === profile.id)
     if (data.profileId === profile.id) {
       profileRecords.push({
         title: data.title,
