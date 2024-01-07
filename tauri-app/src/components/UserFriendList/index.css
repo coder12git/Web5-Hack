@@ -1,0 +1,78 @@
+.friend-tag-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+  border-radius: 8px;
+  transition: 0.3s;
+  padding: 8px;
+  transition: 0.3s;
+}
+
+.friend-tag-container h1 {
+  font-size: 18px;
+  font-family: "Roboto";
+}
+
+.friend-tag-container img {
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+.friends-list-container hr {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.friends-list-container hr:last-child {
+  display: none;
+}
+
+.friend-tag-container:hover {
+  background: var(--color-slate-accent);
+}
+
+.friends-list-container {
+  box-shadow: var(--box-shadow-black);
+  padding: 8px 14px;
+  border-radius: 15px;
+  margin-top: 30px;
+  width: 300px;
+}
+
+.friends-list-header {
+  background: var(--color-blue);
+  padding: 4px 12px;
+  border-radius: 10px;
+  color: var(--color-white);
+  font-family: "Roboto";
+  text-align: center;
+}
+
+.friend-main-list-container {
+  overflow-y: scroll;
+  height: 300px;
+  margin: 15px 0;
+  padding: 5px;
+}
+
+.friend-main-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.friend-main-list-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+}
+
+.friend-main-list-container::-webkit-scrollbar-thumb {
+  width: 2px;
+  background: var(--color-blue);
+  border-radius: 5px;
+  margin: 0 3px;
+}
+
+.friends-list-header b {
+  font-family: "Pacifico";
+}
