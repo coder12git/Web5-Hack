@@ -1,6 +1,6 @@
-# Pulsepal-MVP  🌟
+# PulsePal-MVP  🌟
 
-## Welcome to the Pulsepal MVP repository
+## Welcome to the PulsePal MVP repository
 
 <p align="center" width="100%">
   <img src="https://github.com/coder12git/Web5-Hack/assets/58889001/7c2389e3-4897-40e7-920f-7d21fc437264" alt="site"/>
@@ -137,7 +137,7 @@ This Project was created by these awesome dedicated members
 </p>
 
 
-> ## What's next for Pulsepal
+> ## What's next for PulsePal
 
 - Personalized Health Insights: "Our plan includes integrating AI-driven analytics to offer personalized health insights, assessing individual health risks and predicting future health trends based on users' medical records."
 
@@ -166,4 +166,4 @@ Before adding a pull request, please note:
 
 All **`suggestions`** are welcome!
 #
-> ##### README Created by `Enebeli Emmanuel` for Pulsepal
+> ##### README Created by `Enebeli Emmanuel` for PulsePal
