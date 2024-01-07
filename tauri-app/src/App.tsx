@@ -10,6 +10,7 @@ import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Chat from "./pages/Chat/";
 import { Toaster } from "react-hot-toast";
+import ProfileGuard from "./components/Auth/Profile/Guard";
 
 const router = createHashRouter([
   {
@@ -17,7 +18,7 @@ const router = createHashRouter([
     element: <SharedLayout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/records", element: <Records /> },
+      { path: "/records", element: <ProfileGuard><Records /></ProfileGuard> },
       { path: "/connect", element: <Connect /> },
       { path: "/remedies", element: <Remedy /> },
       { path: "/medic", element: <MedicPage /> },

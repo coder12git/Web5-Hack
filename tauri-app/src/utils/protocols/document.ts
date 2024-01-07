@@ -62,7 +62,7 @@ export namespace Record {
   export type Document = {
     title: string
     file: FileMeta,
-    description?: string
+    description: string
     otherFiles: FileMeta[],
     profileId: string
     condition: string

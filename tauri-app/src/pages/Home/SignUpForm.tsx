@@ -78,12 +78,11 @@ export default function SignUpForm() {
     const hasSignedUpSuccessfully = await signUp(agent, payload)
 
     if (!hasSignedUpSuccessfully) {
-      toast.success('Sorry an error occurred!')
-
+      toast.error('Sorry an error occurred!')
       return
     }
 
-    if (!await signIn()) return 
+    if (!await signIn(agent)) return 
 
     toast.success('Successfully signed up!')
 
