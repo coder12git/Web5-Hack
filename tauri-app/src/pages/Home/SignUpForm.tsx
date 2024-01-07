@@ -7,7 +7,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast";
-import { CreatePayload } from "@/utils/user";
+import { SignUpPayload } from "@/stores/profile";
 
 const formSchema = z.object({
   firstName: z.string().min(1),
@@ -68,7 +68,7 @@ export default function SignUpForm() {
     }
   })
 
-  const createProfile = async (agent: Agent, payload: CreatePayload) => {
+  const createProfile = async (agent: Agent, payload: SignUpPayload) => {
     const hasSignedUpSuccessfully = await signUp(agent, payload)
 
     if (!hasSignedUpSuccessfully) {

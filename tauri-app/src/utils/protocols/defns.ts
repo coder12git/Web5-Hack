@@ -1,1 +1,1 @@
-export const url = "https://dschema.org/v0.0.8" as const
+export const url = "https://dschema.org/v0.0.10a" as const

@@ -33,6 +33,7 @@ export namespace Record {
     firstName: string
     lastName: string
     profilePictureId: string
+    conditions: string[]
     description: string
     dateCreated: string
   }
