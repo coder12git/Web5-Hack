@@ -6,7 +6,7 @@ import UserDetailsUtils, { CreatePayload } from "@/utils/user";
 import BlobUtils from "@/utils/blob";
 import { Record as Web5Record } from "@web5/api/browser"
 
-export type SignUpPayload = Omit<CreatePayload, "conditions">
+export type SignUpPayload = Omit<CreatePayload, "conditions" | "did">
 
 export type ProfileState = Omit<UserDetailsProtocolRecord.Details, "profilePictureId"> &
 {
@@ -102,7 +102,7 @@ export const useProfile = create(
       return updatedRecord
     },
     signUp: async (agent: Agent, payload: SignUpPayload) => {
-      const profile = await UserDetailsUtils.createUserDetailsRecord(agent, { ...payload, conditions: [] })
+      const profile = await UserDetailsUtils.createUserDetailsRecord(agent, { ...payload, conditions: [], did: agent.did })
       if (!profile) return false
 
       return profile

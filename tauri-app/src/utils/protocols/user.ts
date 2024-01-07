@@ -30,6 +30,7 @@ const UserDetailsProtocol = {
 
 export namespace Record {
   export type Details = {
+    did: string
     firstName: string
     lastName: string
     profilePictureId: string
