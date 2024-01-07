@@ -220,7 +220,6 @@ export default function HomePage() {
           </div>
         </div>
         {showAuthModal && <SignUpForm />}
-      </div>
-    </>
+   </>
   );
 }

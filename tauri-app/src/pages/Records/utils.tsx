@@ -2,6 +2,7 @@ import { Agent } from "@/components/Auth/types"
 import { ProfileState } from "@/stores/profile"
 import { Record as DocumentRecord } from "@/utils/protocols/document";
 import DocumentUtils from "@/utils/document"
+import BlobUtils from "@/utils/blob";
 
 export const fetchRecords = async (agent: Agent, profile: ProfileState) => {
   const records = await DocumentUtils.fetchDocumentRecords(agent)
@@ -10,12 +11,12 @@ export const fetchRecords = async (agent: Agent, profile: ProfileState) => {
   const profileRecords = []
   for (const record of records) {
     const data: DocumentRecord.Document = await record.data.json()
-    const fileRecord = await DocumentUtils.fetchBlobRecord(agent, data.file.id)
+    const fileRecord = await BlobUtils.fetchBlobRecord(agent, { recordId: data.file.id })
     if (!fileRecord) continue
     const fileData = await fileRecord.data.blob()
 
     const otherFilesProcessing = await Promise.all(data.otherFiles.map(async file => {
-      const record = await DocumentUtils.fetchBlobRecord(agent, file.id)
+      const record = await BlobUtils.fetchBlobRecord(agent, { recordId: file.id })
       if (!record) return false
 
       const data = await record.data.blob()

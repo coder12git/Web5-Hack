@@ -1,7 +1,7 @@
 import { Web5, Record as Web5Record } from "@web5/api/browser"
 import UserDetailsProtocol, { Record as UserDetailsProtocolRecord, did as UserDetailsProtocolDID } from "./protocols/user";
-import DocumentUtils from "./document";
 import _ from "lodash";
+import BlobUtils from "./blob";
 
 type Agent = {
   web5: Web5
@@ -42,18 +42,22 @@ async function createRecord<T extends Type>(agent: Agent, data: UserDetailsProto
     return false
   }
 
-  const { status: syncStatus } = await record.send(UserDetailsProtocolDID)
+  const { status: protocolDwnSyncStatus } = await record.send(UserDetailsProtocolDID)
+  if (protocolDwnSyncStatus.code !== 202) {
+    console.log("Failed to sync record with protocol remote DWN:", protocolDwnSyncStatus)
+  }
 
-  if (syncStatus.code !== 202) {
-    console.log("Failed to sync record with remote DWN:", syncStatus)
+  const { status: remoteDwnSyncStatus } = await record.send(agent.did)
+  if (remoteDwnSyncStatus.code !== 202) {
+    console.log("Failed to sync record with remote DWN:", remoteDwnSyncStatus)
   }
 
   return record
 }
 
-async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<T>, from?: string) {
+async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<T>, remote?: boolean) {
   const { records, status } = await agent.web5.dwn.records.query({
-    from,
+    from: remote ? UserDetailsProtocolDID : undefined,
     message: {
       filter: {
         ...filter,
@@ -82,7 +86,7 @@ async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
     return false
   }
 
-  const blobRecord = await DocumentUtils.createBlobRecord(agent, payload.profilePicture)
+  const blobRecord = await BlobUtils.createBlobRecord(agent, { file: payload.profilePicture }, true)
   if (!blobRecord) return false
 
   const { profilePicture, ...restPayload } = payload
@@ -109,13 +113,13 @@ async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
   return record
 }
 
-async function fetchUserDetailsRecord(agent: Agent) {
+async function fetchUserDetailsRecord(agent: Agent, remote?: boolean) {
   const records = await fetchRecords(agent, {
     schema: UserDetailsProtocol.types.details.schema,
     protocolPath: "details",
-  })
+  }, remote)
 
-  if (!records || !records[0]) return false
+  if (!records) return false
 
   return records[0]
 }
@@ -124,7 +128,7 @@ async function fetchUserDetailsRecords(agent: Agent) {
   return fetchRecords(agent, {
     protocolPath: "details",
     schema: UserDetailsProtocol.types.details.schema,
-  })
+  }, true)
 }
 
 type UpdatePayload = Partial<
@@ -151,16 +155,16 @@ async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Re
   const data: UserDetailsProtocolRecord.Details = await record.data.json()
   const { profilePicture, ...restPayload } = payload
 
-  let url = data.profilePictureId
+  let profilePictureId = data.profilePictureId
   if (profilePicture) {
-    const blobRecord = await DocumentUtils.updateBlobRecord(agent, url, profilePicture)
+    const blobRecord = await BlobUtils.updateBlobRecord(agent, profilePictureId, { file: profilePicture })
     if (!blobRecord) return false
 
-    url = blobRecord.id
+    profilePictureId = blobRecord.id
   }
 
   const { status } = await record.update({
-    data: _.merge(data, Object.assign(restPayload, { url }))
+    data: _.merge(data, Object.assign(restPayload, { profilePictureId }))
   })
 
   if (status.code !== 202) {
@@ -177,7 +181,7 @@ async function deleteUserDetailsRecord(agent: Agent) {
 
   const profile: UserDetailsProtocolRecord.Details = await record.data.json()
 
-  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureId)
+  const hasDeletedProfilePictureRecord = await BlobUtils.deleteBlobRecord(agent, profile.profilePictureId)
   if (!hasDeletedProfilePictureRecord) return false
 
   const { status } = await agent.web5.dwn.records.delete({
@@ -196,6 +200,7 @@ async function deleteUserDetailsRecord(agent: Agent) {
 
 const UserDetailsUtils = {
   fetchUserDetailsRecord,
+  fetchUserDetailsRecords,
   updateUserDetailsRecord,
   createUserDetailsRecord,
   deleteUserDetailsRecord

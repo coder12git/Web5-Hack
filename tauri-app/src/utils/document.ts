@@ -1,5 +1,6 @@
 import { Web5, Record as Web5Record } from "@web5/api/browser"
-import DocumentProtocol, { Record as DocumentProtocolRecord, did as DocumentProtocolDID } from "./protocols/document";
+import DocumentProtocol, { Record } from "./protocols/document";
+import BlobUtils from "./blob";
 import _ from "lodash";
 
 type Agent = {
@@ -27,10 +28,7 @@ type FullMessageObj<T extends Type> = {
   published: typeof DocumentProtocol["published"]
 }
 
-async function createRecord(agent: Agent, data: DocumentProtocolRecord.Document, message: FullMessageObj<"document">): Promise<false | Web5Record>;
-async function createRecord(agent: Agent, data: DocumentProtocolRecord.File, message: FullMessageObj<"blob">): Promise<false | Web5Record>;
-
-async function createRecord<T extends Type>(agent: Agent, data: DocumentProtocolRecord.Document | DocumentProtocolRecord.File, message: FullMessageObj<T>) {
+async function createRecord<T extends Type>(agent: Agent, data: Record.Document, message: FullMessageObj<T>) {
   const { record, status } = await agent.web5.dwn.records.create({
     data,
     message: Object.assign({
@@ -44,7 +42,8 @@ async function createRecord<T extends Type>(agent: Agent, data: DocumentProtocol
     return false
   }
 
-  const { status: syncStatus } = await record.send(DocumentProtocolDID)
+  // const { status: syncStatus } = await record.send(DocumentProtocolDID)
+  const { status: syncStatus } = await record.send(agent.did)
 
   if (syncStatus.code !== 202) {
     console.log("Failed to sync record with remote DWN:", syncStatus)
@@ -55,7 +54,7 @@ async function createRecord<T extends Type>(agent: Agent, data: DocumentProtocol
 
 async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<T>) {
   const { records, status } = await agent.web5.dwn.records.query({
-    from: DocumentProtocolDID,
+    // from: DocumentProtocolDID,
     message: {
       filter: {
         ...filter,
@@ -73,7 +72,7 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
   return records
 }
 
-type CreatePayload = Omit<DocumentProtocolRecord.Document, "title" | "file" | "otherFiles" | "dateCreated" | "dateModified"> &
+type CreatePayload = Omit<Record.Document, "title" | "file" | "otherFiles" | "dateCreated" | "dateModified"> &
 {
   title?: string
   file: File,
@@ -83,7 +82,7 @@ type CreatePayload = Omit<DocumentProtocolRecord.Document, "title" | "file" | "o
 async function createDocumentRecord(agent: Agent, payload: CreatePayload) {
   const { file, otherFiles, ...restPayload } = payload
 
-  const blobRecord = await createBlobRecord(agent, file)
+  const blobRecord = await BlobUtils.createBlobRecord(agent, { file })
   if (!blobRecord) return false
 
   const fileData = {
@@ -95,7 +94,7 @@ async function createDocumentRecord(agent: Agent, payload: CreatePayload) {
 
   const otherFilesData = []
   for (const file of otherFiles) {
-    const blobRecord = await createBlobRecord(agent, file)
+    const blobRecord = await BlobUtils.createBlobRecord(agent, { file })
     if (!blobRecord) return false
 
     otherFilesData.push({
@@ -130,26 +129,6 @@ async function createDocumentRecord(agent: Agent, payload: CreatePayload) {
   return record
 }
 
-async function createBlobRecord(agent: Agent, file: File) {
-  const record = await createRecord(
-    agent,
-    new Blob([file], { type: file.type }),
-    {
-      schema: DocumentProtocol.types.blob.schema,
-      protocolPath: "blob",
-      dataFormat: file.type as DataFormat<"blob">,
-      published: DocumentProtocol.published,
-    }
-  )
-
-  if (!record) {
-    console.error("Failed to create blob record")
-    return false
-  }
-
-  return record
-}
-
 async function fetchDocumentRecord(agent: Agent, filter: FilterObj) {
   const records = await fetchRecords(agent, {
     ...filter,
@@ -169,26 +148,8 @@ async function fetchDocumentRecords(agent: Agent) {
   })
 }
 
-async function fetchBlobRecord(agent: Agent, id: string) {
-  const records = await fetchRecords(agent, {
-    protocolPath: "blob",
-    schema: DocumentProtocol.types.blob.schema,
-  })
-
-  if (!records || !records[0]) return false
-
-  return records[0]
-}
-
-async function fetchBlobRecords(agent: Agent) {
-  return fetchRecords(agent, {
-    protocolPath: "blob",
-    schema: DocumentProtocol.types.blob.schema,
-  })
-}
-
 type UpdatePayload = Partial<
-  Omit<DocumentProtocolRecord.Document, "file" | "otherFiles" | "dateCreated" | "dateModified"> &
+  Omit<Record.Document, "file" | "otherFiles" | "dateCreated" | "dateModified"> &
   {
     file: File,
     otherFiles: File[]
@@ -212,12 +173,12 @@ async function updateDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
     record = idOrRecord
   }
 
-  const data: DocumentProtocolRecord.Document = await record.data.json()
+  const data: Record.Document = await record.data.json()
   const { file, otherFiles, ...restPayload } = payload
 
   const fileData = data.file
   if (file) {
-    const blobRecord = await updateBlobRecord(agent, data.file.id, file)
+    const blobRecord = await BlobUtils.updateBlobRecord(agent, data.file.id, { file })
     if (!blobRecord) return false
 
     fileData.id = blobRecord.id
@@ -232,7 +193,7 @@ async function updateDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
       const file = otherFiles[i]
       const otherFile = otherFilesData[i]
 
-      const blobRecord = await updateBlobRecord(agent, otherFile.id, file)
+      const blobRecord = await BlobUtils.updateBlobRecord(agent, otherFile.id, { file })
       if (!blobRecord) return false
 
       otherFile.id = blobRecord.id
@@ -248,7 +209,7 @@ async function updateDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
       for (let i = otherFilesData.length; i < otherFiles.length; i++) {
         const file = otherFiles[i]
 
-        const blobRecord = await createBlobRecord(agent, file)
+        const blobRecord = await BlobUtils.createBlobRecord(agent, { file })
         if (!blobRecord) return false
 
         otherFilesData.push({
@@ -273,33 +234,6 @@ async function updateDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
   return record
 }
 
-async function updateBlobRecord(agent: Agent, id: string, file: File): Promise<false | Web5Record>;
-async function updateBlobRecord(agent: Agent, record: Web5Record, file: File): Promise<false | Web5Record>;
-
-async function updateBlobRecord(agent: Agent, idOrRecord: string | Web5Record, file: File): Promise<false | Web5Record> {
-  let record: Web5Record
-
-  if (typeof idOrRecord === "string") {
-    const blobRecord = await fetchBlobRecord(agent, idOrRecord)
-    if (!blobRecord) return false
-    record = blobRecord
-  }
-  else {
-    record = idOrRecord
-  }
-
-  const { status } = await record.update({
-    data: new Blob([file], { type: file.type })
-  })
-
-  if (status.code !== 202) {
-    console.log("Failed to sync blob record update with remote DWN:", status)
-    return false
-  }
-
-  return record
-}
-
 async function deleteDocumentRecord(agent: Agent, id: string): Promise<boolean>;
 async function deleteDocumentRecord(agent: Agent, record: Web5Record): Promise<boolean>;
 
@@ -317,13 +251,13 @@ async function deleteDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
     record = idOrRecord
   }
 
-  const document: DocumentProtocolRecord.Document = await record.data.json()
+  const document: Record.Document = await record.data.json()
 
-  const hasDeletedBlobRecord = await deleteBlobRecord(agent, document.file.id)
+  const hasDeletedBlobRecord = await BlobUtils.deleteBlobRecord(agent, document.file.id)
   if (!hasDeletedBlobRecord) return false
 
   for (const otherFile of document.otherFiles) {
-    await deleteBlobRecord(agent, otherFile.id)
+    await BlobUtils.deleteBlobRecord(agent, otherFile.id)
   }
 
   const { status } = await agent.web5.dwn.records.delete({
@@ -339,36 +273,12 @@ async function deleteDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
   return true
 }
 
-async function deleteBlobRecord(agent: Agent, id: string): Promise<boolean>;
-async function deleteBlobRecord(agent: Agent, record: Web5Record): Promise<boolean>;
-
-async function deleteBlobRecord(agent: Agent, idOrRecord: string | Web5Record): Promise<boolean> {
-  const record = typeof idOrRecord === "string" ? await fetchBlobRecord(agent, idOrRecord) : idOrRecord
-  if (!record) return false
-
-  const { status } = await agent.web5.dwn.records.delete({
-    message: {
-      recordId: record.id
-    }
-  })
-  if (status.code !== 202) {
-    console.log("Failed to delete blob record:", status)
-    return false
-  }
-
-  return true
-}
-
 const DocumentUtils = {
   createDocumentRecord,
-  createBlobRecord,
   fetchDocumentRecord,
   fetchDocumentRecords,
-  fetchBlobRecord,
   updateDocumentRecord,
-  updateBlobRecord,
   deleteDocumentRecord,
-  deleteBlobRecord
 }
 
 export default DocumentUtils

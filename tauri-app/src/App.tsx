@@ -26,7 +26,13 @@ const router = createHashRouter([
         ),
       },
       { path: "/connect", element: <Connect /> },
-      { path: "/remedies", element: <Remedy /> },
+      {
+        path: "/remedies", element: (
+          <ProfileGuard fallback={<Navigate to="/" />}>
+            <Remedy />
+          </ProfileGuard>
+        )
+      },
       { path: "/contact", element: <Doctors /> },
       { path: "/chat", element: <Chat /> },
     ],

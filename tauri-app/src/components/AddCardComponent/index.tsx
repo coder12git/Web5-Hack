@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast";
 import DocumentUtils from "@/utils/document";
 import { Agent } from "../Auth/types";
-import { ProfileState } from "@/stores/profile";
+import { ProfileState, useProfile } from "@/stores/profile";
 
 const possibleConditions = [
   "Cancer",
@@ -64,7 +64,8 @@ const formSchema = z.object({
   otherFiles: z.array(z.instanceof(File))
 })
 
-const index: FunctionComponent<{profile: ProfileState, agent: Agent, onClose: () => void}> = ({ profile, agent, onClose }) => {
+const index: FunctionComponent<{ agent: Agent, onClose: () => void }> = ({ agent, onClose }) => {
+  const { profile, addCondition } = useProfile(store => ({ profile: store.state.profile!, addCondition: store.addCondition }))
   const [numFileUploaders, setNumFileUploaders] = useState(0)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -85,6 +86,10 @@ const index: FunctionComponent<{profile: ProfileState, agent: Agent, onClose: ()
       toast.error('Sorry an error occurred!')
       return
     }
+
+    const hasAddedCondition = await addCondition(agent, data.condition)
+    if (hasAddedCondition)
+      console.log("Added condition to profile")
 
     toast.success('Successfully created record!')
 
