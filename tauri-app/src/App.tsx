@@ -18,11 +18,12 @@ const router = createHashRouter([
     children: [
       { path: "/", element: <HomePage /> },
       {
-        path: "/records", element: (
+        path: "/records",
+        element: (
           <ProfileGuard fallback={<Navigate to="/" />}>
             <Records />
           </ProfileGuard>
-        )
+        ),
       },
       { path: "/connect", element: <Connect /> },
       { path: "/remedies", element: <Remedy /> },

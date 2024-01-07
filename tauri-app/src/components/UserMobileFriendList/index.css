@@ -1,0 +1,69 @@
+.m-friend-tag-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 15px;
+  padding: 2px 8px;
+  transition: 0.3s;
+  margin: 15px 20px;
+  background: var(--color-slate-accent);
+  box-shadow: var(--box-shadow-black);
+  height: 80px;
+}
+
+.m-friend-tag-container h1 {
+  font-size: 15px;
+  font-family: "Roboto";
+}
+
+.m-friend-tag-container img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.m-friend-tag-container span {
+  font-family: "Roboto";
+  background: var(--color-red);
+  border-radius: 3px;
+  padding: 2px 3px;
+  color: var(--color-white);
+  border: 2px solid var(--color-white);
+  border-radius: 8px;
+  font-size: 8px;
+  position: relative;
+  left: -15px;
+  top: -4px;
+  width: 40px;
+  height: 40px;
+}
+
+.m-friends-list-container hr {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.m-friends-list-container hr:last-child {
+  display: none;
+}
+
+.m-friends-list-container {
+  border-radius: 15px;
+}
+
+.m-friends-list-header {
+  padding: var(--padding-mobile);
+  font-family: "Roboto";
+  text-align: left;
+}
+
+.m-friend-main-list-container {
+  overflow: hidden;
+}
+
+.m-header {
+  background: var(--color-blue);
+  color: var(--color-white);
+  font-family: "Roboto";
+  padding: 8px 25px;
+}

@@ -4,7 +4,7 @@ import SignUpForm from "./SignUpForm";
 import AuthGuard from "@/components/Auth/Guard";
 
 export default function HomePage() {
-  const showAuthModal = useProfile(state => state.showAuthModal);
+  const showAuthModal = useProfile((state) => state.showAuthModal);
 
   return (
     <>
@@ -219,13 +219,8 @@ export default function HomePage() {
             </div>
           </div>
         </div>
-        {showAuthModal && (
-          <AuthGuard>
-            {console.log("fjekkfle") || null}
-            <SignUpForm />
-          </AuthGuard>
-        )}
-      </div >
+        {showAuthModal && <SignUpForm />}
+      </div>
     </>
   );
 }

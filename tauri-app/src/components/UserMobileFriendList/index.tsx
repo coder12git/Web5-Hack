@@ -6,6 +6,12 @@ interface FriendTagProp {
   friendName: string;
   isFriendOnline: boolean;
   newChat?: number;
+  setHideChat: () => void;
+  hideChat: boolean;
+}
+
+interface UserFriendListProp {
+  friendList: FriendTagProp[];
 }
 
 const FriendTag: FC<FriendTagProp> = ({
@@ -13,14 +19,21 @@ const FriendTag: FC<FriendTagProp> = ({
   friendName,
   isFriendOnline,
   newChat,
+  setHideChat,
+  hideChat,
 }) => {
   return (
-    <div className="friend-tag-container">
+    <div
+      onClick={() => setHideChat(!hideChat)}
+      className="m-friend-tag-container"
+    >
       <div>
         <img src={friendProfileImg} />
         {newChat && <span>{newChat}</span>}
       </div>
-      <h1>{friendName.slice(0, 6) + "..."}</h1>
+      <div>
+        <h1>{friendName.slice(0, 20) + "..."}</h1>
+      </div>
       <i
         className="fas fa-wifi"
         style={{
@@ -33,19 +46,17 @@ const FriendTag: FC<FriendTagProp> = ({
   );
 };
 
-interface UserFriendListProp {
-  friendList: FriendTagProp[];
-  setHideChat: () => void;
-  hideChat: boolean;
-}
-
-const index: FC = ({ friendList, setHideChat, hideChat }) => {
+const index: FC<UserFriendListProp> = ({
+  friendList,
+  hideChat,
+  setHideChat,
+}) => {
   return (
-    <div className="friends-list-container">
-      <div className="friends-list-header">
+    <div className="m-friends-list-container">
+      <div className="m-header">
         <h1>Friends</h1>
       </div>
-      <div className="friend-main-list-container">
+      <div className="m-friend-main-list-container">
         {friendList.map((friend) => {
           return (
             <>
@@ -54,8 +65,9 @@ const index: FC = ({ friendList, setHideChat, hideChat }) => {
                 isFriendOnline={friend.isOnline}
                 friendName={friend.username}
                 newChat={friend.newChat}
+                setHideChat={setHideChat}
+                hideChat={hideChat}
               />
-              <hr />
             </>
           );
         })}
