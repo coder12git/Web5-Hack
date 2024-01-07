@@ -81,7 +81,6 @@ export default function SignUpForm() {
 
     toast.success('Successfully signed up!')
 
-
     setShowAuthModal(false)
   }
 
