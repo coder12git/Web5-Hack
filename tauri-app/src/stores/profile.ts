@@ -3,7 +3,7 @@ import { combine } from "zustand/middleware";
 import { Record as UserDetailsProtocolRecord } from "@/utils/protocols/user";
 import { Agent } from "@/components/Auth/types";
 import UserDetailsUtils, { CreatePayload } from "@/utils/user";
-import DocumentUtils from "@/utils/document";
+import BlobUtils from "@/utils/blob";
 
 export type ProfileState = {
   id: string
@@ -52,12 +52,10 @@ export const useProfile = create(
 
       const profile: UserDetailsProtocolRecord.Details = await profileRecord.data.json()
 
-      const profilePicture = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureId)
+      const profilePicture = await BlobUtils.fetchBlobRecord(agent, { recordId: profile.profilePictureId })
       let profilePictureUrl = ""
       if (profilePicture) {
-        console.log('fetching blob:', profilePicture.data)
         const profilePictureBlob = await profilePicture.data.blob()
-        console.log(profilePictureBlob)
         profilePictureUrl = URL.createObjectURL(profilePictureBlob)
       }
 

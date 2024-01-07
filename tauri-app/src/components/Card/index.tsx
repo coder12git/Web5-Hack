@@ -48,7 +48,7 @@ const index: FC<CardProp> = ({
         <h1>{title ? title : file_name}</h1>
       </div>
       <div className="info-container">
-        <p>{desc}</p>
+        <p>{desc.substring(0, 50)}</p>
         <div className="date-container">
           <i className="fas fa-save"></i>
           <span>{date}</span>

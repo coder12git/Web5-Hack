@@ -41,7 +41,6 @@ const FileUploader: FunctionComponent<{ onChange: (file: File | null) => void }>
 };
 
 export default function SignUpForm() {
-  console.log("kfjle")
   const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }));
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const { setShowAuthModal, signUp, signIn } = useProfile(
