@@ -10,31 +10,10 @@ const DocumentProtocol = {
       dataFormats: [
         "application/json"
       ]
-    },
-    blob: {
-      schema: `${protocol}/schema/blob.json`,
-      dataFormats: [
-        "image/png",
-        "image/jpeg",
-        "image/jpg",
-        "application/pdf"
-      ]
     }
   },
   structure: {
     document: {
-      $actions: [
-        {
-          who: "anyone",
-          can: "read"
-        },
-        {
-          who: "anyone",
-          can: "write"
-        }
-      ]
-    },
-    blob: {
       $actions: [
         {
           who: "anyone",
@@ -56,8 +35,6 @@ export namespace Record {
     type: string
     name: string
   }
-
-  export type File = Blob
 
   export type Document = {
     title: string
