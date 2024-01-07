@@ -32,7 +32,7 @@ export namespace Record {
   export type Details = {
     firstName: string
     lastName: string
-    profilePictureUrl: string
+    profilePictureId: string
     description: string
     dateCreated: string
   }
