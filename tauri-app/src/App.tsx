@@ -38,11 +38,10 @@ function App() {
 
   return (
     <>
-      <>{web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}</>
-      <Toaster
-        position="top-center"
-        reverseOrder={false}
-      />
+      <>
+        {web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}
+      </>
+      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }
