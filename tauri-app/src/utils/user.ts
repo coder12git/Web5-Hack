@@ -51,9 +51,9 @@ async function createRecord<T extends Type>(agent: Agent, data: UserDetailsProto
   return record
 }
 
-async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<T>) {
+async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<T>, from?: string) {
   const { records, status } = await agent.web5.dwn.records.query({
-    from: UserDetailsProtocolDID,
+    from,
     message: {
       filter: {
         ...filter,
@@ -71,12 +71,10 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
   return records
 }
 
-type CreatePayload = {
-  firstName: string
-  lastName: string
-  description: string
+export type CreatePayload = Omit<UserDetailsProtocolRecord.Details, "profilePictureId" | "dateCreated"> & {
   profilePicture: File,
 }
+
 async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
   const existingRecord = await fetchUserDetailsRecord(agent)
   if (existingRecord) {
@@ -93,7 +91,7 @@ async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
     agent,
     {
       ...restPayload,
-      profilePictureUrl: blobRecord.id,
+      profilePictureId: blobRecord.id,
       dateCreated: new Date().toISOString()
     },
     {
@@ -129,12 +127,12 @@ async function fetchUserDetailsRecords(agent: Agent) {
   })
 }
 
-type UpdatePayload = Partial<{
-  firstName: string
-  lastName: string
-  description: string
-  profilePicture: File
-}>
+type UpdatePayload = Partial<
+  Omit<UserDetailsProtocolRecord.Details, "profilePictureId"> &
+  {
+    profilePicture: File,
+  }
+>
 
 async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Record, payload: Partial<UpdatePayload>) {
   let record: Web5Record
@@ -153,7 +151,7 @@ async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Re
   const data: UserDetailsProtocolRecord.Details = await record.data.json()
   const { profilePicture, ...restPayload } = payload
 
-  let url = data.profilePictureUrl
+  let url = data.profilePictureId
   if (profilePicture) {
     const blobRecord = await DocumentUtils.updateBlobRecord(agent, url, profilePicture)
     if (!blobRecord) return false
@@ -179,7 +177,7 @@ async function deleteUserDetailsRecord(agent: Agent) {
 
   const profile: UserDetailsProtocolRecord.Details = await record.data.json()
 
-  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureUrl)
+  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureId)
   if (!hasDeletedProfilePictureRecord) return false
 
   const { status } = await agent.web5.dwn.records.delete({

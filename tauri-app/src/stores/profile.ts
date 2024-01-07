@@ -2,24 +2,26 @@ import { create } from "zustand"
 import { combine } from "zustand/middleware";
 import { Record as UserDetailsProtocolRecord } from "@/utils/protocols/user";
 import { Agent } from "@/components/Auth/types";
-import UserDetailsUtils from "@/utils/user";
+import UserDetailsUtils, { CreatePayload } from "@/utils/user";
 import DocumentUtils from "@/utils/document";
 
+export type ProfileState = {
+  id: string
+  // username: string
+  firstName: string,
+  lastName: string,
+  profilePictureUrl: string
+}
+
 type State = {
-  profile: {
-    firstName: string,
-    lastName: string,
-    profilePictureUrl: string
-  },
+  profile: ProfileState,
   isSignedIn: true
 } | {
   profile: null,
   isSignedIn: false
 }
 
-type Payload = {
-  firstName: string,
-  lastName: string,
+type Payload = Omit<UserDetailsProtocolRecord.Details, "dateCreated" | "profilePictureUrl"> & {
   profilePicture: File
 }
 
@@ -50,7 +52,7 @@ export const useProfile = create(
 
       const profile: UserDetailsProtocolRecord.Details = await profileRecord.data.json()
 
-      const profilePicture = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureUrl)
+      const profilePicture = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureId)
       let profilePictureUrl = ""
       if (profilePicture) {
         const profilePictureBlob = await profilePicture.data.blob()
@@ -61,6 +63,7 @@ export const useProfile = create(
         state: {
           isSignedIn: true,
           profile: {
+            id: profileRecord.id,
             firstName: profile.firstName,
             lastName: profile.lastName,
             profilePictureUrl
@@ -70,7 +73,7 @@ export const useProfile = create(
 
       return true
     },
-    signUp: async (agent: Agent, payload: Payload) => {
+    signUp: async (agent: Agent, payload: CreatePayload) => {
       const profile = await UserDetailsUtils.createUserDetailsRecord(agent, payload)
       if (!profile) return false
 

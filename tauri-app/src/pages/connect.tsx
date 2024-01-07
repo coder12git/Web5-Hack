@@ -74,7 +74,7 @@ function Connect() {
           {similarConditionDocuments.map((doc, index) => (
             <div key={index}>
               <div>
-                {doc.name}
+                {doc.title}
               </div>
               <div>
                 {doc.condition}

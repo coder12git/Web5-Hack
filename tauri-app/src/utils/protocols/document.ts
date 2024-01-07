@@ -50,17 +50,24 @@ const DocumentProtocol = {
 } as const
 
 export namespace Record {
+  type FileMeta = {
+    id: string
+    size: number
+    type: string
+    name: string
+  }
+
   export type File = Blob
 
   export type Document = {
-    name: string
-    encodingFormat: string
-    size: number
-    url: string
-    // profileUrl: string
+    title: string
+    file: FileMeta,
+    description: string
+    otherFiles: FileMeta[],
+    profileId: string
     condition: string
-    dateCreated?: string
-    dateModified?: string
+    dateCreated: string
+    dateModified: string
   };
 }
 

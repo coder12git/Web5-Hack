@@ -5,9 +5,9 @@ import { Agent } from "@/components/Auth/types";
 import { FunctionComponent, useRef, useState } from "react";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import { parse } from "path";
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast";
+import { CreatePayload } from "@/utils/user";
 
 const formSchema = z.object({
   firstName: z.string().min(1),
@@ -41,17 +41,12 @@ const FileUploader: FunctionComponent<{ onChange: (file: File | null) => void }>
 };
 
 export default function SignUpForm() {
+  console.log("kfjle")
   const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }));
   const submitBtnRef = useRef<HTMLButtonElement>(null);
   const { setShowAuthModal, signUp, signIn } = useProfile(
     (state) => ({ signUp: state.signUp, signIn: state.signIn, setShowAuthModal: state.setShowAuthModal }),
   );
-  // const [form, setForm] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   description: "",
-  //   profilePicture: new File([], ""),
-  // })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
@@ -74,23 +69,15 @@ export default function SignUpForm() {
     }
   })
 
-  type Payload = {
-    firstName: string
-    lastName: string
-    description: string
-    profilePicture: File
-  }
-
-  const createProfile = async (agent: Agent, payload: Payload) => {
+  const createProfile = async (agent: Agent, payload: CreatePayload) => {
     const hasSignedUpSuccessfully = await signUp(agent, payload)
 
     if (!hasSignedUpSuccessfully) {
-      toast.success('Sorry an error occurred!')
-
+      toast.error('Sorry an error occurred!')
       return
     }
 
-    if (!await signIn()) return 
+    if (!await signIn(agent)) return
 
     toast.success('Successfully signed up!')
 
