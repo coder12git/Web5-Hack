@@ -1,10 +1,11 @@
 .userprofile-container {
   box-shadow: var(--box-shadow-black);
-  width: 300px;
+  width: 200px;
   text-align: center;
   border-radius: 15px;
-  padding: 8px 12px;
+  padding: 8px 11px;
   position: relative;
+  padding-bottom: 12px;
 }
 
 .userprofile-info-container img {
