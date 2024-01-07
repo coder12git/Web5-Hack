@@ -14,48 +14,7 @@ const index = () => {
   const agent = useWeb5Store(state => ({ web5: state.web5!, did: state.did! }))
   const profile = useProfile(state => state.state.profile!)
 
-  const [cardsData, setCardsData] = useState<CardData[]>([
-    // {
-    //   title: "Diabetes Docs",
-    //   description: "documentation of test ran for diagonese of diabtets slated for type dissertion",
-    //   date: "1/2/24",
-    //   file_extension: "pdf",
-    //   file_name: "Diabetes_scan.pdf",
-    // },
-    // {
-    //   title: "Diabetes Docs",
-    //   description: "documentation of test ran for diagonese of diabtets slated for type dissertion",
-    //   date: "1/2/24",
-    //   file_extension: "pdf",
-    //   file_name: "Diabetes_scan.pdf",
-    //   other_files: [
-    //     { file_name: "cat scan", file_extension: "pdf", file_url: "some url" },
-    //     { file_name: "cat scan", file_extension: "pdf", file_url: "some url" },
-    //   ],
-    // },
-    // {
-    //   title: "Diabetes Docs",
-    //   description: "documentation of test ran for diagonese of diabtets slated for type dissertion",
-    //   date: "1/2/24",
-    //   file_extension: "docx",
-    //   file_name: "Diabetes_test.docx",
-    //   other_files: [
-    //     { file_name: "cat scan", file_extension: "pdf", file_url: "some url" },
-    //     { file_name: "cat scan", file_extension: "pdf", file_url: "some url" },
-    //   ],
-    // },
-    // {
-    //   desc: "documentation of test ran for diagonese of diabtets slated for type dissertion",
-    //   date: "1/2/24",
-    //   file_extension: "jpg",
-    //   file_name: "D_IMG1103.jpg",
-    //   file_1_url: "../../../public/pic.jpg",
-    //   other_files: [
-    //     { file_name: "cat scan", file_extension: "pdf", file_url: "some url" },
-    //     { file_name: "cat scan", file_extension: "pdf", file_url: "some url" },
-    //   ],
-    // },
-  ]);
+  const [cardsData, setCardsData] = useState<CardData[]>([]);
 
   useEffect(() => {
     refetchRecords()
