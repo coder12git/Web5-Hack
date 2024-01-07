@@ -273,6 +273,10 @@ export default function Home() {
     };
 
     return (
-      <div></div>
+      <div>
+      <h1>{myDid}</h1>
+      <input placeholder="Enter your message"/>
+      <button>Send Message</button>
+      </div>
     );
 }

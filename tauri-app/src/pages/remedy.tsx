@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useRef, useState } from "react";
 import useWeb5Store, { schemaOrgProtocolDefinition } from "@/stores/useWeb5Store";
 import { useRemedies } from "@/stores/useRemedy";
+import toast from "react-hot-toast";
 import Remedies from './Remedies';
 
 const cards = [
@@ -76,10 +77,10 @@ const Remedy: FunctionComponent = () => {
 
     console.log(res)
     if (res) {
-      alert(`Remedy record saved: ${res}`)
+      toast.success('Successfully created remedy!')
     }
     else {
-      alert("Failed to save record")
+      toast.error('Failed to create remedy!')
       console.error();
     }
   }
