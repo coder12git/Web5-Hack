@@ -15,7 +15,7 @@ const FriendTag: FC<FriendTagProp> = ({
   return (
     <div className="friend-tag-container">
       <img src={friendProfileImg} />
-      <h1>{friendName.slice(0, 60) + "..."}</h1>
+      <h1>{friendName.slice(0, 6) + "..."}</h1>
       <i
         className="fas fa-wifi"
         style={{
@@ -36,9 +36,7 @@ const index: FC = ({ friendList }) => {
   return (
     <div className="friends-list-container">
       <div className="friends-list-header">
-        <h1>
-          Friends <b>45</b>
-        </h1>
+        <h1>Friends</h1>
       </div>
       <div className="friend-main-list-container">
         {friendList.map((friend) => {

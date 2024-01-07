@@ -69,7 +69,7 @@ const index = () => {
             className="auth_container"
             onClick={() => web5 && did ? beginAuthFlow({ web5, did }) : null}
           >
-            <h3>Join us!</h3>
+            <h3>Connect Wallet</h3>
             <i className="fa fa-user"></i>
           </button>
         }

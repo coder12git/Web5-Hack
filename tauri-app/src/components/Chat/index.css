@@ -16,9 +16,8 @@
 }
 
 .chat-message-input-container input {
-  width: 80%;
-  height: 30px;
-  padding: 8px 12px;
+  width: 85%;
+  padding: 12px 8px;
   background: var(--color-slate-accent);
   border: none;
   border-radius: 25px;
@@ -37,15 +36,36 @@
   background: var(--color-blue);
   box-shadow: var(--box-shadow-blue);
   font-size: 20px;
+  outline: none;
 }
 
 .chats-container {
-  width: 95%;
+  width: 98%;
   background: var(--color-light-grey);
-  height: 90%;
+  height: 85%;
   padding: 12px;
-  border-radius: 15px;
+  border-radius: 15px 5px 5px 15px;
   margin: 0 auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 600px;
+}
+
+.chats-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.chats-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0 15px 15px 0;
+  transform: translateX(-4px);
+}
+
+.chats-container::-webkit-scrollbar-thumb {
+  width: 2px;
+  background: var(--color-blue);
+  border-radius: 5px;
+  margin: 0 3px;
 }
 
 .msg-container {
@@ -60,7 +80,7 @@
   padding: 4px 10px;
   border-radius: 8px 8px 8px 0px;
   margin-right: auto;
-  max-width: 300px;
+  max-width: 400px;
 }
 
 .msg-t {
@@ -70,5 +90,5 @@
   padding: 4px 10px;
   border-radius: 8px 8px 0px 8px;
   margin-left: auto;
-  max-width: 300px;
+  max-width: 400px;
 }
