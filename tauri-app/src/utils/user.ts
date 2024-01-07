@@ -93,7 +93,7 @@ async function createUserDetailsRecord(agent: Agent, payload: CreatePayload) {
     agent,
     {
       ...restPayload,
-      profilePictureUrl: blobRecord.id,
+      profilePictureId: blobRecord.id,
       dateCreated: new Date().toISOString()
     },
     {
@@ -153,7 +153,7 @@ async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Re
   const data: UserDetailsProtocolRecord.Details = await record.data.json()
   const { profilePicture, ...restPayload } = payload
 
-  let url = data.profilePictureUrl
+  let url = data.profilePictureId
   if (profilePicture) {
     const blobRecord = await DocumentUtils.updateBlobRecord(agent, url, profilePicture)
     if (!blobRecord) return false
@@ -179,7 +179,7 @@ async function deleteUserDetailsRecord(agent: Agent) {
 
   const profile: UserDetailsProtocolRecord.Details = await record.data.json()
 
-  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureUrl)
+  const hasDeletedProfilePictureRecord = await DocumentUtils.deleteBlobRecord(agent, profile.profilePictureId)
   if (!hasDeletedProfilePictureRecord) return false
 
   const { status } = await agent.web5.dwn.records.delete({
