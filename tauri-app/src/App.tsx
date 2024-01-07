@@ -3,7 +3,6 @@ import useWeb5Store from "./stores/useWeb5Store";
 import { useEffect } from "react";
 import Connect from "./pages/connect";
 import Remedy from "./pages/remedy";
-import MedicPage from "./pages/medic";
 import Doctors from "./pages/nearbyDoctor";
 import HomePage from "./pages/Home";
 import SharedLayout from "./pages/SharedLayout/";
@@ -21,7 +20,6 @@ const router = createHashRouter([
       { path: "/records", element: <ProfileGuard><Records /></ProfileGuard> },
       { path: "/connect", element: <Connect /> },
       { path: "/remedies", element: <Remedy /> },
-      { path: "/medic", element: <MedicPage /> },
       { path: "/contact", element: <Doctors /> },
       { path: "/chat", element: <Chat /> },
     ],

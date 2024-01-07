@@ -8,7 +8,7 @@ import DetailCardComponent from "../../components/DetailCardComponent";
 import Card from "../../components/Card";
 import { useProfile } from "@/stores/profile";
 import useWeb5Store from "@/stores/useWeb5Store";
-import { fetchRecords } from "./utils";
+import { CardData, fetchRecords } from "./utils";
 
 const index = () => {
   const agent = useWeb5Store(state => ({ web5: state.web5!, did: state.did! }))
@@ -93,7 +93,7 @@ const index = () => {
           }
           onClick={() => setIsAddCardActive(!isAddCardActive)}
         >
-          <i className="fa fa-plus"></i>
+          <i className="fa fa-plus" />
         </div>
       </div>
       <div className="cards-container">
