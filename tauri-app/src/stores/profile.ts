@@ -55,7 +55,9 @@ export const useProfile = create(
       const profilePicture = await DocumentUtils.fetchBlobRecord(agent, profile.profilePictureId)
       let profilePictureUrl = ""
       if (profilePicture) {
+        console.log('fetching blob:', profilePicture.data)
         const profilePictureBlob = await profilePicture.data.blob()
+        console.log(profilePictureBlob)
         profilePictureUrl = URL.createObjectURL(profilePictureBlob)
       }
 
@@ -77,7 +79,7 @@ export const useProfile = create(
       const profile = await UserDetailsUtils.createUserDetailsRecord(agent, payload)
       if (!profile) return false
 
-      return true
+      return profile
     }
   }))
 )
