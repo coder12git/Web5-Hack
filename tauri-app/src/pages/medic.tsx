@@ -39,7 +39,7 @@ const Page: FunctionComponent = () => {
         if (!fileRecord)
           continue
 
-        const file = new File([await fileRecord.data.blob()], data.name, { type: data.encodingFormat })
+        const file = new File([await fileRecord.data.blob()], data.title, { type: data.encodingFormat })
 
         docsWithUrl.push({
           record: docRecord,

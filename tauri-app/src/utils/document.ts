@@ -73,18 +73,45 @@ async function fetchRecords<T extends Type>(agent: Agent, filter: FullFilterObj<
   return records
 }
 
-async function createDocumentRecord(agent: Agent, { name, file, condition }: { name: string | undefined, file: File, condition: string }) {
+type CreatePayload = Omit<DocumentProtocolRecord.Document, "title" | "file" | "otherFiles" | "dateCreated" | "dateModified"> &
+{
+  title?: string
+  file: File,
+  otherFiles: File[]
+}
+
+async function createDocumentRecord(agent: Agent, payload: CreatePayload) {
+  const { file, otherFiles, ...restPayload } = payload
+
   const blobRecord = await createBlobRecord(agent, file)
   if (!blobRecord) return false
+
+  const fileData = {
+    id: blobRecord.id,
+    size: file.size,
+    type: file.type,
+    name: file.name,
+  }
+
+  const otherFilesData = []
+  for (const file of otherFiles) {
+    const blobRecord = await createBlobRecord(agent, file)
+    if (!blobRecord) return false
+
+    otherFilesData.push({
+      id: blobRecord.id,
+      size: file.size,
+      type: file.type,
+      name: file.name,
+    })
+  }
 
   const record = await createRecord(
     agent,
     {
-      name: name ?? file.name,
-      encodingFormat: file.type,
-      size: file.size,
-      url: blobRecord.id,
-      condition,
+      ..._.merge({ title: file.name }, restPayload),
+      file: fileData,
+      otherFiles: otherFilesData,
       dateCreated: new Date().toISOString(),
       dateModified: new Date().toISOString()
     },
@@ -160,11 +187,13 @@ async function fetchBlobRecords(agent: Agent) {
   })
 }
 
-type UpdatePayload = Partial<{
-  name: string
-  condition: string
-  file: File
-}>
+type UpdatePayload = Partial<
+  Omit<DocumentProtocolRecord.Document, "file" | "otherFiles" | "dateCreated" | "dateModified"> &
+  {
+    file: File,
+    otherFiles: File[]
+  }
+>
 
 async function updateDocumentRecord(agent: Agent, id: string, payload: UpdatePayload): Promise<false | Web5Record>;
 async function updateDocumentRecord(agent: Agent, record: Web5Record, payload: UpdatePayload): Promise<false | Web5Record>;
@@ -184,18 +213,56 @@ async function updateDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
   }
 
   const data: DocumentProtocolRecord.Document = await record.data.json()
-  const { file, ...restPayload } = payload
+  const { file, otherFiles, ...restPayload } = payload
 
-  let url = data.url
+  const fileData = data.file
   if (file) {
-    const blobRecord = await updateBlobRecord(agent, url, file)
+    const blobRecord = await updateBlobRecord(agent, data.file.id, file)
     if (!blobRecord) return false
 
-    url = blobRecord.id
+    fileData.id = blobRecord.id
+    fileData.name = file.name
+    fileData.size = file.size
+    fileData.type = file.type
+  }
+
+  const otherFilesData = data.otherFiles
+  if (otherFiles) {
+    for (let i = 0; i < otherFiles.length; i++) {
+      const file = otherFiles[i]
+      const otherFile = otherFilesData[i]
+
+      const blobRecord = await updateBlobRecord(agent, otherFile.id, file)
+      if (!blobRecord) return false
+
+      otherFile.id = blobRecord.id
+      otherFile.name = file.name
+      otherFile.size = file.size
+      otherFile.type = file.type
+    }
+
+    if (otherFiles.length < otherFilesData.length) {
+      otherFilesData.splice(otherFiles.length, otherFilesData.length - otherFiles.length)
+    }
+    else {
+      for (let i = otherFilesData.length; i < otherFiles.length; i++) {
+        const file = otherFiles[i]
+
+        const blobRecord = await createBlobRecord(agent, file)
+        if (!blobRecord) return false
+
+        otherFilesData.push({
+          id: blobRecord.id,
+          name: file.name,
+          size: file.size,
+          type: file.type,
+        })
+      }
+    }
   }
 
   const { status } = await record.update({
-    data: _.merge(data, Object.assign(restPayload, { url }))
+    data: _.merge(data, Object.assign(restPayload, { file: fileData, otherFiles: otherFilesData }))
   })
 
   if (status.code !== 202) {
@@ -252,8 +319,12 @@ async function deleteDocumentRecord(agent: Agent, idOrRecord: string | Web5Recor
 
   const document: DocumentProtocolRecord.Document = await record.data.json()
 
-  const hasDeletedBlobRecord = await deleteBlobRecord(agent, document.url)
+  const hasDeletedBlobRecord = await deleteBlobRecord(agent, document.file.id)
   if (!hasDeletedBlobRecord) return false
+
+  for (const otherFile of document.otherFiles) {
+    await deleteBlobRecord(agent, otherFile.id)
+  }
 
   const { status } = await agent.web5.dwn.records.delete({
     message: {

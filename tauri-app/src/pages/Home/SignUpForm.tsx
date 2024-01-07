@@ -5,8 +5,7 @@ import { Agent } from "@/components/Auth/types";
 import { FunctionComponent, useRef, useState } from "react";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Controller, useForm } from "react-hook-form"
-import { parse } from "path";
+import { useForm } from "react-hook-form"
 import toast from "react-hot-toast";
 
 const formSchema = z.object({
@@ -46,12 +45,6 @@ export default function SignUpForm() {
   const { setShowAuthModal, signUp, signIn } = useProfile(
     (state) => ({ signUp: state.signUp, signIn: state.signIn, setShowAuthModal: state.setShowAuthModal }),
   );
-  // const [form, setForm] = useState({
-  //   firstName: "",
-  //   lastName: "",
-  //   description: "",
-  //   profilePicture: new File([], ""),
-  // })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)

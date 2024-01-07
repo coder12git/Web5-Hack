@@ -5,21 +5,23 @@ import { Agent } from "@/components/Auth/types";
 import UserDetailsUtils from "@/utils/user";
 import DocumentUtils from "@/utils/document";
 
+export type ProfileState = {
+  id: string
+  // username: string
+  firstName: string,
+  lastName: string,
+  profilePictureUrl: string
+}
+
 type State = {
-  profile: {
-    firstName: string,
-    lastName: string,
-    profilePictureUrl: string
-  },
+  profile: ProfileState,
   isSignedIn: true
 } | {
   profile: null,
   isSignedIn: false
 }
 
-type Payload = {
-  firstName: string,
-  lastName: string,
+type Payload = Omit<ProfileState, "id" | "profilePictureUrl"> & {
   profilePicture: File
 }
 
@@ -61,6 +63,7 @@ export const useProfile = create(
         state: {
           isSignedIn: true,
           profile: {
+            id: profileRecord.id,
             firstName: profile.firstName,
             lastName: profile.lastName,
             profilePictureUrl
