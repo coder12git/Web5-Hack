@@ -21,7 +21,7 @@ type State = {
   isSignedIn: false
 }
 
-type Payload = Omit<ProfileState, "id" | "profilePictureUrl"> & {
+type Payload = Omit<UserDetailsProtocolRecord.Details, "dateCreated" | "profilePictureUrl"> & {
   profilePicture: File
 }
 
