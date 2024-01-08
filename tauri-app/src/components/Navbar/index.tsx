@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import useWeb5Store from "@/stores/useWeb5Store.ts";
 import { Agent } from "../Auth/types";
 import { useProfile } from "@/stores/profile.ts";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const SignedInBtn = () => {
   const { profile, signOut } = useProfile((store) => ({
@@ -12,6 +12,8 @@ const SignedInBtn = () => {
     signOut: store.signOut,
   }));
   const [showSignOutUtils, setShowSignOutUtils] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const copyRef = useRef(null);
 
   return (
     <>
@@ -19,12 +21,30 @@ const SignedInBtn = () => {
         <div className="did-container">
           <div>
             <b style={{ fontFamily: "Roboto" }}>DID:</b>
-            <input type="text" value={profile.did} placeholder="did field" />
+            <input
+              ref={copyRef}
+              type="text"
+              value={profile.did}
+              placeholder="did field"
+            />
+            {!isCopied ? (
+              <i
+                onClick={() => {
+                  copyRef.current.select();
+                  document.execCommand("copy");
+                  setIsCopied(true);
+                }}
+                className="fa-regular fa-copy"
+              ></i>
+            ) : (
+              <i className="fas fa-check-double"></i>
+            )}
           </div>
           <button
             type="button"
             className="auth_container"
-            onClick={() => signOut()}>
+            onClick={() => signOut()}
+          >
             <h3>Sign Out</h3>
             <i className="fa fa-sign-out" />
           </button>
@@ -34,14 +54,20 @@ const SignedInBtn = () => {
       <button
         type="button"
         className="auth_container"
-        onClick={() => setShowSignOutUtils(!showSignOutUtils)}
+        onClick={() => {
+          setIsCopied(false);
+          setShowSignOutUtils(!showSignOutUtils);
+        }}
       >
         <h3>In App</h3>
-        <i className="fa fa-sign-out" />
+        <i
+          style={{ width: "max-content", height: "max-content" }}
+          className="fa fa-cubes"
+        />
       </button>
     </>
-  )
-}
+  );
+};
 
 const index = () => {
   const { web5, did } = useWeb5Store((state) => ({

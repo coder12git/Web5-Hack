@@ -22,7 +22,7 @@ const FriendTag: FC<FriendTagProp> = ({
       </div>
       <h1>{friendName.slice(0, 6) + "..."}</h1>
       <i
-        className="fas fa-wifi"
+        className="fa fa-cube"
         style={{
           color: `${
             isFriendOnline ? "var(--color-green)" : "var(--color-red)"
