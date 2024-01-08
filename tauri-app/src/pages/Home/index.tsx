@@ -50,7 +50,7 @@ export default function HomePage() {
               stored making it a breeze to safely store medical data and
               records.
             </p>
-         </div>
+          </div>
           <div className="tech">
             <i className="fa-solid fa-robot"></i>
             <h2>A.I</h2>

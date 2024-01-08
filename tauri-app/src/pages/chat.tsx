@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Web5 } from "@web5/api/browser";
 import { dingerProtocolDefinition } from '@/stores/useWeb5Store';
-import '../components/Chat/index.css';
+import Chat from '../components/Chat';
 
 // Define your dingerProtocolDefinition object
 
@@ -207,7 +207,8 @@ const ChatConnect: React.FC = () => {
 
   return (
     <div>
-      <button id="copy-did">Copy your DID</button>
+      <Chat/>
+      {/* <button id="copy-did">Copy your DID</button>
       <form id="ding-form">
         <p id="ding-error"></p>
         <input type="text" id="did" placeholder="Enter DID" />
@@ -216,51 +217,19 @@ const ChatConnect: React.FC = () => {
         <br />
         <button type="submit">Send</button>
         <span id="ding-progress"></span>
-      </form>
+      </form> */}
 
-      <h2>You Dinged:</h2>
-      <ul id="dinged-list">
+      {/* <h2>You Dinged:</h2>
+      <ul id="dinged-list"> */}
         {/* List items will be added here dynamically */}
-      </ul>
+      {/* </ul>
 
       <h2>You were Dinged by:</h2>
-      <ul id="dinged-by-list">
+      <ul id="dinged-by-list"> */}
         {/* List items will be added here dynamically */}
-      </ul>
+      {/* </ul> */}
     </div>
   );
 };
 
 export default ChatConnect;
-
-
-interface MessageProp {
-    message: string;
-    isLeft: boolean;
-  }
-  //@ts-ignore
-  const Message: FC<MessageProp> = ({ message, isLeft }) => {
-    return (
-      <div className="msg-container" style={{ justifyContent: "right" }}>
-        <div className={isLeft ? "msg-f" : "msg-t"}>
-          <p>{message}</p>
-        </div>
-      </div>
-    );
-  };
-  //@ts-ignore
-  export const index: FC = () => {
-    return (
-      <div className="chat-component-container">
-        <div className="chats-container">
-        </div>
-        <div className="chat-message-input-container">
-          <input type="text" placeholder="Say Hi!" />
-          <button>
-            <i className="fa fa-caret-right"></i>
-          </button>
-        </div>
-      </div>
-    );
-  };
-  
