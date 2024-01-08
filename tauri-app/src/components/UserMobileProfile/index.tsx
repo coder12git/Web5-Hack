@@ -30,7 +30,7 @@ const index: FC<UserProfileProps> = ({
   friends,
   friendRequests,
   friendRequestsUtils,
-  findFriendsUtils
+  findFriendsUtils,
 }) => {
   return (
     <div className="m-userprofile-container">
@@ -42,12 +42,17 @@ const index: FC<UserProfileProps> = ({
         }}
         className="m-cover-container"
       >
-        <h3>@{username}</h3>
+        <h3>@{username.slice(0, 10) + "..."}</h3>
         <p>
           Friends | <b>{friends}</b>
         </p>
         <p>
-          <button onClick={() => findFriendsUtils[1](!findFriendsUtils[0])} className="find-friend-btn">Find Friends</button>
+          <button
+            onClick={() => findFriendsUtils[1](!findFriendsUtils[0])}
+            className="find-friend-btn"
+          >
+            Find Friends
+          </button>
         </p>
 
         <div className="bell-container">

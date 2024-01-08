@@ -5,6 +5,7 @@
   background: var(--color-white);
   border-radius: 15px;
   padding: 20px;
+  margin-top: 30px;
 }
 
 .find-friends-container h3 {

@@ -42,7 +42,7 @@ const index: FC<UserProfileProps> = ({
         }}
         className="cover-container"
       >
-        <h3>@{username}</h3>
+        <h3>@{username.slice(0, 10) + "..."}</h3>
         <p>
           Friends <b>{friends}</b>
         </p>
