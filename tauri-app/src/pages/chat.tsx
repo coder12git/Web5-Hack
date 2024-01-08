@@ -80,7 +80,7 @@ const ChatConnect: React.FC = () => {
 
     const shortenedDid = did.substr(0, 22);
     //@ts-ignore
-    dingProgressElement.textContent = `Ding written locally! Dinging ${shortenedDid}...`;
+    dingProgressElement.textContent = `Ding written! Dinging ${shortenedDid}...`;
 //@ts-ignore
     const { status: sendStatus } = await record.send(did);
     console.log('send status', sendStatus);
