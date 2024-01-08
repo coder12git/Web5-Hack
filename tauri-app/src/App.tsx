@@ -45,7 +45,7 @@ function App() {
   return (
     <>
       <>
-        {true ? <RouterProvider router={router} /> : <div>Connecting...</div>}
+        {web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}
       </>
       <Toaster position="top-center" reverseOrder={false} />
     </>
