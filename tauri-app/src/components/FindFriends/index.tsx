@@ -50,7 +50,7 @@ const index: FC = () => {
     setIsLoading(false);
   }, 5000);
   return (
-    <div className="find-friends-container">
+    <div className="find-friends-container" onClick{(e)=>e.stopPropagation()}>
       {isLoading ? (
         <>
           <div className="loading-container">
