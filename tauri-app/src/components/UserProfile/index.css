@@ -49,8 +49,63 @@
   top: 15px;
 }
 
+.bell-container {
+  position: absolute;
+  right: 10px;
+  top: 22px;
+}
+
+.bell-container i {
+  font-size: 25px;
+  color: var(--color-white);
+}
+
+.bell-container span {
+  font-family: "Roboto";
+  background: var(--color-red);
+  box-shadow: var(--box-shadow-red);
+  color: var(--color-white);
+  padding: 2px 4px;
+  border-radius: 10px;
+  border: 2px solid var(--color-white);
+  font-size: 10px;
+  position: relative;
+  left: -8px;
+}
+
+.find-friend-btn {
+  background: transparent;
+  color: var(--color-white);
+  font-family: "Roboto";
+  border: none;
+  outline: none;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (max-width: 750px) {
   .userprofile-container {
     width: 100%;
+  }
+
+  .bell-container {
+    top: 18px;
+  }
+
+  .bell-container i {
+    font-size: 30px;
+  }
+
+  .find-friend-btn {
+    padding: 4px 6px;
+    margin-top: 5px;
+    background: var(--color-red);
+    box-shadow: var(--box-shadow-red);
+    color: var(--color-white);
+    border-radius: 5px;
+    font-family: "Roboto";
+    border: none;
+    outline: none;
+    text-decoration: none;
   }
 }

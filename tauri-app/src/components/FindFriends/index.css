@@ -1,0 +1,79 @@
+.find-friends-container {
+  width: 500px;
+  height: max-content;
+  min-height: 420px;
+  background: var(--color-white);
+  border-radius: 15px;
+  padding: 20px;
+}
+
+.find-friends-container h3 {
+  font-family: "Pacifico";
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: center;
+  width: 480px;
+  height: max-content;
+  margin: auto auto;
+  min-height: 300px;
+  position: relative;
+}
+
+.pluse-container {
+  width: 100px;
+  height: 100px;
+  background: var(--color-red);
+  box-shadow: var(--box-shadow-red);
+  border-radius: 50%;
+  font-size: 30px;
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.g-pluse {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: var(--color-green);
+  border-radius: 50%;
+  top: 100px;
+  transform: scale(1.5);
+  animation: pulseAnim 2s ease-out infinite;
+}
+
+.b-pluse {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: var(--color-blue);
+  border-radius: 50%;
+  top: 100px;
+  transform: scale(1.5);
+  animation: pulseAnim 2s ease-out infinite;
+  animation-delay: 1s;
+}
+
+@keyframes pulseAnim {
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 750px) {
+  .find-friends-container {
+    width: 320px;
+    padding: 10px;
+  }
+
+  .loading-container {
+    width: 310px;
+  }
+}
