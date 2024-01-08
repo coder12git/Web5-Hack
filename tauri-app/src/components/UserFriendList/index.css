@@ -65,8 +65,27 @@
   text-align: center;
 }
 
+.d-did-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.friend-tag-container input {
+  background: var(--color-light-grey);
+  border-radius: 5px;
+  border: none;
+  font-family: "Roboto";
+  outline: none;
+  padding: 8px 4px;
+  margin: 14px 0px;
+  margin-right: 8px;
+  width: 40px;
+}
+
 .friend-main-list-container {
   overflow-y: scroll;
+  overflow-x: hidden;
   height: 250px;
   margin: 15px 0;
   padding: 5px;

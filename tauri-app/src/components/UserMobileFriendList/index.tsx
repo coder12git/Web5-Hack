@@ -1,5 +1,5 @@
 import "./index.css";
-import React, { FC, useState } from "react";
+import React, { FC, useState, useRef } from "react";
 
 interface FriendTagProp {
   friendProfileImg: string;
@@ -8,6 +8,7 @@ interface FriendTagProp {
   newChat?: number;
   setHideChat: () => void;
   hideChat: boolean;
+  didi?: string;
 }
 
 interface UserFriendListProp {
@@ -21,7 +22,11 @@ const FriendTag: FC<FriendTagProp> = ({
   newChat,
   setHideChat,
   hideChat,
+  did,
 }) => {
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const didRef = useRef(null);
+
   return (
     <div
       onClick={() => setHideChat(!hideChat)}
@@ -31,8 +36,29 @@ const FriendTag: FC<FriendTagProp> = ({
         <img src={friendProfileImg} />
         {newChat && <span>{newChat}</span>}
       </div>
-      <div>
+      <div
+        style={{
+          padding: "0px 5px",
+        }}
+      >
         <h1>{friendName.slice(0, 20) + "..."}</h1>
+        <div className="m-did-container">
+          <input ref={didRef} type="text" value={did} />
+
+          {!isCopied ? (
+            <i
+              onClick={(e) => {
+                e.stopPropagation();
+                didRef.current.select();
+                document.execCommand("copy");
+                setIsCopied(true);
+              }}
+              className="fa-regular fa-copy"
+            ></i>
+          ) : (
+            <i className="fas fa-check-double"></i>
+          )}
+        </div>
       </div>
       <i
         className="fa fa-cube"
@@ -67,6 +93,7 @@ const index: FC<UserFriendListProp> = ({
                 newChat={friend.newChat}
                 setHideChat={setHideChat}
                 hideChat={hideChat}
+                did={friend.did}
               />
             </>
           );

@@ -12,15 +12,16 @@ import { useEffect, useState } from "react";
 
 const index = () => {
   const [friends, setFriends] = useState([
-    { profile_pic: "/pg.jpg", username: "@scriptkidd", isOnline: false },
-    { profile_pic: "/pg.jpg", username: "@nikki", isOnline: false, newChat: 1 },
+    { profile_pic: "/pg.jpg", username: "@scriptkidd", isOnline: false ,did:"1020383*@(wppwsj)"},
+    { profile_pic: "/pg.jpg", username: "@nikki", isOnline: false, newChat: 1,did:"apqpwpudrZpwpsAaap" },
     {
       profile_pic: "/pm.jpg",
       username: "@gregidd",
       isOnline: true,
       newChat: 7,
+      did:"12340APDPDISavavagaAjd"
     },
-    { profile_pic: "/pic.jpg", username: "@scdd", isOnline: false, newChat: 4 },
+    { profile_pic: "/pic.jpg", username: "@scdd", isOnline: false, newChat: 4 ,did:"APSOWJEHDHaksosodoQPPE1O"},
   ]);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [hideChat, setHideChat] = useState<boolean>(false);

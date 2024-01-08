@@ -230,7 +230,6 @@ const index = ({ save, formFunc, form, remediesData, docsWithImageUrls }) => {
             }}
           >
             <h1>Unauthorized - Please Sign in</h1>
-            <button>Connect Wallet</button>
           </div>
         </div>
       )}
