@@ -28,7 +28,14 @@ const router = createHashRouter([
         element: <Remedy />,
       },
       { path: "/contact", element: <Doctors /> },
-      { path: "/chat", element: <ProfileGuard><Chat /></ProfileGuard> },
+      {
+        path: "/chat",
+        element: (
+          <ProfileGuard>
+            <Chat />
+          </ProfileGuard>
+        ),
+      },
       { path: "/chatConnect", element: <ChatConnect /> },
     ],
   },
@@ -46,7 +53,7 @@ function App() {
   return (
     <>
       <>
-        {true ? <RouterProvider router={router} /> : <div>Connecting...</div>}
+        {web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}
       </>
       <Toaster position="top-center" reverseOrder={false} />
     </>
