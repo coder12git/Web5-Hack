@@ -50,11 +50,6 @@ export default function HomePage() {
               stored making it a breeze to safely store medical data and
               records.
             </p>
-            <Link to="/connect">
-              <button type="button" className="gs_btn">
-                Get Started! <i className="fa fa-fire" />
-              </button>
-            </Link>
           </div>
           <div className="tech">
             <i className="fa-solid fa-robot"></i>
