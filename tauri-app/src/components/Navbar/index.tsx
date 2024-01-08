@@ -6,6 +6,43 @@ import { Agent } from "../Auth/types";
 import { useProfile } from "@/stores/profile.ts";
 import { useState } from "react";
 
+const SignedInBtn = () => {
+  const { profile, signOut } = useProfile((store) => ({
+    profile: store.state.profile!,
+    signOut: store.signOut,
+  }));
+  const [showSignOutUtils, setShowSignOutUtils] = useState(false);
+
+  return (
+    <>
+      {showSignOutUtils && (
+        <div className="did-container">
+          <div>
+            <b style={{ fontFamily: "Roboto" }}>DID:</b>
+            <input type="text" value={profile.did} placeholder="did field" />
+          </div>
+          <button
+            type="button"
+            className="auth_container"
+            onClick={() => signOut()}>
+            <h3>Sign Out</h3>
+            <i className="fa fa-sign-out" />
+          </button>
+        </div>
+      )}
+
+      <button
+        type="button"
+        className="auth_container"
+        onClick={() => setShowSignOutUtils(!showSignOutUtils)}
+      >
+        <h3>In App</h3>
+        <i className="fa fa-sign-out" />
+      </button>
+    </>
+  )
+}
+
 const index = () => {
   const { web5, did } = useWeb5Store((state) => ({
     web5: state.web5,
@@ -25,44 +62,43 @@ const index = () => {
     }
   };
 
-  const [showSignOutUtils, setShowSignOutUtils] = useState<boolean>(false);
   return (
     <div className="main_navbar_container">
       <div className="logo_container">
-        <i className="fa-brands fa-paypal"></i>
-        <i className="fa fa-heartbeat"></i>
+        <i className="fa-brands fa-paypal" />
+        <i className="fa fa-heartbeat" />
       </div>
       <div className="comp_menu_container">
         <NavLink to="/" style={{ textDecoration: "none" }}>
           <div>
-            <i className="fa fa-home"></i>
+            <i className="fa fa-home" />
             <h3>Home</h3>
           </div>
         </NavLink>
         <NavLink to="/records" style={{ textDecoration: "none" }}>
           <div>
-            <i className="fa fa-database"></i>
+            <i className="fa fa-database" />
             <h3>Records </h3>
             <span>28</span>
           </div>
         </NavLink>
         <NavLink to="/chat" style={{ textDecoration: "none" }}>
           <div>
-            <i className="fas fa-comment-alt"></i>
+            <i className="fas fa-comment-alt" />
             <h3>Chats </h3>
             <span>5</span>
           </div>
         </NavLink>
         <NavLink to="/remedies" style={{ textDecoration: "none" }}>
           <div>
-            <i className="fas fa-first-aid"></i>
+            <i className="fas fa-first-aid" />
             <h3>DIY Remedies</h3>
             <span>99+</span>
           </div>
         </NavLink>
         <NavLink to="/contact" style={{ textDecoration: "none" }}>
           <div>
-            <i className="fa fa-address-book"></i>
+            <i className="fa fa-address-book" />
             <h3>Contact</h3>
           </div>
         </NavLink>
@@ -72,34 +108,14 @@ const index = () => {
           <button
             type="button"
             className="auth_container"
-            onClick={() => (web5 && did ? signOut() : null)}
+            onClick={() => (web5 && did ? beginAuthFlow({ web5, did }) : null)}
           >
             <h3>Connect Wallet</h3>
-            <i className="fa fa-user"></i>
+            <i className="fa fa-user" />
           </button>
         }
       >
-        {showSignOutUtils && (
-          <div className="did-container">
-            <div>
-              <b style={{ fontFamily: "Roboto" }}>DID:</b>
-              <input type="text" value={did} placeholder="did field" />
-            </div>
-            <button type="button" className="auth_container">
-              <h3>Sign Out</h3>
-              <i className="fa fa-sign-out"></i>
-            </button>
-          </div>
-        )}
-
-        <button
-          type="button"
-          className="auth_container"
-          onClick={() => setShowSignOutUtils(!showSignOutUtils)}
-        >
-          <h3>In App</h3>
-          <i className="fa fa-sign-out"></i>
-        </button>
+        <SignedInBtn />
       </ProfileGuard>
     </div>
   );
