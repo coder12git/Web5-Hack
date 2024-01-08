@@ -19,15 +19,12 @@ const router = createHashRouter([
       { path: "/", element: <HomePage /> },
       {
         path: "/records",
-        element: (
-            <Records />
-        ),
+        element: <Records />,
       },
       { path: "/connect", element: <Connect /> },
       {
-        path: "/remedies", element: (
-            <Remedy />
-        )
+        path: "/remedies",
+        element: <Remedy />,
       },
       { path: "/contact", element: <Doctors /> },
       { path: "/chat", element: <Chat /> },
@@ -48,7 +45,7 @@ function App() {
   return (
     <>
       <>
-        {web5 ? <RouterProvider router={router} /> : <div>Connecting...</div>}
+        {true ? <RouterProvider router={router} /> : <div>Connecting...</div>}
       </>
       <Toaster position="top-center" reverseOrder={false} />
     </>
