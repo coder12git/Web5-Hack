@@ -1,23 +1,24 @@
 import useWeb5Store from "@/stores/useWeb5Store";
 import { useState } from "react";
-import DocumentUtils from "@/utils/document";
 import { Agent } from "@/components/Auth/types";
-import { Record as DocumentRecord } from "@/utils/protocols/document";
+import { Record as UserDetailsProtocolRecord } from "@/utils/protocols/user";
+import UserDetailsUtils from "@/utils/user";
 
-const fetchDocumentsWithCondition = async (agent: Agent, condition: string) => {
-  const documentRecords = await DocumentUtils.fetchDocumentRecords(agent)
-  if (!documentRecords)
+const fetchProfilesWithCondition = async (agent: Agent, condition: string) => {
+  const profileRecords = await UserDetailsUtils.fetchUserDetailsRecords(agent)
+  if (!profileRecords)
     return []
 
-  const matchingDocumentConditions = []
-  for (const documentRecord of documentRecords) {
-    const data: DocumentRecord.Document = await documentRecord.data.json()
+  const matchingProfiles = []
+  for (const record of profileRecords) {
+    const profile: UserDetailsProtocolRecord.Details = await record.data.json()
+    console.log(profile)
 
-    if (data.condition === condition) {
-      matchingDocumentConditions.push(data)
+    if (profile.conditions.indexOf(condition) > -1 && profile.did !== agent.did) {
+      matchingProfiles.push(profile)
     }
   }
-  return matchingDocumentConditions
+  return matchingProfiles
 }
 
 const possibleConditions = [
@@ -31,13 +32,13 @@ const possibleConditions = [
 
 function Connect() {
   const agent = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }))
-  const [similarConditionDocuments, setSimilarConditionDocuments] = useState<DocumentRecord.Document[]>([])
+  const [similarProfiles, setSimilarProfiles] = useState<UserDetailsProtocolRecord.Details[]>([])
   const [form, setForm] = useState({ condition: possibleConditions[0] })
 
   const connectCondition = async () => {
-    const res = await fetchDocumentsWithCondition(agent, form.condition)
+    const res = await fetchProfilesWithCondition(agent, form.condition)
     console.log(res)
-    setSimilarConditionDocuments(res)
+    setSimilarProfiles(res)
   }
 
   return (
@@ -71,13 +72,13 @@ function Connect() {
           People with similar conditions:
         </header>
         <div>
-          {similarConditionDocuments.map((doc, index) => (
+          {similarProfiles.map((profile, index) => (
             <div key={index}>
               <div>
-                {doc.title}
+                {profile.did}
               </div>
               <div>
-                {doc.condition}
+                {profile.did}
               </div>
             </div>
           ))}
