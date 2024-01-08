@@ -12,7 +12,6 @@ const fetchProfilesWithCondition = async (agent: Agent, condition: string) => {
   const matchingProfiles = []
   for (const record of profileRecords) {
     const profile: UserDetailsProtocolRecord.Details = await record.data.json()
-    console.log(profile)
 
     if (profile.conditions.indexOf(condition) > -1 && profile.did !== agent.did) {
       matchingProfiles.push(profile)

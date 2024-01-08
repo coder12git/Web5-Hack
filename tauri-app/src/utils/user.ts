@@ -172,6 +172,11 @@ async function updateUserDetailsRecord(agent: Agent, idOrRecord: string | Web5Re
     return false
   }
 
+  const { status: protocolDwnSyncStatus } = await record.send(UserDetailsProtocolDID)
+  if (protocolDwnSyncStatus.code !== 202) {
+    console.log("Failed to sync document record update with protocol remote DWN:", protocolDwnSyncStatus)
+  }
+
   return record
 }
 
