@@ -9,7 +9,6 @@ import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Chat from "./pages/Chat/";
 import { Toaster } from "react-hot-toast";
-import ProfileGuard from "./components/Auth/Profile/Guard";
 
 const router = createHashRouter([
   {
@@ -20,17 +19,13 @@ const router = createHashRouter([
       {
         path: "/records",
         element: (
-          <ProfileGuard fallback={<Navigate to="/" />}>
             <Records />
-          </ProfileGuard>
         ),
       },
       { path: "/connect", element: <Connect /> },
       {
         path: "/remedies", element: (
-          <ProfileGuard fallback={<Navigate to="/" />}>
             <Remedy />
-          </ProfileGuard>
         )
       },
       { path: "/contact", element: <Doctors /> },

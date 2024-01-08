@@ -72,7 +72,7 @@ const index = () => {
           <button
             type="button"
             className="auth_container"
-            onClick={() => () => (web5 && did ? signOut() : null)}
+            onClick={() => (web5 && did ? signOut() : null)}
           >
             <h3>Connect Wallet</h3>
             <i className="fa fa-user"></i>
@@ -83,7 +83,7 @@ const index = () => {
           <div className="did-container">
             <div>
               <b style={{ fontFamily: "Roboto" }}>DID:</b>
-              <input type="text" value={"$0$02$9$"} placeholder="did field" />
+              <input type="text" value={did} placeholder="did field" />
             </div>
             <button type="button" className="auth_container">
               <h3>Sign Out</h3>
