@@ -4,23 +4,28 @@ import { NavLink } from "react-router-dom";
 import useWeb5Store from "@/stores/useWeb5Store.ts";
 import { Agent } from "../Auth/types";
 import { useProfile } from "@/stores/profile.ts";
+import { useState } from "react";
 
 const index = () => {
-  const { web5, did } = useWeb5Store((state) => ({ web5: state.web5, did: state.did }));
-  const { signIn, setShowAuthModal, signOut } = useProfile(state => ({
+  const { web5, did } = useWeb5Store((state) => ({
+    web5: state.web5,
+    did: state.did,
+  }));
+  const { signIn, setShowAuthModal, signOut } = useProfile((state) => ({
     signIn: state.signIn,
     signOut: state.signOut,
-    setShowAuthModal: state.setShowAuthModal
-  }))
+    setShowAuthModal: state.setShowAuthModal,
+  }));
 
   const beginAuthFlow = async (agent: Agent) => {
-    const signedIn = await signIn(agent)
+    const signedIn = await signIn(agent);
     if (!signedIn) {
-      console.log("displaying auth modal")
-      setShowAuthModal(true)
+      console.log("displaying auth modal");
+      setShowAuthModal(true);
     }
-  }
+  };
 
+  const [showSignOutUtils, setShowSignOutUtils] = useState<boolean>(false);
   return (
     <div className="main_navbar_container">
       <div className="logo_container">
@@ -67,18 +72,32 @@ const index = () => {
           <button
             type="button"
             className="auth_container"
-            onClick={() => web5 && did ? beginAuthFlow({ web5, did }) : null}
+            onClick={() => (web5 && did ? signOut() : null)}
           >
             <h3>Connect Wallet</h3>
             <i className="fa fa-user"></i>
           </button>
         }
       >
+        {showSignOutUtils && (
+          <div className="did-container">
+            <div>
+              <b style={{ fontFamily: "Roboto" }}>DID:</b>
+              <input type="text" value={did} placeholder="did field" />
+            </div>
+            <button type="button" className="auth_container">
+              <h3>Sign Out</h3>
+              <i className="fa fa-sign-out"></i>
+            </button>
+          </div>
+        )}
+
         <button
           type="button"
           className="auth_container"
-          onClick={() => web5 && did ? signOut() : null}>
-          <h3>Sign out</h3>
+          onClick={() => setShowSignOutUtils(!showSignOutUtils)}
+        >
+          <h3>In App</h3>
           <i className="fa fa-sign-out"></i>
         </button>
       </ProfileGuard>

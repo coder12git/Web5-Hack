@@ -1,10 +1,36 @@
-import { create } from "zustand"
+import { create } from "zustand";
 import { combine } from "zustand/middleware";
 import { Record as UserDetailsProtocolRecord } from "@/utils/protocols/user";
 import { Agent } from "@/components/Auth/types";
 import UserDetailsUtils, { CreatePayload } from "@/utils/user";
 import BlobUtils from "@/utils/blob";
 import { Record as Web5Record } from "@web5/api/browser"
+
+<<<<<<< HEAD
+export type ProfileState = {
+  id: string;
+  // username: string
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string;
+};
+
+type State =
+  | {
+      profile: ProfileState;
+      isSignedIn: true;
+    }
+  | {
+      profile: null;
+      isSignedIn: false;
+    };
+
+type Payload = Omit<
+  UserDetailsProtocolRecord.Details,
+  "dateCreated" | "profilePictureUrl"
+> & {
+  profilePicture: File;
+};
 
 export type SignUpPayload = Omit<CreatePayload, "conditions" | "did">
 
@@ -26,20 +52,59 @@ type State = {
 }
 
 export const useProfile = create(
-  combine({
-    state: {
-      profile: null,
-      isSignedIn: false
-    } as State,
-    showAuthModal: false
-  }, (set, get) => ({
-    setShowAuthModal: (showAuthModal: boolean) => {
-      set({ showAuthModal })
+  combine(
+    {
+      state: {
+        profile: null,
+        isSignedIn: false,
+      } as State,
+      showAuthModal: false,
     },
-    signOut: () => {
-      if (get().state.isSignedIn) {
+    (set, get) => ({
+      setShowAuthModal: (showAuthModal: boolean) => {
+        set({ showAuthModal });
+      },
+      signOut: () => {
+        if (get().state.isSignedIn) {
+          set({
+            state: {
+              isSignedIn: false,
+              profile: null,
+            },
+          });
+        }
+      },
+      signIn: async (agent: Agent) => {
+        const profileRecord =
+          await UserDetailsUtils.fetchUserDetailsRecord(agent);
+        if (!profileRecord) return false;
+
+        const profile: UserDetailsProtocolRecord.Details =
+          await profileRecord.data.json();
+
+        const profilePicture = await DocumentUtils.fetchBlobRecord(
+          agent,
+          profile.profilePictureId,
+        );
+        let profilePictureUrl = "";
+        if (profilePicture) {
+          const profilePictureBlob = await profilePicture.data.blob();
+          profilePictureUrl = URL.createObjectURL(profilePictureBlob);
+        }
+
         set({
           state: {
+<<<<<<< HEAD
+            isSignedIn: true,
+            profile: {
+              id: profileRecord.id,
+              firstName: profile.firstName,
+              lastName: profile.lastName,
+              profilePictureUrl,
+            },
+          },
+        });
+=======
             isSignedIn: false,
             record: null,
             profile: null
@@ -50,9 +115,24 @@ export const useProfile = create(
     signIn: async (agent: Agent) => {
       const profileRecord = await UserDetailsUtils.fetchUserDetailsRecord(agent)
       if (!profileRecord) return false
+>>>>>>> 402d66ccee7417a3b8bf1521291c3d95ef82ec69
 
-      const profile: UserDetailsProtocolRecord.Details = await profileRecord.data.json()
+        return true;
+      },
+      signUp: async (agent: Agent, payload: CreatePayload) => {
+        const profile = await UserDetailsUtils.createUserDetailsRecord(
+          agent,
+          payload,
+        );
+        if (!profile) return false;
 
+<<<<<<< HEAD
+        return true;
+      },
+    }),
+  ),
+);
+=======
       const profilePicture = await BlobUtils.fetchBlobRecord(agent, { recordId: profile.profilePictureId })
       let profilePictureUrl = ""
       if (profilePicture) {
@@ -109,3 +189,4 @@ export const useProfile = create(
     }
   }))
 )
+>>>>>>> 402d66ccee7417a3b8bf1521291c3d95ef82ec69

@@ -70,6 +70,50 @@
   position: relative;
 }
 
+.no-records {
+  font-family: "Open Sans";
+}
+
+.connect-wallet-container {
+  width: 300px;
+  height: 200px;
+  background: var(--color-white);
+  border-radius: 15px;
+  padding: 18px 8px;
+  text-align: center;
+}
+
+.connect-wallet-container h1 {
+  font-family: "Roboto";
+  font-size: 25px;
+  margin-top: 30px;
+}
+
+.connect-wallet-container button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  background: var(--color-green);
+  box-shadow: var(--box-shadow-green);
+  color: var(--color-white);
+  font-family: "Roboto";
+  cursor: pointer;
+  font-weight: 800;
+  border: none;
+  min-width: 180px;
+  font-size: 25px;
+  text-align: center;
+  margin-top: 40px;
+  outline: none;
+}
+
+.connect-wallet-container button i {
+  background: var(--color-white);
+  padding: 10px 12px;
+  border-radius: 50%;
+  color: var(--color-black);
+  margin-left: 10px;
+}
+
 @media (max-width: 750px) {
   .main-records-container {
     padding: var(--padding-mobile);

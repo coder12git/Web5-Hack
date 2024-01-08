@@ -1,5 +1,6 @@
 import "./index.css";
 import { useState } from "react";
+import { useProfile } from "@/stores/profile";
 
 import Ratings from "../../components/Ratings";
 import RemedyCard from "../../components/RemedyCard/";
@@ -45,6 +46,10 @@ const index = ({ save, formFunc, form, remediesData, docsWithImageUrls }) => {
     },
   ]);
 
+  const isSignedIn = useProfile((state) => state.state.isSignedIn);
+  const [showConnectWalletComponent, setShowConnectWalletComponent] =
+    useState<boolean>(false);
+
   const [isDetailRemedyActive, setIsDetailRemedyActive] = useState(false);
   const [activeRemedy, setActiveRemedy] = useState(null);
 
@@ -83,6 +88,13 @@ const index = ({ save, formFunc, form, remediesData, docsWithImageUrls }) => {
   };
 
   const [isAddRemedyActive, setIsAddRemedyActive] = useState(false);
+  const SignedInCheck = () => {
+    if (isSignedIn) {
+      setIsAddRemedyActive(!isAddRemedyActive);
+    } else {
+      setShowConnectWalletComponent(true);
+    }
+  };
 
   return (
     <div className="main-remedies-container">
@@ -92,7 +104,7 @@ const index = ({ save, formFunc, form, remediesData, docsWithImageUrls }) => {
           className={
             !isAddRemedyActive ? "add-records-btn" : "close-add-records-btn"
           }
-          onClick={() => setIsAddRemedyActive(!isAddRemedyActive)}
+          onClick={() => SignedInCheck()}
         >
           <i className="fa fa-plus"></i>
         </div>
@@ -203,6 +215,23 @@ const index = ({ save, formFunc, form, remediesData, docsWithImageUrls }) => {
             formFunc={formFunc}
             form={form}
           />
+        </div>
+      )}
+
+      {showConnectWalletComponent && (
+        <div
+          onClick={() => setShowConnectWalletComponent(false)}
+          className="add-remedy-container"
+        >
+          <div
+            className="connect-wallet-container"
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          >
+            <h1>Unauthorized - Please Sign in</h1>
+            <button>Connect Wallet</button>
+          </div>
         </div>
       )}
     </div>

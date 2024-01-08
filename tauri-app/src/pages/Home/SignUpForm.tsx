@@ -3,9 +3,9 @@ import useWeb5Store from "@/stores/useWeb5Store";
 import { useProfile } from "@/stores/profile";
 import { Agent } from "@/components/Auth/types";
 import { FunctionComponent, useRef, useState } from "react";
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { SignUpPayload } from "@/stores/profile";
 
@@ -13,14 +13,16 @@ const formSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   description: z.string().min(1),
-  profilePicture: z.instanceof(File)
-})
+  profilePicture: z.instanceof(File),
+});
 
 interface FileProp {
   file: File | null | undefined;
 }
 
-const FileUploader: FunctionComponent<{ onChange: (file: File | null) => void }> = ({ onChange }) => {
+const FileUploader: FunctionComponent<{
+  onChange: (file: File | null) => void;
+}> = ({ onChange }) => {
   const [file, setFile] = useState<FileProp>({ file: null });
 
   return (
@@ -29,8 +31,8 @@ const FileUploader: FunctionComponent<{ onChange: (file: File | null) => void }>
       <br />
       <input
         onChange={(e) => {
-          const file = e?.target?.files?.[0]
-          onChange(file ? file : null)
+          const file = e?.target?.files?.[0];
+          onChange(file ? file : null);
           setFile({ file: e?.target?.files?.[0] });
         }}
         type="file"
@@ -41,56 +43,65 @@ const FileUploader: FunctionComponent<{ onChange: (file: File | null) => void }>
 };
 
 export default function SignUpForm() {
-  const { web5, did } = useWeb5Store((state) => ({ web5: state.web5!, did: state.did! }));
+  console.log("kfjle");
+  const { web5, did } = useWeb5Store((state) => ({
+    web5: state.web5!,
+    did: state.did!,
+  }));
+
   const submitBtnRef = useRef<HTMLButtonElement>(null);
-  const { setShowAuthModal, signUp, signIn } = useProfile(
-    (state) => ({ signUp: state.signUp, signIn: state.signIn, setShowAuthModal: state.setShowAuthModal }),
-  );
+  const { setShowAuthModal, signUp, signIn } = useProfile((state) => ({
+    signUp: state.signUp,
+    signIn: state.signIn,
+    setShowAuthModal: state.setShowAuthModal,
+  }));
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema)
-  })
+    resolver: zodResolver(formSchema),
+  });
 
   form.watch((value) => {
-    if (!submitBtnRef.current) return
+    if (!submitBtnRef.current) return;
 
-    const isValid = formSchema.safeParse(value).success
+    const isValid = formSchema.safeParse(value).success;
 
     if (isValid) {
-      submitBtnRef.current.classList.remove("not-filled-btn")
-      submitBtnRef.current.classList.add("filled-btn")
-      submitBtnRef.current.disabled = false
+      submitBtnRef.current.classList.remove("not-filled-btn");
+      submitBtnRef.current.classList.add("filled-btn");
+      submitBtnRef.current.disabled = false;
+    } else {
+      submitBtnRef.current.classList.add("not-filled-btn");
+      submitBtnRef.current.classList.remove("filled-btn");
+      submitBtnRef.current.disabled = true;
     }
-    else {
-      submitBtnRef.current.classList.add("not-filled-btn")
-      submitBtnRef.current.classList.remove("filled-btn")
-      submitBtnRef.current.disabled = true
-    }
-  })
+  });
 
   const createProfile = async (agent: Agent, payload: SignUpPayload) => {
-    const hasSignedUpSuccessfully = await signUp(agent, payload)
+    const hasSignedUpSuccessfully = await signUp(agent, payload);
 
     if (!hasSignedUpSuccessfully) {
-      toast.error('Sorry an error occurred!')
-      return
+      toast.error("Sorry an error occurred!");
+      return;
     }
 
-    if (!await signIn(agent)) return
+    if (!(await signIn(agent))) return;
 
-    toast.success('Successfully signed up!')
+    toast.success("Successfully signed up!");
 
-    setShowAuthModal(false)
-  }
+    setShowAuthModal(false);
+  };
 
   const onSubmit = (value: z.infer<typeof formSchema>) => {
-    if (web5 && did) createProfile({ web5, did }, value)
-  }
+    if (web5 && did) createProfile({ web5, did }, value);
+  };
 
   return (
-    <div className="data-container">
-      <form className="auth-form"
-        onSubmit={form.handleSubmit(onSubmit)}>
+    <div className="data-container" onClick={() => setShowAuthModal(false)}>
+      <form
+        className="auth-form"
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
         <FileUploader
           onChange={(file) => form.setValue("profilePicture", file as File)}
         />
@@ -122,6 +133,5 @@ export default function SignUpForm() {
         </button>
       </form>
     </div>
-  )
+  );
 }
-
