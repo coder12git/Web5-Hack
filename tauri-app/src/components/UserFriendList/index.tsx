@@ -1,3 +1,4 @@
+import { Friend } from "@/pages/Chat";
 import "./index.css";
 import React, { FC, useState, useRef } from "react";
 
@@ -68,7 +69,7 @@ interface UserFriendListProp {
   hideChat: boolean;
 }
 
-const index: FC = ({ friendList, setHideChat, hideChat }) => {
+const index: FC<{ friendList: Friend[]}> = ({ friendList, setHideChat, hideChat }) => {
   return (
     <div className="friends-list-container">
       <div className="friends-list-header" style={{ background:"var(--color-blue)"}}>
@@ -79,10 +80,10 @@ const index: FC = ({ friendList, setHideChat, hideChat }) => {
           return (
             <>
               <FriendTag
-                friendProfileImg={friend.profile_pic}
+                friendProfileImg={friend.profilePictureUrl}
                 isFriendOnline={friend.isOnline}
                 friendName={friend.username}
-                newChat={friend.newChat}
+                newChat={0}
                 did={friend.did}
               />
               <hr />
