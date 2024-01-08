@@ -154,27 +154,15 @@ const index = () => {
     return (
       <div className="m-chat-container">
         <UserMobileProfile
-<<<<<<< HEAD
-          username={"gravyboat247"}
-          about_user={
-            "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-          }
-          profile_pic={"/pg.jpg"}
-          cover_pic={"/pic.jpg"}
-          friends={45}
-          friendRequests={5}
-          friendRequestsUtils={[showFriendRequests, setShowFriendRequests]}
-          findFriendsUtils={[showFindFriends, setShowFindFriends]}
-=======
-          username={`${profile.firstName}${profile.lastName}`}
+         username={`${profile.firstName}${profile.lastName}`}
           about_user={profile.description}
           profile_pic={profile.profilePictureUrl}
           cover_pic={profile.profilePictureUrl}
           friends={friends.length}
->>>>>>> 499f1964de53b184725503bcf7efa766f1394645
-        />
-        <UserMobileFriendList
-          //@ts-ignore
+          friendRequests={5}
+          friendRequestsUtils={[showFriendRequests, setShowFriendRequests]}
+          findFriendsUtils={[showFindFriends, setShowFindFriends]}
+         //@ts-ignore
           friendList={friends}
           setHideChat={setHideChat}
           hideChat={hideChat}
@@ -183,7 +171,6 @@ const index = () => {
           <div className="data-container">
             <MobileChat
               //@ts-ignore
-<<<<<<< HEAD
               setHideChat={setHideChat}
               hideChat={hideChat}
             />
@@ -204,9 +191,7 @@ const index = () => {
             className="data-container"
           >
             <FindFriends />
-=======
               setHideChat={setHideChat} hideChat={hideChat} />
->>>>>>> 499f1964de53b184725503bcf7efa766f1394645
           </div>
         )}
       </div>
@@ -216,32 +201,18 @@ const index = () => {
     <div className="main-chat-container">
       <div className="utils-container">
         <UserProfile
-<<<<<<< HEAD
-          username={"gravyboat247"}
-          about_user={
-            "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
-          }
-          profile_pic={"/pg.jpg"}
-          cover_pic={"/pic.jpg"}
-          friends={45}
-          friendRequests={5}
-          friendRequestsUtils={[showFriendRequests, setShowFriendRequests]}
-          findFriendsUtils={[showFindFriends, setShowFindFriends]}
-        />
-        <UserFriendList
-          //@ts-ignore
-          friendList={friends}
-        />
-=======
-          username={`${profile.firstName}${profile.lastName}`}
+        username={`${profile.firstName}${profile.lastName}`}
           about_user={profile.description}
           profile_pic={profile.profilePictureUrl}
           cover_pic={profile.profilePictureUrl}
           friends={friends.length}
+       friendRequests={5}
+          friendRequestsUtils={[showFriendRequests, setShowFriendRequests]}
+          findFriendsUtils={[showFindFriends, setShowFindFriends]}
+    
         />
         <UserFriendList
           friendList={friends} />
->>>>>>> 499f1964de53b184725503bcf7efa766f1394645
       </div>
       <div className="chat-container">
         <Chat />
