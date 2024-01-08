@@ -9,6 +9,7 @@ import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Chat from "./pages/Chat/";
 import { Toaster } from "react-hot-toast";
+import ChatConnect from "./pages/chat";
 
 const router = createHashRouter([
   {
@@ -30,6 +31,7 @@ const router = createHashRouter([
       },
       { path: "/contact", element: <Doctors /> },
       { path: "/chat", element: <Chat /> },
+      { path: "/chatConnect", element: <ChatConnect /> },
     ],
   },
 ]);

@@ -1,282 +1,233 @@
-import { Web5 } from "@web5/api";
-import { useState, useEffect } from "react";
+// Import necessary libraries and modules
+import React, { useEffect } from 'react';
+import { Web5 } from "@web5/api/browser";
+import { dingerProtocolDefinition } from '@/stores/useWeb5Store';
 
-export default function Home() {
+// Define your dingerProtocolDefinition object
 
-    const [web5, setWeb5] = useState(null);
-    const [myDid, setMyDid] = useState(null);
-    const [activeRecipient, setActiveRecipient] = useState(null);
+const ChatConnect: React.FC = () => {
+  useEffect(() => {
+    const initDinger = async () => {
+      const copyDidElement = document.querySelector('#copy-did');
+      const dingForm = document.querySelector('#ding-form');
+      const dingErrorElement = document.querySelector('#ding-error');
+      const dingProgressElement = document.querySelector('#ding-progress');
+      const dingedList = document.querySelector('#dinged-list');
+      const dingedByList = document.querySelector('#dinged-by-list');
 
-    const [noteValue, setNoteValue] = useState("");
-    const [errorMessage, setErrorMessage] = useState('');
-    const [recipientDid, setRecipientDid] = useState("");
+      const { web5, did: myDid } = await Web5.connect();
+      await configureProtocol(web5);
 
-    const [didCopied, setDidCopied] = useState(false);
-    const [showNewChatInput, setShowNewChatInput] = useState(false);
+      setInterval(async () => {
+        await renderDings(web5, myDid, dingedList, dingedByList);
+      }, 2000);
 
-    const [allDings, setAllDings] = useState([]);
-
-    const sortedDings = allDings.sort(
-        //@ts-ignore
-        (a, b) => new Date(a.timestampWritten) - new Date(b.timestampWritten)
-    );
-
-    const groupedDings = allDings.reduce((acc, ding) => {
-        //@ts-ignore
-        const recipient = ding.sender === myDid ? ding.recipient : ding.sender;
-        //@ts-ignore
-        if (!acc[recipient]) acc[recipient] = [];
-        //@ts-ignore
-        acc[recipient].push(ding);
-        return acc;
-    }, {});
-
-    useEffect(() => {
-        const initWeb5 = async () => {
-            const { web5, did } = await Web5.connect();
+      //@ts-ignore
+      copyDidElement.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(myDid);
+        } catch (err) {
             //@ts-ignore
-            setWeb5(web5);
-            //@ts-ignore
-            setMyDid(did);
-
-            if (web5 && did) {
-                await configureProtocol(web5, did);
-                await fetchDings(web5, did);
-            }
-        };
-        initWeb5();
-    }, []);
-
-    useEffect(() => {
-        if (!web5 || !myDid) return;
-        const intervalId = setInterval(async () => {
-            await fetchDings(web5, myDid);
-        }, 2000);
-
-        return () => clearInterval(intervalId);
-    }, [web5, myDid]);
-
-    const createProtocolDefinition = () => {
-        const dingerProtocolDefinition = {
-            protocol: "https://blackgirlbytes.dev/dinger-chat-protocol",
-            published: true,
-            types: {
-                ding: {
-                    schema: "https://blackgirlbytes.dev/ding",
-                    dataFormats: ["application/json"],
-                },
-            },
-            structure: {
-                ding: {
-                    $actions: [
-                        { who: "anyone", can: "write" },
-                        { who: "author", of: "ding", can: "read" },
-                        { who: "recipient", of: "ding", can: "read" },
-                    ],
-                },
-            },
-        };
-        return dingerProtocolDefinition;
-    };
-
-    //@ts-ignore
-    const queryForProtocol = async (web5) => {
-        return await web5.dwn.protocols.query({
-            message: {
-                filter: {
-                    protocol: "https://blackgirlbytes.dev/dinger-chat-protocol",
-                },
-            },
-        });
-    };
-
-    //@ts-ignore
-    const installProtocolLocally = async (web5, protocolDefinition) => {
-        return await web5.dwn.protocols.configure({
-            message: {
-                definition: protocolDefinition,
-            },
-        });
-    };
-
-    //@ts-ignore
-    const configureProtocol = async (web5, did) => {
-        const protocolDefinition = await createProtocolDefinition();
-
-        const { protocols: localProtocol, status: localProtocolStatus } =
-            await queryForProtocol(web5);
-        console.log({ localProtocol, localProtocolStatus });
-        if (localProtocolStatus.code !== 200 || localProtocol.length === 0) {
-
-            const { protocol, status } = await installProtocolLocally(web5, protocolDefinition);
-            console.log("Protocol installed locally", protocol, status);
-
-            const { status: configureRemoteStatus } = await protocol.send(did);
-            console.log("Did the protocol install on the remote DWN?", configureRemoteStatus);
-        } else {
-            console.log("Protocol already installed");
+          alert('Failed to copy DID: ', err);
         }
-    };
+      });
 
+      //@ts-ignore
+      dingForm.addEventListener('submit', async (event) => {
+        // ... (your existing form submission logic)
+        event.preventDefault();
 
-    const constructDing = () => {
-        const currentDate = new Date().toLocaleDateString();
-        const currentTime = new Date().toLocaleTimeString();
-        const ding = {
-            sender: myDid,
-            note: noteValue,
-            recipient: recipientDid,
-            timestampWritten: `${currentDate} ${currentTime}`,
-        };
-        return ding;
-    };
+//@ts-ignore
+  dingErrorElement.textContent = '';
+  //@ts-ignore
+  dingProgressElement.textContent = '';
+//@ts-ignore
+  const did = document.querySelector('#did').value;
+  //@ts-ignore
+  const note = document.querySelector('#note').value;
 
+  if (did.length === 0) {
     //@ts-ignore
-    const writeToDwn = async (ding) => {
+    dingErrorElement.textContent = 'DID required';
+    return;
+  }
+
+  const ding = { dinger: myDid };
+  if (note) {
+    //@ts-ignore
+    ding.note = note;
+  }
+//@ts-ignore
+  dingProgressElement.textContent = 'writing ding to local DWN...';
+
+  try {
+    const { record, status } = await web5.dwn.records.write({
+      data: ding,
+      message: {
+        protocol: dingerProtocolDefinition.protocol,
+        protocolPath: 'ding',
+        schema: 'ding',
+        recipient: did
+      }
+    });
+
+    if (status.code !== 202) {
         //@ts-ignore
-        const { record } = await web5.dwn.records.write({
-            data: ding,
-            message: {
-                protocol: "https://blackgirlbytes.dev/dinger-chat-protocol",
-                protocolPath: "ding",
-                schema: "https://blackgirlbytes.dev/ding",
-                recipient: recipientDid,
-            },
+      dingErrorElement.textContent = `${status.code} - ${status.detail}`;
+      return;
+    }
+
+    const shortenedDid = did.substr(0, 22);
+    //@ts-ignore
+    dingProgressElement.textContent = `Ding written locally! Dinging ${shortenedDid}...`;
+//@ts-ignore
+    const { status: sendStatus } = await record.send(did);
+    console.log('send status', sendStatus);
+
+    if (sendStatus.code !== 202) {
+        //@ts-ignore
+      dingErrorElement.textContent = `${sendStatus.code} - ${sendStatus.detail}`;
+      return;
+    }
+//@ts-ignore
+    dingProgressElement.textContent = `Dinged ${shortenedDid}!`;
+  } catch (e) {
+    //@ts-ignore
+    dingErrorElement.textContent = e.message;
+    return;
+  }
+      });
+    };
+
+    initDinger();
+  }, []);
+
+  const configureProtocol = async (web5: any) => {
+    // ... (your existing configureProtocol function)
+    const { protocols, status } = await web5.dwn.protocols.query({
+      message: {
+        filter: {
+          protocol: 'https://dinger.app/protocol'
+        }
+      }
+    });
+  
+    if (status.code !== 200) {
+      alert('Failed to query protocols. check console');
+      console.error('Failed to query protocols', status);
+  
+      return;
+    }
+  
+    // protocol already exists
+    if (protocols.length > 0) {
+      console.log('protocol already exists');
+      return;
+    }
+  
+    // create protocol
+    const { status: configureStatus } = await web5.dwn.protocols.configure({
+      message: {
+        definition: dingerProtocolDefinition
+      }
+    });
+  
+    console.log('configure protocol status', configureStatus);
+  };
+
+  const renderDings = async (web5: any, myDid: string, dingedList: any, dingedByList: any) => {
+    // ... (your existing renderDings function)
+    const { records, status } = await web5.dwn.records.query({
+      message: {
+        filter: {
+          protocol: dingerProtocolDefinition.protocol
+        }
+      }
+    });
+  
+    if (status.code !== 200) {
+      alert('Failed to query for dings. check console');
+      console.error('Failed to query dings', status);
+    }
+  
+    for (let record of records) {
+      const recordExists = document.getElementById(record.id);
+      if (recordExists) {
+        continue;
+      }
+  
+      const { dinger, note } = await record.data.json();
+      if (dinger === myDid) {
+        const shortenedDid = record.recipient.substr(0, 22);
+        const formattedDing = `[${new Date(record.dateCreated).toLocaleString()}] ${shortenedDid}... - ${note || ''}`;
+  
+        const dingElement = document.createElement('li');
+        dingElement.id = record.id;
+        dingElement.textContent = formattedDing;
+  
+        const dingBackButton = document.createElement('button');
+        dingBackButton.className = 'ding-back';
+        dingBackButton.textContent = 'Ding agane';
+        dingBackButton.dataset.toDing = record.recipient;
+  
+        dingBackButton.addEventListener('click', event => {
+          const didInput = document.querySelector('#did');
+          //@ts-ignore
+          didInput.value = event.target.dataset.toDing;
         });
-        return record;
-    };
-
-    //@ts-ignore
-    const sendRecord = async (record) => {
-        return await record.send(recipientDid);
-    };
-    //@ts-ignore
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        if (!noteValue.trim()) {
-            setErrorMessage('Please type a message before sending.');
-            return;
-        }
-
-        const ding = constructDing();
-        const record = await writeToDwn(ding);
-        const { status } = await sendRecord(record);
-
-        console.log("Send record status", status);
-
-        await fetchDings(web5, myDid);
-        setNoteValue("");
-    };
-
-    const handleCopyDid = async () => {
-        if (myDid) {
-            try {
-                await navigator.clipboard.writeText(myDid);
-                setDidCopied(true);
-                console.log("DID copied to clipboard");
-
-                setTimeout(() => {
-                    setDidCopied(false);
-                }, 3000);
-            } catch (err) {
-                console.log("Failed to copy DID: " + err);
-            }
-        }
-    };
-
-    //@ts-ignore
-    const fetchSentMessages = async (web5, did) => {
-        const response = await web5.dwn.records.query({
-            message: {
-                filter: {
-                    protocol: "https://blackgirlbytes.dev/dinger-chat-protocol",
-                },
-            },
+  
+        dingElement.appendChild(dingBackButton);
+        dingedList.appendChild(dingElement);
+      } else {
+        const shortenedDid = dinger.substr(0, 22);
+        const formattedDing = `[${new Date(record.dateCreated).toLocaleString()}] ${shortenedDid}... - ${note || ''}`;
+  
+        const dingElement = document.createElement('li');
+        dingElement.id = record.id;
+        dingElement.textContent = formattedDing;
+  
+        const dingBackButton = document.createElement('button');
+        dingBackButton.className = 'ding-back';
+        dingBackButton.textContent = 'Ding Back';
+        dingBackButton.dataset.toDing = dinger;
+  
+        dingBackButton.addEventListener('click', event => {
+          const didInput = document.querySelector('#did');
+          //@ts-ignore
+          didInput.value = event.target.dataset.toDing;
         });
+  
+        dingElement.appendChild(dingBackButton);
+        dingedByList.appendChild(dingElement);
+      }
+    }
 
-        if (response.status.code === 200) {
-            const sentDings = await Promise.all(
-                //@ts-ignore
-                response.records.map(async (record) => {
-                    const data = await record.data.json();
-                    return data;
-                })
-            );
-            console.log(sentDings, "I sent these dings");
-            return sentDings;
-        } else {
-            console.log("error", response.status);
-        }
-    };
+  };
 
-    //@ts-ignore
-    const fetchReceivedMessages = async (web5, did) => {
-        const response = await web5.dwn.records.query({
-            from: did,
-            message: {
-                filter: {
-                    protocol: "https://blackgirlbytes.dev/dinger-chat-protocol",
-                    schema: "https://blackgirlbytes.dev/ding",
-                },
-            },
-        });
+  return (
+    <div>
+      <button id="copy-did">Copy your DID</button>
+      <form id="ding-form">
+        <p id="ding-error"></p>
+        <input type="text" id="did" placeholder="Enter DID" />
+        <br />
+        <input type="text" id="note" placeholder="Enter note (optional)" />
+        <br />
+        <button type="submit">Ding</button>
+        <span id="ding-progress"></span>
+      </form>
 
-        if (response.status.code === 200) {
-            const receivedDings = await Promise.all(
-                //@ts-ignore
-                response.records.map(async (record) => {
-                    const data = await record.data.json();
-                    return data;
-                })
-            );
-            console.log(receivedDings, "I received these dings");
-            return receivedDings;
-        } else {
-            console.log("error", response.status);
-        }
-    };
+      <h2>You Dinged:</h2>
+      <ul id="dinged-list">
+        {/* List items will be added here dynamically */}
+      </ul>
 
-    //@ts-ignore
-    const fetchDings = async (web5, did) => {
-        const sentMessages = await fetchSentMessages(web5, did);
-        const receivedMessages = await fetchReceivedMessages(web5, did);
-        const allMessages = [...(sentMessages || []), ...(receivedMessages || [])];
-        //@ts-ignore
-        setAllDings(allMessages);
+      <h2>You were Dinged by:</h2>
+      <ul id="dinged-by-list">
+        {/* List items will be added here dynamically */}
+      </ul>
+    </div>
+  );
+};
 
-    };
-
-    const handleStartNewChat = () => {
-        setActiveRecipient(null);
-        setShowNewChatInput(true);
-    };
-
-    //@ts-ignore
-    const handleSetActiveRecipient = (recipient) => {
-        setRecipientDid(recipient);
-        setActiveRecipient(recipient);
-        setShowNewChatInput(false);
-    };
-
-    const handleConfirmNewChat = () => {
-        //@ts-ignore
-        setActiveRecipient(recipientDid);
-        //@ts-ignore
-        setActiveRecipient(recipientDid);
-        setShowNewChatInput(false);
-        //@ts-ignore
-        if (!groupedDings[recipientDid]) {
-            //@ts-ignore
-            groupedDings[recipientDid] = [];
-        }
-    };
-
-    return (
-      <div>
-      <h1>{myDid}</h1>
-      <input placeholder="Enter your message"/>
-      <button>Send Message</button>
-      </div>
-    );
-}
+export default ChatConnect;
