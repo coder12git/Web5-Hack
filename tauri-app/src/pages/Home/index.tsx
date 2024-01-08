@@ -2,6 +2,7 @@ import "./index.css";
 import { useProfile } from "@/stores/profile";
 import SignUpForm from "./SignUpForm";
 import AuthGuard from "@/components/Auth/Guard";
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   const showAuthModal = useProfile(state => state.showAuthModal);
@@ -26,9 +27,11 @@ export default function HomePage() {
               based on your location. PulsePal – where advanced technology meets
               user-friendly design for your secure, connected health journey.
             </p>
-            <button className="gs_btn">
-              Get Started! <i className="fa fa-fire"></i>
-            </button>
+            <Link to="/connect">
+              <button type="button" className="gs_btn">
+                Get Started! <i className="fa fa-fire" />
+              </button>
+            </Link>
           </div>
           <div className="img-container"></div>
         </div>
