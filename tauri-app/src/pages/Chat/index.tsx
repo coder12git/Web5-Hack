@@ -191,7 +191,6 @@ const index = () => {
             className="data-container"
           >
             <FindFriends />
-              setHideChat={setHideChat} hideChat={hideChat} />
           </div>
         )}
       </div>
