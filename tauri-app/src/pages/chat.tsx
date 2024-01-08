@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { Web5 } from "@web5/api/browser";
 import { dingerProtocolDefinition } from '@/stores/useWeb5Store';
+import '../components/Chat/index.css';
 
 // Define your dingerProtocolDefinition object
 
@@ -167,7 +168,7 @@ const ChatConnect: React.FC = () => {
   
         const dingBackButton = document.createElement('button');
         dingBackButton.className = 'ding-back';
-        dingBackButton.textContent = 'Ding agane';
+        // dingBackButton.textContent = 'Ding agane';
         dingBackButton.dataset.toDing = record.recipient;
   
         dingBackButton.addEventListener('click', event => {
@@ -188,7 +189,7 @@ const ChatConnect: React.FC = () => {
   
         const dingBackButton = document.createElement('button');
         dingBackButton.className = 'ding-back';
-        dingBackButton.textContent = 'Ding Back';
+        // dingBackButton.textContent = 'Ding Back';
         dingBackButton.dataset.toDing = dinger;
   
         dingBackButton.addEventListener('click', event => {
@@ -211,9 +212,9 @@ const ChatConnect: React.FC = () => {
         <p id="ding-error"></p>
         <input type="text" id="did" placeholder="Enter DID" />
         <br />
-        <input type="text" id="note" placeholder="Enter note (optional)" />
+        <input type="text" id="note" placeholder="Enter note" />
         <br />
-        <button type="submit">Ding</button>
+        <button type="submit">Send</button>
         <span id="ding-progress"></span>
       </form>
 
@@ -231,3 +232,35 @@ const ChatConnect: React.FC = () => {
 };
 
 export default ChatConnect;
+
+
+interface MessageProp {
+    message: string;
+    isLeft: boolean;
+  }
+  //@ts-ignore
+  const Message: FC<MessageProp> = ({ message, isLeft }) => {
+    return (
+      <div className="msg-container" style={{ justifyContent: "right" }}>
+        <div className={isLeft ? "msg-f" : "msg-t"}>
+          <p>{message}</p>
+        </div>
+      </div>
+    );
+  };
+  //@ts-ignore
+  export const index: FC = () => {
+    return (
+      <div className="chat-component-container">
+        <div className="chats-container">
+        </div>
+        <div className="chat-message-input-container">
+          <input type="text" placeholder="Say Hi!" />
+          <button>
+            <i className="fa fa-caret-right"></i>
+          </button>
+        </div>
+      </div>
+    );
+  };
+  

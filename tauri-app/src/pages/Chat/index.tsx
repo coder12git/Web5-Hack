@@ -47,13 +47,16 @@ const index = () => {
           friends={45}
         />
         <UserMobileFriendList
+        //@ts-ignore
           friendList={friends}
           setHideChat={setHideChat}
           hideChat={hideChat}
         />
         {hideChat && (
           <div className="data-container">
-            <MobileChat setHideChat={setHideChat} hideChat={hideChat} />
+            <MobileChat 
+            //@ts-ignore
+            setHideChat={setHideChat} hideChat={hideChat} />
           </div>
         )}
       </div>
@@ -71,7 +74,9 @@ const index = () => {
           cover_pic={"/pic.jpg"}
           friends={45}
         />
-        <UserFriendList friendList={friends} />
+        <UserFriendList 
+        //@ts-ignore
+        friendList={friends} />
       </div>
       <div className="chat-container">
         <Chat />

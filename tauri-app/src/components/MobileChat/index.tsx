@@ -15,7 +15,7 @@ const Message: FC<MessageProp> = ({ message, isLeft }) => {
     </div>
   );
 };
-
+//@ts-ignore
 const index: FC = ({ setHideChat, hideChat }) => {
   return (
     <div className="m-chat-m-container">
