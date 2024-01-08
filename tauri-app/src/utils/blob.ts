@@ -108,12 +108,12 @@ async function createBlobRecord(agent: Agent, payload: CreatePayload, remote?: b
   return record
 }
 
-async function fetchBlobRecord(agent: Agent, filter: FilterObj) {
+async function fetchBlobRecord(agent: Agent, filter: FilterObj, remote?: boolean) {
   const records = await fetchRecords(agent, {
     ...filter,
     protocolPath: "blob",
     schema: BlobProtocol.types.blob.schema,
-  })
+  }, remote)
 
   if (!records || !records[0]) return false
 
