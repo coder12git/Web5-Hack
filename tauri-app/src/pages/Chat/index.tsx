@@ -76,37 +76,37 @@ export type Friend = Awaited<ReturnType<typeof fetchProfilesWithConditions>>[num
 }
 
 const index = () => {
-  const [friends, setFriends] = useState([
-    {
-      profile_pic: "/pg.jpg",
-      username: "@scriptkidd",
-      isOnline: false,
-      did: "1020383*@(wppwsj)",
-    },
-    {
-      profile_pic: "/pg.jpg",
-      username: "@nikki",
-      isOnline: false,
-      newChat: 1,
-      did: "apqpwpudrZpwpsAaap",
-    },
-    {
-      profile_pic: "/pm.jpg",
-      username: "@gregidd",
-      isOnline: true,
-      newChat: 7,
-      did: "12340APDPDISavavagaAjd",
-    },
-    {
-      profile_pic: "/pic.jpg",
-      username: "@scdd",
-      isOnline: false,
-      newChat: 4,
-      did: "APSOWJEHDHaksosodoQPPE1O",
-    },
- ]);
+  //  const [friends, setFriends] = useState([
+  //    {
+  //      profile_pic: "/pg.jpg",
+  //      username: "@scriptkidd",
+  //      isOnline: false,
+  //      did: "1020383*@(wppwsj)",
+  //    },
+  //    {
+  //      profile_pic: "/pg.jpg",
+  //      username: "@nikki",
+  //      isOnline: false,
+  //      newChat: 1,
+  //      did: "apqpwpudrZpwpsAaap",
+  //    },
+  //    {
+  //      profile_pic: "/pm.jpg",
+  //      username: "@gregidd",
+  //      isOnline: true,
+  //      newChat: 7,
+  //      did: "12340APDPDISavavagaAjd",
+  //    },
+  //    {
+  //      profile_pic: "/pic.jpg",
+  //      username: "@scdd",
+  //      isOnline: false,
+  //      newChat: 4,
+  //      did: "APSOWJEHDHaksosodoQPPE1O",
+  //    },
+  // ]);
 
-  {/*const [friends, setFriends] = useState<Friend[]>([
+  const [friends, setFriends] = useState<Friend[]>([
     // { profile_pic: "/pg.jpg", username: "@scriptkidd", isOnline: false, did: "1020383*@(wppwsj)" },
     // { profile_pic: "/pg.jpg", username: "@nikki", isOnline: false, newChat: 1, did: "apqpwpudrZpwpsAaap" },
     // {
@@ -117,8 +117,8 @@ const index = () => {
     //   did: "12340APDPDISavavagaAjd"
     // },
     // { profile_pic: "/pic.jpg", username: "@scdd", isOnline: false, newChat: 4, did: "APSOWJEHDHaksosodoQPPE1O" },
->>>>>>> 499f1964de53b184725503bcf7efa766f1394645*/}
- 
+  ])
+
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [hideChat, setHideChat] = useState<boolean>(false);
   const [showFriendRequests, setShowFriendRequests] = useState<boolean>(false);
@@ -129,12 +129,14 @@ const index = () => {
 
   useEffect(() => {
     const fetchProfiles = async () => {
+      console.log("fetching new friends")
       const res = await fetchProfilesWithConditions({ web5, did }, profile.conditions)
       const newFriends = res.map(profile => ({
         ...profile,
         isOnline: true,
         username: `${profile.firstName}${profile.lastName}`
       }))
+      console.log('newFriends:', newFriends)
       setFriends(newFriends)
     }
 
@@ -154,7 +156,7 @@ const index = () => {
     return (
       <div className="m-chat-container">
         <UserMobileProfile
-         username={`${profile.firstName}${profile.lastName}`}
+          username={`${profile.firstName}${profile.lastName}`}
           about_user={profile.description}
           profile_pic={profile.profilePictureUrl}
           cover_pic={profile.profilePictureUrl}
@@ -162,7 +164,7 @@ const index = () => {
           friendRequests={5}
           friendRequestsUtils={[showFriendRequests, setShowFriendRequests]}
           findFriendsUtils={[showFindFriends, setShowFindFriends]}
-         //@ts-ignore
+          //@ts-ignore
           friendList={friends}
           setHideChat={setHideChat}
           hideChat={hideChat}
@@ -200,15 +202,15 @@ const index = () => {
     <div className="main-chat-container">
       <div className="utils-container">
         <UserProfile
-        username={`${profile.firstName}${profile.lastName}`}
+          username={`${profile.firstName}${profile.lastName}`}
           about_user={profile.description}
           profile_pic={profile.profilePictureUrl}
           cover_pic={profile.profilePictureUrl}
           friends={friends.length}
-       friendRequests={5}
+          friendRequests={5}
           friendRequestsUtils={[showFriendRequests, setShowFriendRequests]}
           findFriendsUtils={[showFindFriends, setShowFindFriends]}
-    
+
         />
         <UserFriendList
           friendList={friends} />
