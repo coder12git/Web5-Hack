@@ -9,7 +9,6 @@ import SharedLayout from "./pages/SharedLayout/";
 import Records from "./pages/Records";
 import Chat from "./pages/Chat/";
 import { Toaster } from "react-hot-toast";
-import ChatConnect from "./pages/chat";
 import ProfileGuard from "./components/Auth/Profile/Guard";
 
 const router = createHashRouter([
@@ -35,8 +34,7 @@ const router = createHashRouter([
             <Chat />
           </ProfileGuard>
         ),
-      },
-      { path: "/chatConnect", element: <ChatConnect /> },
+      }
     ],
   },
 ]);
